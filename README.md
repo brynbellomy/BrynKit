@@ -18,7 +18,7 @@ if set to 1, this will add the filename and line num to NSLog calls
 
 ## ii. debugging/logging macros
 
-### \_\_JUST_FILENAME\_\_
+### \_\_JUST\_FILENAME\_\_
 
 the built-in macro `__FILE__` contains the entire path to a
 file.  you don't often want that. this just gives you the file's actual name.
