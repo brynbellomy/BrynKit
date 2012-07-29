@@ -92,6 +92,7 @@
 
 #ifndef __IPHONE_6_0
 
+// redefining YES and NO allows us to use @YES and @NO for NSNumber'd BOOLs
 // Provided by James Webster on StackOverFlow
 #if __has_feature(objc_bool) 
 #undef YES 
@@ -99,6 +100,9 @@
 #define YES __objc_yes 
 #define NO __objc_no 
 #endif 
+
+// boxed enums
+#define b(x) [NSNumber numberWithInteger:(x)]
 
 @interface NSArray (Indexing)
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
