@@ -101,10 +101,10 @@
 // redefining YES and NO allows us to use @YES and @NO for NSNumber'd BOOLs
 // Provided by James Webster on StackOverFlow
 #if __has_feature(objc_bool) 
-#undef YES 
-#undef NO 
-#define YES __objc_yes 
-#define NO __objc_no 
+  #undef YES
+  #undef NO 
+  #define YES __objc_yes 
+  #define NO __objc_no 
 #endif 
 
 // boxed enums

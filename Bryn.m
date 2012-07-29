@@ -5,6 +5,7 @@
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
+#import "Bryn.h"
 
 /**
  * objective-c literal support on iOS < 6
