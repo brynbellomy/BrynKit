@@ -15,6 +15,7 @@
 /*************************************/
 
 #define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
+#define SILENCE_NSLOG 0 // if set to 1, all calls to NSLog become no-ops
 #define LOG_MACROS_ARE_ACTIVE 0 // easily turn off all changes to logging
 
 
@@ -36,6 +37,11 @@
   // replace NSLog with BrynLog
   #if VERBOSE_NSLOG == 1
     #define NSLog(__FORMAT__, ...) BrynLog(__FORMAT__, ##__VA_ARGS__)
+  #endif
+
+  // replace NSLog with a no-op
+  #if SILENCE_NSLOG == 1
+    #define NSLog(__FORMAT__, ...) do{}while(0)
   #endif
 
   // like BrynLog except it logs the function/selector name instead of the file and line num.
