@@ -15,7 +15,7 @@
 /*************************************/
 
 #define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
-
+#define LOG_MACROS_ARE_ACTIVE 0 // easily turn off all changes to logging
 
 
 
@@ -28,19 +28,25 @@
 // __FILE__ contains the entire path to a file.  this #define only gives you the file's actual name.
 #define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
 
-// this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
-// without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
-#define BrynLog(__FORMAT__, ...) NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
+#if LOG_MACROS_ARE_ACTIVE == 1
+  // this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
+  // without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
+  #define BrynLog(__FORMAT__, ...) NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
 
-// replace NSLog with BrynLog
-#if VERBOSE_NSLOG == 1
-  #define NSLog(__FORMAT__, ...) BrynLog(__FORMAT__, ##__VA_ARGS__)
+  // replace NSLog with BrynLog
+  #if VERBOSE_NSLOG == 1
+    #define NSLog(__FORMAT__, ...) BrynLog(__FORMAT__, ##__VA_ARGS__)
+  #endif
+
+  // like BrynLog except it logs the function/selector name instead of the file and line num.
+  #define BrynFnLog(__FORMAT__, ...) NSLog(@"%s > %@", __func__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
+
+#else
+
+  #define BrynLog do{}while(0)
+  #define BrynFnLog do{}while(0)
+
 #endif
-
-// like BrynLog except it logs the function/selector name instead of the file and line num.
-#define BrynFnLog(__FORMAT__, ...) NSLog(@"%s > %@", __func__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
-
-
 
 
 
@@ -97,6 +103,42 @@
 #if !defined (SEObjectAtIndex)
   #define SEObjectAtIndex(array, index) (array.count >= (index + 1) ? [array objectAtIndex:index] : nil)
 #endif
+
+
+
+/*************************************/
+#pragma mark- objective-c literal support on iOS < 6
+#pragma mark-
+/*************************************/
+
+#ifndef __IPHONE_6_0
+
+// Provided by James Webster on StackOverFlow
+#if __has_feature(objc_bool) 
+#undef YES 
+#undef NO 
+#define YES __objc_yes 
+#define NO __objc_no 
+#endif 
+
+@interface NSArray (Indexing)
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+@end
+
+@interface NSMutableArray (Indexing)
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+@end
+
+@interface  NSDictionary (Indexing)
+- (id)objectForKeyedSubscript:(id)key;
+@end
+
+@interface  NSMutableDictionary (Indexing)
+- (void)setObject:(id)obj forKeyedSubscript:(id)key;
+@end
+
+#endif
+
 
 
 #endif
