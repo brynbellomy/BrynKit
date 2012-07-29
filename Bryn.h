@@ -107,8 +107,12 @@
   #define NO __objc_no 
 #endif 
 
-// boxed enums
-#define b(x) [NSNumber numberWithInteger:(x)]
+// boxed values
+#define b(x)  [NSNumber numberWithInteger:(x)]
+#define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
+#define bf(x) [NSNumber numberWithFloat:(x)]
+#define bd(x) [NSNumber numberWithDouble:(x)]
+#define bb(x) [NSNumber numberWithBool:(x)]
 
 @interface NSArray (Indexing)
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
