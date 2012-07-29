@@ -68,27 +68,6 @@
 
 
 
-
-
-
-/*************************************/
-#pragma mark- string-related macros
-#pragma mark-
-/*************************************/
-
-// SESameStrings(a, b)
-//
-// tests two NSStrings for sameness, and also prevents the false positive that
-// occurs when you call [A compare:B] and A is nil.  this happens because
-// NSOrderedSame == 0, which is the same as the return value of any message sent
-// to nil -- that is, nil.
-#if !defined(SESameStrings)
-  #define SESameStrings(x, y) (BOOL)((x != nil) && ([(NSString *)(x) compare:(NSString *)(y)] == NSOrderedSame))
-#endif
-
-
-
-
 /*************************************/
 #pragma mark- container-related macros
 #pragma mark-
@@ -101,7 +80,7 @@
 // warning: you may fail to notice bugs in your code when using this macro.
 // exceptions get thrown for a reason, y'heard?
 #if !defined (SEObjectAtIndex)
-  #define SEObjectAtIndex(array, index) (array.count >= (index + 1) ? [array objectAtIndex:index] : nil)
+  #define SEObjectAtIndex(array, index) (array.count >= (index + 1) ? array[ index ] : nil)
 #endif
 
 
