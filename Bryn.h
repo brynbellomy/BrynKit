@@ -16,7 +16,7 @@
 
 #define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
 #define SILENCE_NSLOG 0 // if set to 1, all calls to NSLog become no-ops
-#define LOG_MACROS_ARE_ACTIVE 0 // easily turn off all changes to logging
+#define LOG_MACROS_ARE_ACTIVE 1 // easily turn off all changes to logging
 
 
 
@@ -134,4 +134,43 @@
 
 
 
+/*************************************/
+#pragma mark- ARC/non-ARC compatibility helpers
+#pragma mark-
+/*************************************/
+
+// everything in this section comes courtesy of the fantastic MBProgressHUD
+// class by matej bukovinski [http://github.com/jdg/MBProgressHUD]
+
+#ifndef bryn_strong
+  #if __has_feature(objc_arc)
+    #define bryn_strong strong
+  #else
+    #define bryn_strong retain
+  #endif
 #endif
+
+#ifndef bryn_weak
+  #if __has_feature(objc_arc_weak)
+    #define bryn_weak weak
+  #elif __has_feature(objc_arc)
+    #define bryn_weak unsafe_unretained
+  #else
+    #define bryn_weak assign
+  #endif
+#endif
+
+#if __has_feature(objc_arc)
+  #define BrynAutorelease(exp) exp
+  #define BrynRelease(exp) exp
+  #define BrynRetain(exp) exp
+#else
+  #define BrynAutorelease(exp) [exp autorelease]
+  #define BrynRelease(exp) [exp release]
+  #define BrynRetain(exp) [exp retain]
+#endif
+
+
+
+#endif
+
