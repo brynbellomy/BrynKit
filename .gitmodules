@@ -1,0 +1,6 @@
+[submodule "Vendor/Underscore.m"]
+	path = Vendor/Underscore.m
+	url = git://github.com/robb/Underscore.m.git
+[submodule "Vendor/ObjC-DesignByContract"]
+	path = Vendor/ObjC-DesignByContract
+	url = git://github.com/brynbellomy/ObjC-DesignByContract.git
