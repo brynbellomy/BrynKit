@@ -116,9 +116,6 @@ typedef void(^UIntBlock)(NSUInteger i);
   #define bd(x) [NSNumber numberWithDouble:(x)]
   #define bb(x) [NSNumber numberWithBool:(x)]
 
-#endif // ifndef __IPHONE_6_0
-
-#if !__has_feature(objc_subscripting)
 
   @interface NSArray (Indexing)
   - (id)objectAtIndexedSubscript:(NSUInteger)idx;
