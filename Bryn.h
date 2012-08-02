@@ -8,6 +8,8 @@
 #ifndef __Bryn__
 #define __Bryn__  // is this even possible????
 
+typedef void(^BoolBlock)(BOOL success);
+typedef void(^UIntBlock)(NSUInteger i);
 
 /*************************************/
 #pragma mark- settable settings
@@ -45,12 +47,12 @@
   #endif
 
   // like BrynLog except it logs the function/selector name instead of the file and line num.
-  #define BrynFnLog(__FORMAT__, ...) NSLog(@"%s > %@", __func__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
+  #define BrynFnLog(__FORMAT__, ...) (NSLog(@"%s > %@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
 
 #else
 
-  #define BrynLog do{}while(0)
-  #define BrynFnLog do{}while(0)
+  #define BrynLog(__FORMAT__, ...) do{}while(0)
+  #define BrynFnLog(__FORMAT__, ...) do{}while(0)
 
 #endif
 
@@ -69,7 +71,7 @@
 // note: the image filename you pass to this macro should not contain its file
 // extension (".png").
 #if !defined(UIImageWithBundlePNG)
-  #define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource: [NSString stringWithFormat:(x)] ofType: @"png"]])
+  #define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:(x) ofType: @"png"]])
 #endif
 
 
@@ -158,7 +160,6 @@
   #else
     #define bryn_weak assign
   #endif
-#endif
 
 #if __has_feature(objc_arc)
   #define BrynAutorelease(exp) exp
@@ -169,6 +170,22 @@
   #define BrynRelease(exp) [exp release]
   #define BrynRetain(exp) [exp retain]
 #endif
+
+
+
+/*************************************/
+#pragma mark- GCD/concurrency helpers
+#pragma mark-
+/*************************************/
+
+static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block) {
+  if (dispatch_get_current_queue() == queue)
+    block();
+  else
+    dispatch_sync(queue, block);
+}
+
+
 
 
 
