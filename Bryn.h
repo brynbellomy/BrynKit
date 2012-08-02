@@ -100,37 +100,41 @@ typedef void(^UIntBlock)(NSUInteger i);
 
 #ifndef __IPHONE_6_0
 
-// redefining YES and NO allows us to use @YES and @NO for NSNumber'd BOOLs
-// Provided by James Webster on StackOverFlow
-#if __has_feature(objc_bool) 
-  #undef YES
-  #undef NO 
-  #define YES __objc_yes 
-  #define NO __objc_no 
-#endif 
+  // redefining YES and NO allows us to use @YES and @NO for NSNumber'd BOOLs
+  // Provided by James Webster on StackOverFlow
+  #if __has_feature(objc_bool) 
+    #undef YES
+    #undef NO 
+    #define YES __objc_yes 
+    #define NO __objc_no 
+  #endif 
 
-// boxed values
-#define b(x)  [NSNumber numberWithInteger:(x)]
-#define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
-#define bf(x) [NSNumber numberWithFloat:(x)]
-#define bd(x) [NSNumber numberWithDouble:(x)]
-#define bb(x) [NSNumber numberWithBool:(x)]
+  // boxed values
+  #define b(x)  [NSNumber numberWithInteger:(x)]
+  #define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
+  #define bf(x) [NSNumber numberWithFloat:(x)]
+  #define bd(x) [NSNumber numberWithDouble:(x)]
+  #define bb(x) [NSNumber numberWithBool:(x)]
 
-@interface NSArray (Indexing)
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
-@end
+#endif // ifndef __IPHONE_6_0
 
-@interface NSMutableArray (Indexing)
-- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
-@end
+#if !__has_feature(objc_subscripting)
 
-@interface  NSDictionary (Indexing)
-- (id)objectForKeyedSubscript:(id)key;
-@end
+  @interface NSArray (Indexing)
+  - (id)objectAtIndexedSubscript:(NSUInteger)idx;
+  @end
 
-@interface  NSMutableDictionary (Indexing)
-- (void)setObject:(id)obj forKeyedSubscript:(id)key;
-@end
+  @interface NSMutableArray (Indexing)
+  - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+  @end
+
+  @interface  NSDictionary (Indexing)
+  - (id)objectForKeyedSubscript:(id)key;
+  @end
+
+  @interface  NSMutableDictionary (Indexing)
+  - (void)setObject:(id)obj forKeyedSubscript:(id)key;
+  @end
 
 #endif
 
@@ -150,7 +154,7 @@ typedef void(^UIntBlock)(NSUInteger i);
   #else
     #define bryn_strong retain
   #endif
-#endif
+#endif // bryn_strong
 
 #ifndef bryn_weak
   #if __has_feature(objc_arc_weak)
@@ -161,16 +165,16 @@ typedef void(^UIntBlock)(NSUInteger i);
     #define bryn_weak assign
   #endif
 
-#if __has_feature(objc_arc)
-  #define BrynAutorelease(exp) exp
-  #define BrynRelease(exp) exp
-  #define BrynRetain(exp) exp
-#else
-  #define BrynAutorelease(exp) [exp autorelease]
-  #define BrynRelease(exp) [exp release]
-  #define BrynRetain(exp) [exp retain]
-#endif
-
+  #if __has_feature(objc_arc)
+    #define BrynAutorelease(exp) exp
+    #define BrynRelease(exp) exp
+    #define BrynRetain(exp) exp
+  #else
+    #define BrynAutorelease(exp) [exp autorelease]
+    #define BrynRelease(exp) [exp release]
+    #define BrynRetain(exp) [exp retain]
+  #endif
+#endif // bryn_weak
 
 
 /*************************************/
@@ -189,5 +193,5 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
 
 
 
-#endif
+#endif // __Bryn__
 
