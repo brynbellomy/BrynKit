@@ -4,3 +4,6 @@
 [submodule "Vendor/ObjC-DesignByContract"]
 	path = Vendor/ObjC-DesignByContract
 	url = git://github.com/brynbellomy/ObjC-DesignByContract.git
+[submodule "Vendor/MAObjCRuntime"]
+	path = Vendor/MAObjCRuntime
+	url = /Users/bryn/srv/git/MAObjCRuntime.git
