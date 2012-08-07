@@ -155,23 +155,26 @@ typedef void(^UIntBlock)(NSUInteger i);
 
 #ifndef bryn_weak
   #if __has_feature(objc_arc_weak)
-    #define bryn_weak weak
+    #define   bryn_weak   weak
+    #define __bryn_weak __weak
   #elif __has_feature(objc_arc)
-    #define bryn_weak unsafe_unretained
+    #define   bryn_weak   unsafe_unretained
+    #define __bryn_weak __unsafe_unretained
   #else
-    #define bryn_weak assign
+    #define   bryn_weak   assign
+    #define __bryn_weak __assign
   #endif
+#endif
 
-  #if __has_feature(objc_arc)
-    #define BrynAutorelease(exp) exp
-    #define BrynRelease(exp) exp
-    #define BrynRetain(exp) exp
-  #else
-    #define BrynAutorelease(exp) [exp autorelease]
-    #define BrynRelease(exp) [exp release]
-    #define BrynRetain(exp) [exp retain]
-  #endif
-#endif // bryn_weak
+#if __has_feature(objc_arc)
+  #define BrynAutorelease(exp) exp
+  #define BrynRelease(exp) exp
+  #define BrynRetain(exp) exp
+#else
+  #define BrynAutorelease(exp) [exp autorelease]
+  #define BrynRelease(exp) [exp release]
+  #define BrynRetain(exp) [exp retain]
+#endif
 
 
 /*************************************/
