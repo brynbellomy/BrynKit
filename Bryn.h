@@ -8,8 +8,19 @@
 #ifndef __Bryn__
 #define __Bryn__  // is this even possible????
 
+#import <ConciseKit/ConciseKit.h>
+#import <Underscore.m/Underscore.h>
+
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
+typedef void(^NotificationBlock)(NSNotification *);
+
+typedef enum {
+  DispatchSourceState_Suspended = (1 << 0),
+  DispatchSourceState_Resumed = (1 << 1),
+  DispatchSourceState_Canceled = (1 << 2)
+} DispatchSourceState;
+
 
 /*************************************/
 #pragma mark- settable settings
@@ -190,6 +201,53 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
 }
 
 
+
+/*************************************/
+#pragma mark- memory stuff (probably not app store safe)
+#pragma mark-
+/*************************************/
+
+#if DEBUG
+  #import <mach/mach.h>
+  #import <mach/mach_host.h>
+
+  static inline natural_t get_free_memory() {
+    mach_port_t host_port;
+    mach_msg_type_number_t host_size;
+    vm_size_t pagesize;
+    host_port = mach_host_self();
+    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    host_page_size(host_port, &pagesize);
+    vm_statistics_data_t vm_stat;
+    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
+      NSLog(@"Failed to fetch vm statistics");
+      return 0;
+    }
+    /* Stats in bytes */
+    natural_t mem_free = vm_stat.free_count * pagesize;
+    return mem_free;
+  }
+
+  static inline void startOccasionalMemoryLog() {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    // create our timer source
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    NSUInteger step = 3; // 3 seconds
+    dispatch_source_set_timer(timer,
+                              dispatch_time(DISPATCH_TIME_NOW, step * NSEC_PER_SEC),
+                              step * NSEC_PER_SEC,
+                              step * NSEC_PER_SEC);
+    
+    dispatch_source_set_event_handler(timer, ^{
+      natural_t freeMemBytes = get_free_memory();
+      printf("======================\nfree memory: %f\n=====================\n", (double)(freeMemBytes / (1024 * 1024)));
+    });
+    
+    // now that our timer is all set to go, start it
+    dispatch_resume(timer);
+  }
+#endif
 
 
 
