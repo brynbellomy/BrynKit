@@ -11,15 +11,6 @@
 #import <ConciseKit/ConciseKit.h>
 #import <Underscore.m/Underscore.h>
 
-typedef void(^BoolBlock)(BOOL success);
-typedef void(^UIntBlock)(NSUInteger i);
-typedef void(^NotificationBlock)(NSNotification *);
-
-typedef enum {
-  DispatchSourceState_Suspended = (1 << 0),
-  DispatchSourceState_Resumed = (1 << 1),
-  DispatchSourceState_Canceled = (1 << 2)
-} DispatchSourceState;
 
 
 /*************************************/
@@ -30,7 +21,24 @@ typedef enum {
 #define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
 #define SILENCE_NSLOG 0 // if set to 1, all calls to NSLog become no-ops
 #define LOG_MACROS_ARE_ACTIVE 1 // easily turn off all changes to logging
+#define NSLOG_TO_TESTFLIGHT 1 // redirect all NSLog() calls to TFLog(), which sends them to TestFlight
 
+
+
+/*************************************/
+#pragma mark- typedefs
+#pragma mark-
+/*************************************/
+
+typedef void(^BoolBlock)(BOOL success);
+typedef void(^UIntBlock)(NSUInteger i);
+typedef void(^NotificationBlock)(NSNotification *);
+
+typedef enum {
+  DispatchSourceState_Suspended = (1 << 0),
+  DispatchSourceState_Resumed = (1 << 1),
+  DispatchSourceState_Canceled = (1 << 2)
+} DispatchSourceState;
 
 
 
@@ -43,6 +51,12 @@ typedef enum {
 #define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
 
 #if LOG_MACROS_ARE_ACTIVE == 1
+
+  // redirect all NSLog() calls to TFLog(), the TestFlight logging function
+  #if NSLOG_TO_TESTFLIGHT == 1
+    #define NSLog TFLog
+  #endif
+
   // this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
   // without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
   #define BrynLog(__FORMAT__, ...) NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
