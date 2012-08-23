@@ -23,12 +23,10 @@ Pod::Spec.new do |s|
 
   s.subspec 'underscore' do |c|
     c.dependency 'Underscore.m', '>= 0.1.0'
-    c.prefix_header_contents = "#import <Underscore/Underscore.h>"
   end
 
   s.subspec 'concise' do |c|
     c.dependency 'ConciseKit', '>= 0.1.2'
-    c.prefix_header_contents = "#import <ConciseKit/ConciseKit.h>"
   end
 
 end
