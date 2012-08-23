@@ -21,7 +21,8 @@
 #define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
 #define SILENCE_NSLOG 0 // if set to 1, all calls to NSLog become no-ops
 #define LOG_MACROS_ARE_ACTIVE 1 // easily turn off all changes to logging
-#define NSLOG_TO_TESTFLIGHT 1 // redirect all NSLog() calls to TFLog(), which sends them to TestFlight
+#define NSLOG_TO_TESTFLIGHT 0 // redirect all NSLog() calls to TFLog(), which sends them to TestFlight
+#define AUTOMATIC_LOG_COLORS 1 // automatically colorize NSLog output in the xcode console
 
 
 
@@ -47,14 +48,26 @@ typedef enum {
 #pragma mark-
 /*************************************/
 
-#define XCODE_COLORS_ESCAPE @"\033["
+#define XCODE_COLORS_ESCAPE_OSX @"\033["
+#define XCODE_COLORS_ESCAPE_IOS @"\xC2\xA0["
+
+#if TARGET_OS_IPHONE
+  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_IOS
+#else
+  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_OSX
+#endif
 
 #define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
 #define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
 #define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
+#define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @"fg" @#r @"," @#g @"," @#b @";"
 
-static inline void BrynColorLog(NSString *msg, NSUInteger red, NSUInteger green, NSUInteger blue) {
-  NSLog([NSString stringWithFormat:@"%@fg%d,%d,%d;%@%@", XCODE_COLORS_ESCAPE, red, green, blue, msg, XCODE_COLORS_RESET_FG]);
+static inline void BrynEnableColorLogging() {
+  setenv("XcodeColors", "YES", 0); // Enables XcodeColors (you obviously have to install it too)
+}
+
+static inline void BrynDisableColorLogging() {
+  setenv("XcodeColors", "NO", 0); // Disables XcodeColors
 }
 
 // __FILE__ contains the entire path to a file.  this #define only gives you the file's actual name.
@@ -69,7 +82,15 @@ static inline void BrynColorLog(NSString *msg, NSUInteger red, NSUInteger green,
 
   // this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
   // without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
-  #define BrynLog(__FORMAT__, ...) NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__])
+  #if AUTOMATIC_LOG_COLORS == 1
+    #define BrynLog(__FORMAT__, ...) (NSLog(@"[" \
+                                            XCODE_COLORS_FG(0, 180, 0) @"%@" XCODE_COLORS_RESET \
+                                            @":" \
+                                            XCODE_COLORS_FG(150, 150, 0) @"%d" XCODE_COLORS_RESET \
+                                            @"] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
+  #else
+    #define BrynLog(__FORMAT__, ...) (NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
+  #endif
 
   // replace NSLog with BrynLog
   #if VERBOSE_NSLOG == 1
@@ -82,12 +103,20 @@ static inline void BrynColorLog(NSString *msg, NSUInteger red, NSUInteger green,
   #endif
 
   // like BrynLog except it logs the function/selector name instead of the file and line num.
-  #define BrynFnLog(__FORMAT__, ...) (NSLog(@"%s > %@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
+  #if AUTOMATIC_LOG_COLORS == 1
+    #define BrynFnLog(__FORMAT__, ...) (NSLog( \
+                                        XCODE_COLORS_FG(200, 0, 150) @"%s " XCODE_COLORS_RESET \
+                                        @"%@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
+  #else
+    #define BrynFnLog(__FORMAT__, ...) (NSLog(@"%s > %@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
+  #endif
 
+  #define BrynColorLog(msg, r, g, b) NSLog([NSString stringWithFormat:@"%@%@%@", XCODE_COLORS_FG(red, green, blue), msg, XCODE_COLORS_RESET_FG]);
 #else
 
   #define BrynLog(__FORMAT__, ...) do{}while(0)
   #define BrynFnLog(__FORMAT__, ...) do{}while(0)
+  #define BrynColorLog(__FORMAT__, ...) do{}while(0)
 
 #endif
 
