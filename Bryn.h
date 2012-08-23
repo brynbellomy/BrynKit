@@ -47,6 +47,16 @@ typedef enum {
 #pragma mark-
 /*************************************/
 
+#define XCODE_COLORS_ESCAPE @"\033["
+
+#define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
+#define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
+#define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
+
+static inline void BrynColorLog(NSString *msg, NSUInteger red, NSUInteger green, NSUInteger blue) {
+  NSLog([NSString stringWithFormat:@"%@fg%d,%d,%d;%@%@", XCODE_COLORS_ESCAPE, red, green, blue, msg, XCODE_COLORS_RESET_FG]);
+}
+
 // __FILE__ contains the entire path to a file.  this #define only gives you the file's actual name.
 #define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
 
