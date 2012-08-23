@@ -6,7 +6,10 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
   s.prefix_header_contents = "#import <BrynKit/Bryn.h>"
+  s.preferred_dependency = 'main'
 
+  s.subspec 'main' do |c|
+  end
 
   s.subspec 'contracts' do |c|
     c.dependency 'ObjC-DesignByContract', '>= 0.0.1'
