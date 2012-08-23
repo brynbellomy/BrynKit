@@ -8,9 +8,6 @@
 #ifndef __Bryn__
 #define __Bryn__  // is this even possible????
 
-#import <ConciseKit/ConciseKit.h>
-#import <Underscore.m/Underscore.h>
-
 
 
 /*************************************/
@@ -51,16 +48,29 @@ typedef enum {
 #define XCODE_COLORS_ESCAPE_OSX @"\033["
 #define XCODE_COLORS_ESCAPE_IOS @"\xC2\xA0["
 
-#if TARGET_OS_IPHONE
-  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_IOS
-#else
+//#if TARGET_OS_IPHONE
+//  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_IOS
+//#else
   #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_OSX
-#endif
+//#endif
 
 #define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
 #define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
 #define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
 #define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @"fg" @#r @"," @#g @"," @#b @";"
+
+#define COLOR_RED      XCODE_COLORS_FG(178,34,34)
+#define COLOR_YELLOW   XCODE_COLORS_FG(255,185,0)
+#define COLOR_OLIVE    XCODE_COLORS_FG(85,107,47)
+#define COLOR_GREEN    XCODE_COLORS_FG(34,139,34)
+#define COLOR_PURPLE   XCODE_COLORS_FG(132,112,255)
+#define COLOR_BLUE     XCODE_COLORS_FG(30,144,255)
+
+#define COLOR_ERROR(x)    COLOR_RED    x XCODE_COLORS_RESET
+#define COLOR_SUCCESS(x)  COLOR_GREEN  x XCODE_COLORS_RESET
+#define COLOR_FILENAME(x) COLOR_PURPLE x XCODE_COLORS_RESET
+#define COLOR_LINE(x)     COLOR_YELLOW x XCODE_COLORS_RESET
+#define COLOR_FUNC(x)     COLOR_BLUE   x XCODE_COLORS_RESET
 
 static inline void BrynEnableColorLogging() {
   setenv("XcodeColors", "YES", 0); // Enables XcodeColors (you obviously have to install it too)
@@ -83,11 +93,8 @@ static inline void BrynDisableColorLogging() {
   // this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
   // without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
   #if AUTOMATIC_LOG_COLORS == 1
-    #define BrynLog(__FORMAT__, ...) (NSLog(@"[" \
-                                            XCODE_COLORS_FG(0, 180, 0) @"%@" XCODE_COLORS_RESET \
-                                            @":" \
-                                            XCODE_COLORS_FG(150, 150, 0) @"%d" XCODE_COLORS_RESET \
-                                            @"] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
+    #define BrynLog(__FORMAT__, ...) (NSLog(@"[" COLOR_FILENAME(@"%@") @":" COLOR_LINE(@"%d") @"] %@", \
+                                              __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
   #else
     #define BrynLog(__FORMAT__, ...) (NSLog(@"[%@:%d] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
   #endif
@@ -105,18 +112,15 @@ static inline void BrynDisableColorLogging() {
   // like BrynLog except it logs the function/selector name instead of the file and line num.
   #if AUTOMATIC_LOG_COLORS == 1
     #define BrynFnLog(__FORMAT__, ...) (NSLog( \
-                                        XCODE_COLORS_FG(200, 0, 150) @"%s " XCODE_COLORS_RESET \
-                                        @"%@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
+                                          COLOR_FUNC(@"%s ") @"%@", \
+                                          __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
   #else
-    #define BrynFnLog(__FORMAT__, ...) (NSLog(@"%s > %@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
+    #define BrynFnLog(__FORMAT__, ...) (NSLog(@"%s %@", __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
   #endif
-
-  #define BrynColorLog(msg, r, g, b) NSLog([NSString stringWithFormat:@"%@%@%@", XCODE_COLORS_FG(red, green, blue), msg, XCODE_COLORS_RESET_FG]);
 #else
 
   #define BrynLog(__FORMAT__, ...) do{}while(0)
   #define BrynFnLog(__FORMAT__, ...) do{}while(0)
-  #define BrynColorLog(__FORMAT__, ...) do{}while(0)
 
 #endif
 
