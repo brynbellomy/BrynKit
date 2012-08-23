@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "BrynKit"
   s.version      = "0.0.1"
-  s.source       = { :git => "/Users/bryn/repo/BrynKit.git" }
+  s.source       = { :git => "https://github.com/brynbellomy/Bryn.h-iOS.git" }
   s.source_files = '*.{h,m}'
   s.requires_arc = true
   s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
