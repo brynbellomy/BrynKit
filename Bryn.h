@@ -1,37 +1,55 @@
 //
-//  Bryn.h
-//
-//  Created by bryn austin bellomy on 7/18/12.
+//  Bryn.h  
+//  BrynKit
+//  
+//  Created by bryn austin bellomy on 7/18/12.  
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
 #ifndef __Bryn__
 #define __Bryn__  // is this even possible????
 
-
-
-/*************************************/
+/**
+ * # Settable settings
+ *
+ * - **VERBOSE_NSLOG**: if set to 1, this will add the filename and line num to NSLog calls
+ * - **SILENCE_NSLOG**: if set to 1, all calls to NSLog become no-ops
+ * - **LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
+ * - **NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
+ * - **AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` output in the xcode console
+ */
 #pragma mark- settable settings
 #pragma mark-
-/*************************************/
 
-#define VERBOSE_NSLOG 0 // if set to 1, this will add the filename and line num to NSLog calls
-#define SILENCE_NSLOG 0 // if set to 1, all calls to NSLog become no-ops
-#define LOG_MACROS_ARE_ACTIVE 1 // easily turn off all changes to logging
-#define NSLOG_TO_TESTFLIGHT 0 // redirect all NSLog() calls to TFLog(), which sends them to TestFlight
-#define AUTOMATIC_LOG_COLORS 1 // automatically colorize NSLog output in the xcode console
-
+#define VERBOSE_NSLOG 0
+#define SILENCE_NSLOG 0
+#define LOG_MACROS_ARE_ACTIVE 1
+#define NSLOG_TO_TESTFLIGHT 0
+#define AUTOMATIC_LOG_COLORS 1
 
 
-/*************************************/
+
+/**
+ * # Typedefs
+ */
 #pragma mark- typedefs
 #pragma mark-
-/*************************************/
 
+/**
+ * ### Blocks
+ * 
+ * Saves a little bit of tedious typing.
+ */
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
 typedef void(^NotificationBlock)(NSNotification *);
 
+/**
+ * ### enum DispatchSourceState
+ * 
+ * Use this to keep track of the state of `dispatch_source` objects so that you don't
+ * over-resume them, try to cancel them when they're suspended, etc.
+ */
 typedef enum {
   DispatchSourceState_Suspended = (1 << 0),
   DispatchSourceState_Resumed = (1 << 1),
@@ -40,25 +58,36 @@ typedef enum {
 
 
 
-/*************************************/
+/**
+ * # Logging and debug macros
+ */
 #pragma mark- logging and debug macros
 #pragma mark-
-/*************************************/
+
+/**
+ * ### color logging
+ *
+ * These macros and `#define`s help to integrate with the XcodeColors plugin.
+ */
 
 #define XCODE_COLORS_ESCAPE_OSX @"\033["
 #define XCODE_COLORS_ESCAPE_IOS @"\xC2\xA0["
 
-//#if TARGET_OS_IPHONE
-//  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_IOS
-//#else
-  #define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_OSX
-//#endif
+#define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_OSX
 
 #define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @"fg;" // Clear any foreground color
 #define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
 #define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
 #define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @"fg" @#r @"," @#g @"," @#b @";"
 
+/**
+ * ### predefined rgb colors
+ *
+ * These macros evaluate to a regular NSString literal, so you can simply
+ * concatenate them into an NSString expression like so:
+ *
+ * `NSLog(@"Blah blah" COLOR_RED @"This will be red" XCODE_COLORS_RESET @"This will not");`
+ */
 #define COLOR_RED      XCODE_COLORS_FG(178,34,34)
 #define COLOR_YELLOW   XCODE_COLORS_FG(255,185,0)
 #define COLOR_OLIVE    XCODE_COLORS_FG(85,107,47)
@@ -66,22 +95,43 @@ typedef enum {
 #define COLOR_PURPLE   XCODE_COLORS_FG(132,112,255)
 #define COLOR_BLUE     XCODE_COLORS_FG(30,144,255)
 
+/**
+ * ### a simple predefined color logging 'theme'
+ *
+ * Just as with the predefined RGB colors above, you can concatenate
+ * these into a plain ol' NSString expression:
+ *
+ * `NSLog(COLOR_ERROR(@"You screwed up") @"... but it'll be okay.");`
+ */
 #define COLOR_ERROR(x)    COLOR_RED    x XCODE_COLORS_RESET
 #define COLOR_SUCCESS(x)  COLOR_GREEN  x XCODE_COLORS_RESET
 #define COLOR_FILENAME(x) COLOR_PURPLE x XCODE_COLORS_RESET
 #define COLOR_LINE(x)     COLOR_YELLOW x XCODE_COLORS_RESET
 #define COLOR_FUNC(x)     COLOR_BLUE   x XCODE_COLORS_RESET
 
-static inline void BrynEnableColorLogging() {
-  setenv("XcodeColors", "YES", 0); // Enables XcodeColors (you obviously have to install it too)
-}
+/**
+ * ### BrynEnableColorLogging()
+ * 
+ * Enables XcodeColors (you obviously have to install it too).  Call this from
+ * your `main()` function, or something else sufficiently early.
+ */
+#define BrynEnableColorLogging() setenv("XcodeColors", "YES", 0);
 
-static inline void BrynDisableColorLogging() {
-  setenv("XcodeColors", "NO", 0); // Disables XcodeColors
-}
+/**
+ * ### BrynDisableColorLogging()
+ * 
+ * Disables XcodeColors.
+ */
+#define BrynDisableColorLogging() setenv("XcodeColors", "NO", 0);
 
-// __FILE__ contains the entire path to a file.  this #define only gives you the file's actual name.
+/**
+ * ### \_\_JUST_FILENAME\_\_
+ * 
+ * `__FILE__` contains the entire path to a file.  this `#define` only gives you the file's actual name.
+ */
 #define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
+
+
 
 #if LOG_MACROS_ARE_ACTIVE == 1
 
@@ -126,50 +176,65 @@ static inline void BrynDisableColorLogging() {
 
 
 
-/*************************************/
+/**
+ * # Image-related macros
+ */
 #pragma mark- image-related macros
 #pragma mark-
-/*************************************/
 
-// UIImageWithBundlePNG(filenameWithoutExtension)
-//
-// load a PNG file from the main bundle.  people use +[UIImage imageNamed:]
-// because it's much easier than the (minimum) method calls you have to make to
-// load a UIImage the 'right' way.  with a macro like this, there's no excuse.
-// note: the image filename you pass to this macro should not contain its file
-// extension (".png").
+/**
+ * ### UIImageWithBundlePNG()
+ *
+ * Load a PNG file from the main bundle.  People use +[UIImage imageNamed:]
+ * because it's much easier than the (minimum) method calls you have to make to
+ * load a UIImage the 'right' way.  With a macro like this, there's no excuse.
+ * Note: the image filename you pass to this macro should not contain its file
+ * extension (".png").
+ * 
+ * @param {NSString*} filename The filename of the image without its ".png" extension.
+ */
 #if !defined(UIImageWithBundlePNG)
   #define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:(x) ofType: @"png"]])
 #endif
 
 
 
-/*************************************/
+/**
+ * # Container-related macros
+ */
 #pragma mark- container-related macros
 #pragma mark-
-/*************************************/
 
-// SEObjectAtIndex(array, index)
-//
-// calls [array objectAtIndex:index], but first checks to make sure that the
-// array contains enough elements to even HAVE an object at the given index.  
-// warning: you may fail to notice bugs in your code when using this macro.
-// exceptions get thrown for a reason, y'heard?
+/**
+ * ### SEObjectAtIndex()
+ *
+ * Calls `[array objectAtIndex:index]`, but first checks to make sure that the
+ * array contains enough elements to even HAVE an object at the given index.
+ * Warning: you may fail to notice bugs in your code when using this macro.
+ * Exceptions get thrown for a reason, y'heard?
+ *
+ * @param {NSArray*} array The array to be queried.
+ * @param {NSUInteger} index The index of the item.
+ * @return {NSObject*} Either `nil` or the object at the specified index in the array.
+ */
 #if !defined (SEObjectAtIndex)
   #define SEObjectAtIndex(array, index) (array.count >= (index + 1) ? array[ index ] : nil)
 #endif
 
 
 
-/*************************************/
+/**
+ * # Objective-c literals on iOS < 6
+ *
+ * This is just a band-aid until Xcode 4.5 is released.
+ */
 #pragma mark- objective-c literal support on iOS < 6
 #pragma mark-
-/*************************************/
 
 #ifndef __IPHONE_6_0
 
-  // redefining YES and NO allows us to use @YES and @NO for NSNumber'd BOOLs
-  // Provided by James Webster on StackOverFlow
+  // redefining `YES` and `NO` allows us to use `@YES` and
+  // `@NO` for `NSNumber`-ified `BOOL`s.  (Provided by James Webster on StackOverflow)
   #if __has_feature(objc_bool) 
     #undef YES
     #undef NO 
@@ -177,13 +242,15 @@ static inline void BrynDisableColorLogging() {
     #define NO __objc_no 
   #endif 
 
-  // boxed values
+  // Shorthand for boxed values until we can use `@(...)`
   #define b(x)  [NSNumber numberWithInteger:(x)]
   #define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
   #define bf(x) [NSNumber numberWithFloat:(x)]
   #define bd(x) [NSNumber numberWithDouble:(x)]
   #define bb(x) [NSNumber numberWithBool:(x)]
 
+
+  // These methods are implemented in `Bryn.m`.
 
   @interface NSArray (Indexing)
   - (id)objectAtIndexedSubscript:(NSUInteger)idx;
@@ -205,13 +272,15 @@ static inline void BrynDisableColorLogging() {
 
 
 
-/*************************************/
+/**
+ * # ARC/non-ARC compatibility helpers
+ *
+ * everything in this section comes courtesy of the fantastic MBProgressHUD
+ * class by matej bukovinski [http://github.com/jdg/MBProgressHUD]
+ */
 #pragma mark- ARC/non-ARC compatibility helpers
 #pragma mark-
-/*************************************/
 
-// everything in this section comes courtesy of the fantastic MBProgressHUD
-// class by matej bukovinski [http://github.com/jdg/MBProgressHUD]
 
 #ifndef bryn_strong
   #if __has_feature(objc_arc)
@@ -219,7 +288,7 @@ static inline void BrynDisableColorLogging() {
   #else
     #define bryn_strong retain
   #endif
-#endif // bryn_strong
+#endif
 
 #ifndef bryn_weak
   #if __has_feature(objc_arc_weak)
@@ -245,11 +314,22 @@ static inline void BrynDisableColorLogging() {
 #endif
 
 
-/*************************************/
+/**
+ * # GCD/concurrency helpers
+ */
 #pragma mark- GCD/concurrency helpers
 #pragma mark-
-/*************************************/
 
+/**
+ * ### dispatch_safe_sync()
+ *
+ * Exactly like `dispatch_sync()`, except that it prevents you from deadlocking
+ * the current queue by calling `dispatch_sync()` on it.  If the `queue`
+ * parameter turns out to be the current queue, it will just call `block()`.
+ *
+ * @param {dispatch_queue_t} queue The queue on which to execute the block.
+ * @param {dispatch_block_t} block The block to execute.
+ */
 static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block) {
   if (dispatch_get_current_queue() == queue)
     block();
@@ -259,15 +339,23 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
 
 
 
-/*************************************/
-#pragma mark- memory stuff (probably not app store safe)
+/**
+ * # Memory tools
+ */
+#pragma mark- memory stuff (possibly not app store safe)
 #pragma mark-
-/*************************************/
 
 #if DEBUG
   #import <mach/mach.h>
   #import <mach/mach_host.h>
 
+/**
+ * ### get_free_memory()
+ *
+ * Returns the amount of free memory on the device.
+ *
+ * @return {natural_t} The amount of free memory in bytes.
+ */
   static inline natural_t get_free_memory() {
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
