@@ -1,46 +1,94 @@
-# // bryn.h
+# // BrynKit
 
 # what
 
-a collection of macros that have made developing in objective-c and iOS less
-excruciating.
+a collection of macros and other helpers that have made developing in
+objective-c and iOS less excruciating.  the CocoaPods podspec also contains a
+few subspecs for libraries that i tend to use a lot:
 
-# contents
-
-## i. settings/customization
-
-
-### VERBOSE_NSLOG
-
-if set to 1, this will add the filename and line num to NSLog calls
+- ObjC-DesignByContract ([brynbellomy/ObjC-DesignByContract](http://github.com/brynbellomy/ObjC-DesignByContract))
+- Underscore.m ([underscorem.org](http://underscorem.org))
+- ConciseKit ([petejkim/ConciseKit](http://github.com/petejkim/ConciseKit))
+- MAObjCRuntime ([mikeash/MAObjCRuntime](http://github.com/mikeash/MAObjCRuntime))
 
 
+# settable settings
 
-## ii. debugging/logging macros
+- **VERBOSE_NSLOG**: if set to 1, this will add the filename and line num to NSLog calls
+- **SILENCE_NSLOG**: if set to 1, all calls to NSLog become no-ops
+- **LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
+- **NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
+- **AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` (or `BrynLog()`, as the case may be) output in the xcode console
 
-### \_\_JUST\_FILENAME\_\_
+
+
+# debugging/logging macros
+
+
+## color logging for xcode's debug console
+
+these macros are intended to make using the **XcodeColors** plugin
+([DeepIT/XcodeColors](https://github.com/DeepIT/XcodeColors)) easier.
+
+
+
+### predefined rgb colors
+
+These macros evaluate to a regular NSString literal, so you can simply
+concatenate them into an NSString expression like so:
+
+`NSLog(@"Blah blah" COLOR_RED @"This will be red" XCODE_COLORS_RESET @"This will not");`
+
+- `COLOR_RED`
+- `COLOR_YELLOW`
+- `COLOR_OLIVE`
+- `COLOR_GREEN`
+- `COLOR_PURPLE`
+- `COLOR_BLUE`
+
+
+
+### a predefined color logging "theme"
+
+These are actual `#define` macros, accepting an `NSString *` argument.  The
+reason is that they add an `XCODE_COLORS_RESET` after the passed argument.
+
+- `COLOR_ERROR(str)`
+- `COLOR_SUCCESS(str)`
+- `COLOR_FILENAME(str)`
+- `COLOR_LINE(str)`
+- `COLOR_FUNC(str)`
+
+For example:
+
+```objective-c
+NSLog(COLOR_ERROR(@"You screwed up") @"... but it'll be okay.");
+```
+
+
+## \_\_JUST\_FILENAME\_\_
 
 the built-in macro `__FILE__` contains the entire path to a
 file.  you don't often want that. this just gives you the file's actual name.
 
 
-### BrynLog(formatString, ...)
+## BrynLog(formatString, ...)
 
 this is the macro that replaces `NSLog` if you have `VERBOSE_NSLOG` set to 1.  if
 you want to use it without replacing `NSLog`, leave `VERBOSE_NSLOG` set to 0 and
 just call `BrynLog`.  same syntax as `NSLog()`.
 
 
-### BrynFnLog(formatString, ...)
+## BrynFnLog(formatString, ...)
 
 just like BrynLog/NSLog except that it prefixes the log message with the
 function/selector name instead of the file and line num.
 
 
 
-## iii. image-related macros
+# image-related macros
 
-### UIImageWithBundlePNG(filenameWithoutExtension)
+## UIImageWithBundlePNG(filenameWithoutExtension)
 
 load a PNG file from the main bundle.  people use `+[UIImage imageNamed:]`
 because it's much easier than the (minimum) method calls you have to make to
@@ -50,25 +98,13 @@ extension (".png").
 
 
 
-## iv. string-related macros
+# container-related macros
 
-### SESameStrings(a, b)
-
-tests two `NSStrings` for sameness, and also prevents the false positive that
-occurs when you call `[A compare:B]` and `A` is `nil`.  this happens because
-`NSOrderedSame == 0`, which is the same as the return value of any message sent
-to `nil` -- namely, `nil` (or 0 if you cast to a numeric type).
-
-
-
-
-## v. container-related macros
-
-### SEObjectAtIndex(array, index)
+## SEObjectAtIndex(array, index)
 
 calls `[array objectAtIndex:index]`, but first checks to make sure that the
-array contains enough elements to even HAVE an object at the given index.  
-warning: you may fail to notice bugs in your code when using this macro.
+array contains enough elements to even HAVE an object at the given index. 
+**warning:** you may fail to notice bugs in your code when using this macro.
 exceptions get thrown for a reason, y'heard?
 
 
