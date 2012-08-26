@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bryn.m</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = '', thisFile = 'Bryn.m', defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#objective-c-literals-on-ios--lt--6">Objective-c literals on iOS &lt; 6</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>Bryn.m</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>Bryn.m <br />
+ BrynKit  </p>
+
+<p>Created by bryn austin bellomy on 7/29/12. <br />
+ Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;Bryn.h&quot;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="objective-c-literals-on-ios--lt--6">
+  <h1>
+    <a href="#objective-c-literals-on-ios--lt--6" class="pilcrow">&#182;</a>
+    Objective-c literals on iOS &lt; 6
+  </h1>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="cp">#ifndef __IPHONE_6_0 </span>
+
+<span class="k">@implementation</span> <span class="nc">NSArray</span> <span class="nl">(Indexing)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">objectAtIndexedSubscript:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">idx</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">objectAtIndex:</span><span class="n">idx</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">NSMutableArray</span> <span class="nl">(Indexing)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">obj</span> <span class="nf">atIndexedSubscript:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">idx</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">replaceObjectAtIndex:</span><span class="n">idx</span> <span class="nl">withObject:</span><span class="n">obj</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span>  <span class="nc">NSDictionary</span> <span class="nl">(Indexing)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">objectForKeyedSubscript:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">objectForKey:</span><span class="n">key</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span>  <span class="nc">NSMutableDictionary</span> <span class="nl">(Indexing)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">obj</span> <span class="nf">forKeyedSubscript:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">setObject:</span><span class="n">obj</span> <span class="nl">forKey:</span><span class="n">key</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="cp">#endif</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
