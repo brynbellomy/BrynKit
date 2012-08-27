@@ -81,6 +81,9 @@
       <div class="heading h3">
         <a href="#get_free_memory--">get_free_memory()</a>
       </div>
+      <div class="heading h3">
+        <a href="#startoccasionalmemorylog--">startOccasionalMemoryLog()</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -232,6 +235,9 @@ over-resume them, try to cancel them when they're suspended, etc.</p>
 
   </div>
   <div class="body"><p>These macros and <code>#define</code>s help to integrate with the XcodeColors plugin.</p>
+
+<p><strong>IMPORTANT:</strong> XcodeColors currently only works with <code>lldb</code>.  If you're
+using <code>gdb</code>, you'll just see a bunch of garbage surrounding your NSLog output.</p>
   </div>
 </div>
         </td>
@@ -789,9 +795,26 @@ parameter turns out to be the current queue, it will just call <code>block()</co
     <span class="cm">/* Stats in bytes */</span>
     <span class="n">natural_t</span> <span class="n">mem_free</span> <span class="o">=</span> <span class="n">vm_stat</span><span class="p">.</span><span class="n">free_count</span> <span class="o">*</span> <span class="n">pagesize</span><span class="p">;</span>
     <span class="k">return</span> <span class="n">mem_free</span><span class="p">;</span>
-  <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="startoccasionalmemorylog--">
+  <h3>
+    <a href="#startoccasionalmemorylog--" class="pilcrow">&#182;</a>
+    startOccasionalMemoryLog()
+  </h3>
+</div>
 
-  <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">startOccasionalMemoryLog</span><span class="p">()</span> <span class="p">{</span>
+  </div>
+  <div class="body"><p>Starts a GCD timer that spits out the memory currently available on the
+device every few seconds.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">startOccasionalMemoryLog</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
     </pre></div>
         </td>
@@ -799,7 +822,7 @@ parameter turns out to be the current queue, it will just call <code>block()</co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>create our timer source</p>
         </td>
@@ -812,7 +835,11 @@ parameter turns out to be the current queue, it will just call <code>block()</co
     
     <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">timer</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
       <span class="n">natural_t</span> <span class="n">freeMemBytes</span> <span class="o">=</span> <span class="n">get_free_memory</span><span class="p">();</span>
-      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;======================</span><span class="se">\n</span><span class="s">free memory: %f</span><span class="se">\n</span><span class="s">=====================</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">freeMemBytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)));</span>
+<span class="cp">#if AUTOMATIC_LOG_COLORS == 1</span>
+      <span class="n">NSLog</span><span class="p">(</span><span class="n">COLOR_OLIVE</span> <span class="s">@&quot;====================== free memory: %f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="n">XCODE_COLORS_RESET</span><span class="p">,</span> <span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">freeMemBytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)));</span>
+<span class="cp">#else</span>
+      <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;======================</span><span class="se">\n</span><span class="s">free memory: %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">freeMemBytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)));</span>
+<span class="cp">#endif</span>
     <span class="p">});</span>
     </pre></div>
         </td>
@@ -820,7 +847,7 @@ parameter turns out to be the current queue, it will just call <code>block()</co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>now that our timer is all set to go, start it</p>
         </td>
