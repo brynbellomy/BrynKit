@@ -234,6 +234,14 @@ typedef enum {
 #pragma mark- objective-c literal support on iOS < 6
 #pragma mark-
 
+// Shorthand for boxed values until we can use `@(...)`
+#define b(x)  [NSNumber numberWithInteger:(x)]
+#define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
+#define bf(x) [NSNumber numberWithFloat:(x)]
+#define bd(x) [NSNumber numberWithDouble:(x)]
+#define bb(x) [NSNumber numberWithBool:(x)]
+
+
 #ifndef __IPHONE_6_0
 
   // redefining `YES` and `NO` allows us to use `@YES` and
@@ -244,14 +252,6 @@ typedef enum {
     #define YES __objc_yes 
     #define NO __objc_no 
   #endif 
-
-  // Shorthand for boxed values until we can use `@(...)`
-  #define b(x)  [NSNumber numberWithInteger:(x)]
-  #define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
-  #define bf(x) [NSNumber numberWithFloat:(x)]
-  #define bd(x) [NSNumber numberWithDouble:(x)]
-  #define bb(x) [NSNumber numberWithBool:(x)]
-
 
   // These methods are implemented in `Bryn.m`.
 
