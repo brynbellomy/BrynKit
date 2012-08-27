@@ -68,6 +68,9 @@ typedef enum {
  * ### color logging
  *
  * These macros and `#define`s help to integrate with the XcodeColors plugin.
+ *
+ * **IMPORTANT:** XcodeColors currently only works with `lldb`.  If you're
+ * using `gdb`, you'll just see a bunch of garbage surrounding your NSLog output.
  */
 
 #define XCODE_COLORS_ESCAPE_OSX @"\033["
@@ -373,6 +376,12 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     return mem_free;
   }
 
+/**
+ * ### startOccasionalMemoryLog()
+ *
+ * Starts a GCD timer that spits out the memory currently available on the
+ * device every few seconds.
+ */
   static inline void startOccasionalMemoryLog() {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
@@ -386,7 +395,11 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     
     dispatch_source_set_event_handler(timer, ^{
       natural_t freeMemBytes = get_free_memory();
-      printf("======================\nfree memory: %f\n=====================\n", (double)(freeMemBytes / (1024 * 1024)));
+#if AUTOMATIC_LOG_COLORS == 1
+      NSLog(COLOR_OLIVE @"====================== free memory: %f\n" XCODE_COLORS_RESET, (double)(freeMemBytes / (1024 * 1024)));
+#else
+      NSLog(@"======================\nfree memory: %f\n", (double)(freeMemBytes / (1024 * 1024)));
+#endif
     });
     
     // now that our timer is all set to go, start it
