@@ -30,6 +30,13 @@
 
 
 /**
+ * # Misc. stuff
+ */
+
+#define Key(x) static NSString *const x = @ # x
+
+
+/**
  * # Typedefs
  */
 #pragma mark- typedefs
