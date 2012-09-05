@@ -12,25 +12,50 @@
 /**
  * # Settable settings
  *
- * - **VERBOSE_NSLOG**: if set to 1, this will add the filename and line num to NSLog calls
- * - **SILENCE_NSLOG**: if set to 1, all calls to NSLog become no-ops
- * - **LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
- * - **NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
- * - **AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` output in the xcode console
+ * - **BRYNKIT_VERBOSE_NSLOG**: if set to 1, this will add the filename and line num to NSLog calls
+ * - **BRYNKIT_SILENCE_NSLOG**: if set to 1, all calls to NSLog become no-ops
+ * - **BRYNKIT_LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
+ * - **BRYNKIT_NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
+ * - **BRYNKIT_AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` output in the xcode console
  */
 #pragma mark- settable settings
 #pragma mark-
 
-#define VERBOSE_NSLOG 0
-#define SILENCE_NSLOG 0
-#define LOG_MACROS_ARE_ACTIVE 1
-#define NSLOG_TO_TESTFLIGHT 0
-#define AUTOMATIC_LOG_COLORS 1
+#ifndef BRYNKIT_VERBOSE_NSLOG
+#  define BRYNKIT_VERBOSE_NSLOG 0
+#endif
+
+#ifndef BRYNKIT_SILENCE_NSLOG
+#  define BRYNKIT_SILENCE_NSLOG 0
+#endif
+
+#ifndef BRYNKIT_LOG_MACROS_ARE_ACTIVE
+#  define BRYNKIT_LOG_MACROS_ARE_ACTIVE 1
+#endif
+
+#ifndef BRYNKIT_NSLOG_TO_TESTFLIGHT
+#  define BRYNKIT_NSLOG_TO_TESTFLIGHT 0
+#endif
+
+#ifndef BRYNKIT_AUTOMATIC_LOG_COLORS
+#  define BRYNKIT_AUTOMATIC_LOG_COLORS 1
+#endif
 
 
 
 /**
  * # Misc. stuff
+ * 
+ * #### Key()
+ *
+ * Defines a pointer to a static NSString literal to be used for key-value stuff,
+ * NSDictionary keys, etc.  Ex:
+ * ```
+ * Key(MyNotificationUserInfoKey_Clowns);
+ * // ...
+ * NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserInfoKey_Clowns]);
+ * ```
+ * @param {identifier}
  */
 
 #define Key(x) static NSString *const x = @ # x
@@ -143,16 +168,16 @@ typedef enum {
 
 
 
-#if LOG_MACROS_ARE_ACTIVE == 1
+#if BRYNKIT_LOG_MACROS_ARE_ACTIVE == 1
 
   // redirect all NSLog() calls to TFLog(), the TestFlight logging function
-  #if NSLOG_TO_TESTFLIGHT == 1
+  #if BRYNKIT_NSLOG_TO_TESTFLIGHT == 1
     #define NSLog TFLog
   #endif
 
-  // this is the macro that replaces NSLog if you have VERBOSE_NSLOG set to 1.  if you want to use it
-  // without replacing NSLog, leave VERBOSE_NSLOG set to 0 and just call BrynLog.
-  #if AUTOMATIC_LOG_COLORS == 1
+  // this is the macro that replaces NSLog if you have BRYNKIT_VERBOSE_NSLOG set to 1.  if you want to use it
+  // without replacing NSLog, leave BRYNKIT_VERBOSE_NSLOG set to 0 and just call BrynLog.
+  #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1
     #define BrynLog(__FORMAT__, ...) (NSLog(@"[" COLOR_FILENAME(@"%@") @":" COLOR_LINE(@"%d") @"] %@", \
                                               __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))
   #else
@@ -160,17 +185,17 @@ typedef enum {
   #endif
 
   // replace NSLog with BrynLog
-  #if VERBOSE_NSLOG == 1
+  #if BRYNKIT_VERBOSE_NSLOG == 1
     #define NSLog(__FORMAT__, ...) BrynLog(__FORMAT__, ##__VA_ARGS__)
   #endif
 
   // replace NSLog with a no-op
-  #if SILENCE_NSLOG == 1
+  #if BRYNKIT_SILENCE_NSLOG == 1
     #define NSLog(__FORMAT__, ...) do{}while(0)
   #endif
 
   // like BrynLog except it logs the function/selector name instead of the file and line num.
-  #if AUTOMATIC_LOG_COLORS == 1
+  #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1
     #define BrynFnLog(__FORMAT__, ...) (NSLog( \
                                           COLOR_FUNC(@"%s ") @"%@", \
                                           __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))
@@ -402,7 +427,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     
     dispatch_source_set_event_handler(timer, ^{
       natural_t freeMemBytes = get_free_memory();
-#if AUTOMATIC_LOG_COLORS == 1
+#if BRYNKIT_AUTOMATIC_LOG_COLORS == 1
       NSLog(COLOR_OLIVE @"====================== free memory: %f\n" XCODE_COLORS_RESET, (double)(freeMemBytes / (1024 * 1024)));
 #else
       NSLog(@"======================\nfree memory: %f\n", (double)(freeMemBytes / (1024 * 1024)));

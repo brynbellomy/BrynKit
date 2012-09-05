@@ -411,3 +411,8 @@ pre, tt, code {
 #headings .h3 {
   font-size: 0.9em !important;
 }
+
+.dox .dox_tag_detail {
+  text-indent: -1.5em;
+  padding-left: 1.5em;
+}
