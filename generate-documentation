@@ -1,4 +1,0 @@
-#!/bin/sh
-
-rm -rf ./doc
-docker -I -w -c friendly -x 'NS*.*,doc/*,generate-documentation,README.md'
