@@ -17,6 +17,7 @@
  * - **BRYNKIT_LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
  * - **BRYNKIT_NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
  * - **BRYNKIT_AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` output in the xcode console
+ * - **BRYNKIT\_MB\_PROGRESS\_HUD\_INCLUDED**: set this to 1 if you want to use the `BrynShowMBProgressHUD()` helper function.
  */
 #pragma mark- settable settings
 #pragma mark-
@@ -39,6 +40,10 @@
 
 #ifndef BRYNKIT_AUTOMATIC_LOG_COLORS
 #  define BRYNKIT_AUTOMATIC_LOG_COLORS 1
+#endif
+
+#ifndef BRYNKIT_MB_PROGRESS_HUD_INCLUDED
+#  define BRYNKIT_MB_PROGRESS_HUD_INCLUDED 1
 #endif
 
 
@@ -75,6 +80,9 @@
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
 typedef void(^NotificationBlock)(NSNotification *);
+
+@class MBProgressHUD;  
+typedef void(^SetupHUDBlock)     (MBProgressHUD *hud);
 
 /**
  * ### enum DispatchSourceState
@@ -267,11 +275,19 @@ typedef enum {
 #pragma mark-
 
 // Shorthand for boxed values until we can use `@(...)`
-#define b(x)  [NSNumber numberWithInteger:(x)]
-#define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
-#define bf(x) [NSNumber numberWithFloat:(x)]
-#define bd(x) [NSNumber numberWithDouble:(x)]
-#define bb(x) [NSNumber numberWithBool:(x)]
+#if __has_feature(objc_boxed_expressions)
+#  define b(x)  @(x)
+#  define bu(x) @(x)
+#  define bf(x) @(x)
+#  define bd(x) @(x)
+#  define bb(x) @(x)
+#else
+#  define b(x)  [NSNumber numberWithInteger:(x)]
+#  define bu(x) [NSNumber numberWithUnsignedInteger:(x)]
+#  define bf(x) [NSNumber numberWithFloat:(x)]
+#  define bd(x) [NSNumber numberWithDouble:(x)]
+#  define bb(x) [NSNumber numberWithBool:(x)]
+#endif
 
 
 #ifndef __IPHONE_6_0
@@ -428,9 +444,9 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     dispatch_source_set_event_handler(timer, ^{
       natural_t freeMemBytes = get_free_memory();
 #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1
-      NSLog(COLOR_OLIVE @"====================== free memory: %f\n" XCODE_COLORS_RESET, (double)(freeMemBytes / (1024 * 1024)));
+      NSLog(COLOR_OLIVE @"Free memory: %f\n" XCODE_COLORS_RESET, (double)(freeMemBytes / (1024 * 1024)));
 #else
-      NSLog(@"======================\nfree memory: %f\n", (double)(freeMemBytes / (1024 * 1024)));
+      NSLog(@"Free memory: %f\n", (double)(freeMemBytes / (1024 * 1024)));
 #endif
     });
     
@@ -439,6 +455,10 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
   }
 #endif
 
+#if BRYNKIT_MB_PROGRESS_HUD_INCLUDED == 1
+  #import <MBProgressHUD/MBProgressHUD.h>
+  void BrynShowMBProgressHUD(UIView *onView, SetupHUDBlock block_setupHUD, dispatch_block_t block_afterShowingHUD);
+#endif
 
 
 #endif // __Bryn__
