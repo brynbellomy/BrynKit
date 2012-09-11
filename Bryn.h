@@ -9,7 +9,7 @@
 #ifndef __Bryn__
 #define __Bryn__  // is this even possible????
 
-/**
+/**!
  * # Settable settings
  *
  * - **BRYNKIT_VERBOSE_NSLOG**: if set to 1, this will add the filename and line num to NSLog calls
@@ -48,7 +48,7 @@
 
 
 
-/**
+/**!
  * # Misc. stuff
  * 
  * #### Key()
@@ -66,13 +66,13 @@
 #define Key(x) static NSString *const x = @ # x
 
 
-/**
+/**!
  * # Typedefs
  */
 #pragma mark- typedefs
 #pragma mark-
 
-/**
+/**!
  * ### Blocks
  * 
  * Saves a little bit of tedious typing.
@@ -84,13 +84,17 @@ typedef void(^NotificationBlock)(NSNotification *);
 @class MBProgressHUD;  
 typedef void(^SetupHUDBlock)     (MBProgressHUD *hud);
 
-/**
+/**!
  * ### enum DispatchSourceState
  * 
  * Use this to keep track of the state of `dispatch_source` objects so that you don't
  * over-resume them, try to cancel them when they're suspended, etc.
  */
-typedef enum {
+typedef enum
+#ifdef __IPHONE_6_0
+     :NSUInteger
+#endif
+{
   DispatchSourceState_Suspended = (1 << 0),
   DispatchSourceState_Resumed = (1 << 1),
   DispatchSourceState_Canceled = (1 << 2)
@@ -98,13 +102,13 @@ typedef enum {
 
 
 
-/**
+/**!
  * # Logging and debug macros
  */
 #pragma mark- logging and debug macros
 #pragma mark-
 
-/**
+/**!
  * ### color logging
  *
  * These macros and `#define`s help to integrate with the XcodeColors plugin.
@@ -123,7 +127,7 @@ typedef enum {
 #define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
 #define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @"fg" @#r @"," @#g @"," @#b @";"
 
-/**
+/**!
  * ### predefined rgb colors
  *
  * These macros evaluate to a regular NSString literal, so you can simply
@@ -138,7 +142,7 @@ typedef enum {
 #define COLOR_PURPLE   XCODE_COLORS_FG(132,112,255)
 #define COLOR_BLUE     XCODE_COLORS_FG(30,144,255)
 
-/**
+/**!
  * ### a simple predefined color logging 'theme'
  *
  * Just as with the predefined RGB colors above, you can concatenate
@@ -152,7 +156,7 @@ typedef enum {
 #define COLOR_LINE(x)     COLOR_YELLOW x XCODE_COLORS_RESET
 #define COLOR_FUNC(x)     COLOR_BLUE   x XCODE_COLORS_RESET
 
-/**
+/**!
  * ### BrynEnableColorLogging()
  * 
  * Enables XcodeColors (you obviously have to install it too).  Call this from
@@ -160,14 +164,14 @@ typedef enum {
  */
 #define BrynEnableColorLogging() setenv("XcodeColors", "YES", 0);
 
-/**
+/**!
  * ### BrynDisableColorLogging()
  * 
  * Disables XcodeColors.
  */
 #define BrynDisableColorLogging() setenv("XcodeColors", "NO", 0);
 
-/**
+/**!
  * ### \_\_JUST_FILENAME\_\_
  * 
  * `__FILE__` contains the entire path to a file.  this `#define` only gives you the file's actual name.
@@ -219,13 +223,13 @@ typedef enum {
 
 
 
-/**
+/**!
  * # Image-related macros
  */
 #pragma mark- image-related macros
 #pragma mark-
 
-/**
+/**!
  * ### UIImageWithBundlePNG()
  *
  * Load a PNG file from the main bundle.  People use +[UIImage imageNamed:]
@@ -242,13 +246,13 @@ typedef enum {
 
 
 
-/**
+/**!
  * # Container-related macros
  */
 #pragma mark- container-related macros
 #pragma mark-
 
-/**
+/**!
  * ### SEObjectAtIndex()
  *
  * Calls `[array objectAtIndex:index]`, but first checks to make sure that the
@@ -266,7 +270,7 @@ typedef enum {
 
 
 
-/**
+/**!
  * # Objective-c literals on iOS < 6
  *
  * This is just a band-aid until Xcode 4.5 is released.
@@ -323,7 +327,7 @@ typedef enum {
 
 
 
-/**
+/**!
  * # ARC/non-ARC compatibility helpers
  *
  * everything in this section comes courtesy of the fantastic MBProgressHUD
@@ -365,13 +369,13 @@ typedef enum {
 #endif
 
 
-/**
+/**!
  * # GCD/concurrency helpers
  */
 #pragma mark- GCD/concurrency helpers
 #pragma mark-
 
-/**
+/**!
  * ### dispatch_safe_sync()
  *
  * Exactly like `dispatch_sync()`, except that it prevents you from deadlocking
@@ -390,7 +394,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
 
 
 
-/**
+/**!
  * # Memory tools
  */
 #pragma mark- memory stuff (possibly not app store safe)
@@ -400,7 +404,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
   #import <mach/mach.h>
   #import <mach/mach_host.h>
 
-/**
+/**!
  * ### get_free_memory()
  *
  * Returns the amount of free memory on the device.
@@ -424,7 +428,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     return mem_free;
   }
 
-/**
+/**!
  * ### startOccasionalMemoryLog()
  *
  * Starts a GCD timer that spits out the memory currently available on the

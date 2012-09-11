@@ -13,8 +13,10 @@ Pod::Spec.new do |s|
 
   s.subspec 'contracts' do |c|
     c.dependency 'ObjC-DesignByContract', '>= 0.0.1'
-    # c.source_files   = ''
-    # c.compiler_flags = '-Wno-incomplete-implementation -Wno-protocol -Wno-missing-prototypes'
+  end
+
+  s.subspec 'contracts-2.x' do |c|
+    c.dependency 'ObjC-DesignByContract-2.0', '>= 0.0.1'
   end
 
   s.subspec 'objc-runtime' do |c|
