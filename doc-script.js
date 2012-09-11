@@ -6,8 +6,8 @@
 
 // Use localStorage to store data about the tree's state: whether or not
 // the tree is visible and which directories are expanded. Unless the state
-var sidebarVisible = (window.localStorage && window.localStorage.docker_showSidebar) ?
-                        window.localStorage.docker_showSidebar == 'yes' :
+var sidebarVisible = (window.localStorage && window.localStorage.otis_showSidebar) ?
+                        window.localStorage.otis_showSidebar == 'yes' :
                         defaultSidebar;
 
 /**
@@ -15,7 +15,7 @@ var sidebarVisible = (window.localStorage && window.localStorage.docker_showSide
  *
  * Consructs the folder tree view
  *
- * @param {object} treeData Folder structure as in [queueFile](../src/docker.js.html#docker.prototype.queuefile)
+ * @param {object} treeData Folder structure as in [queueFile](../src/otis.js.html#otis.prototype.queuefile)
  * @param {string} root Path from current file to root (ie `'../../'` etc.)
  * @param {string} filename The current file name
  */
@@ -36,7 +36,7 @@ function makeTree(treeData, root, filename){
   if(sidebarVisible) document.body.className += ' sidebar';
 
   // Restore scroll position from localStorage if set. And attach scroll handler
-  if(window.localStorage && window.localStorage.docker_treeScroll) treeNode.scrollTop = window.localStorage.docker_treeScroll;
+  if(window.localStorage && window.localStorage.otis_treeScroll) treeNode.scrollTop = window.localStorage.otis_treeScroll;
   treeNode.onscroll = treeScrolled;
 
   // Only set a class to allow CSS transitions after the tree state has been painted
@@ -51,7 +51,7 @@ function makeTree(treeData, root, filename){
  */
 function treeScrolled(){
   var tree = document.getElementById('tree');
-  if(window.localStorage) window.localStorage.docker_treeScroll = tree.scrollTop;
+  if(window.localStorage) window.localStorage.otis_treeScroll = tree.scrollTop;
 }
 
 /**
@@ -79,10 +79,10 @@ function nodeClicked(e){
   var path = t.getAttribute('rel');
   if(t.className.indexOf('open') !== -1){
     t.className=t.className.replace(/\s*open/g,'');
-    if(window.localStorage) window.localStorage.removeItem('docker_openPath:' + path);
+    if(window.localStorage) window.localStorage.removeItem('otis_openPath:' + path);
   }else{
     t.className += ' open';
-    if(window.localStorage) window.localStorage['docker_openPath:' + path] = 'yes';
+    if(window.localStorage) window.localStorage['otis_openPath:' + path] = 'yes';
   }
 }
 
@@ -99,7 +99,7 @@ function nodeClicked(e){
  */
 function nodeHtml(nodename, node, path, root){
   // Firstly, figure out whether or not the directory is expanded from localStorage
-  var isOpen = window.localStorage && window.localStorage['docker_openPath:' + path] == 'yes';
+  var isOpen = window.localStorage && window.localStorage['otis_openPath:' + path] == 'yes';
   var out = '<div class="dir' + (isOpen ? ' open' : '') + '" rel="' + path + '">';
   out += '<div class="nodename">' + nodename + '</div>';
   out += '<div class="children">';
@@ -146,9 +146,9 @@ function toggleTree(){
   }
   if(window.localStorage){
     if(sidebarVisible){
-      window.localStorage.docker_showSidebar = 'yes';
+      window.localStorage.otis_showSidebar = 'yes';
     }else{
-      window.localStorage.docker_showSidebar = 'no';
+      window.localStorage.otis_showSidebar = 'no';
     }
   }
 }
@@ -202,7 +202,7 @@ function switchTab(tab){
   }
 
   // Store the last open tab in localStorage
-  if(window.localStorage) window.localStorage.docker_sidebarTab = tab;
+  if(window.localStorage) window.localStorage.otis_sidebarTab = tab;
 }
 
 /**
@@ -215,8 +215,8 @@ window.onload = function(){
   wireUpTabs();
 
   // Switch to the last viewed sidebar tab if stored, otherwise default to folder tree
-  if(window.localStorage && window.localStorage.docker_sidebarTab){
-    switchTab(window.localStorage.docker_sidebarTab);
+  if(window.localStorage && window.localStorage.otis_sidebarTab){
+    switchTab(window.localStorage.otis_sidebarTab);
   }else{
     switchTab('tree');
   }
