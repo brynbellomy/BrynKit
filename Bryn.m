@@ -8,23 +8,6 @@
 
 #import "Bryn.h"
 
-#define BrynShowMBProgressHUD(onView, block_setupHUD, block_afterShowingHUD) \
-  ({ \
-    dispatch_queue_t q = dispatch_queue_create("com.brynkit.SetupHUDQueue", 0); \
-    dispatch_set_target_queue(q, dispatch_get_main_queue()); \
-    \
-    dispatch_async(q, ^{ \
-      if (onView == nil) \
-        return; \
-      \
-      MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:onView animated:YES]; \
-      block_setupHUD(hud); \
-    }); \
-    \
-    dispatch_async(q, block_afterShowingHUD); \
-    dispatch_release(q); \
-    NULL; \
-  })
 
 
 /**

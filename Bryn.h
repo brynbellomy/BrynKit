@@ -469,7 +469,6 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     }); \
     \
     dispatch_async(q, block_afterShowingHUD); \
-    dispatch_release(q); \
     NULL; \
   })
 
