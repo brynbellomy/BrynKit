@@ -75,7 +75,6 @@
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
 typedef void(^NotificationBlock)(NSNotification *);
-typedef void(^SetupHUDBlock)(MBProgressHUD *hud);
 
 /**!
  * ### enum DispatchSourceState
