@@ -17,7 +17,6 @@
  * - **BRYNKIT_LOG\_MACROS\_ARE\_ACTIVE**: easily turn off all changes to logging
  * - **BRYNKIT_NSLOG\_TO\_TESTFLIGHT**: redirect all `NSLog()` calls to `TFLog()`, which sends them to TestFlight
  * - **BRYNKIT_AUTOMATIC\_LOG\_COLORS**: automatically colorize `NSLog()` output in the xcode console
- * - **BRYNKIT\_MB\_PROGRESS\_HUD\_INCLUDED**: set this to 1 if you want to use the `BrynShowMBProgressHUD()` helper function.
  */
 #pragma mark- settable settings
 #pragma mark-
@@ -40,10 +39,6 @@
 
 #ifndef BRYNKIT_AUTOMATIC_LOG_COLORS
 #  define BRYNKIT_AUTOMATIC_LOG_COLORS 1
-#endif
-
-#ifndef BRYNKIT_MB_PROGRESS_HUD_INCLUDED
-#  define BRYNKIT_MB_PROGRESS_HUD_INCLUDED 1
 #endif
 
 
@@ -80,9 +75,7 @@
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
 typedef void(^NotificationBlock)(NSNotification *);
-
-@class MBProgressHUD;  
-typedef void(^SetupHUDBlock)     (MBProgressHUD *hud);
+typedef void(^SetupHUDBlock)(MBProgressHUD *hud);
 
 /**!
  * ### enum DispatchSourceState
@@ -90,11 +83,7 @@ typedef void(^SetupHUDBlock)     (MBProgressHUD *hud);
  * Use this to keep track of the state of `dispatch_source` objects so that you don't
  * over-resume them, try to cancel them when they're suspended, etc.
  */
-typedef enum
-#ifdef __IPHONE_6_0
-     :NSUInteger
-#endif
-{
+typedef enum : NSUInteger {
   DispatchSourceState_Suspended = (1 << 0),
   DispatchSourceState_Resumed = (1 << 1),
   DispatchSourceState_Canceled = (1 << 2)
@@ -460,10 +449,30 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
   }
 #endif
 
-#if BRYNKIT_MB_PROGRESS_HUD_INCLUDED == 1
-  #import <MBProgressHUD/MBProgressHUD.h>
-  void BrynShowMBProgressHUD(UIView *onView, SetupHUDBlock block_setupHUD, dispatch_block_t block_afterShowingHUD);
-#endif
+
+/**!
+ * ### BrynShowMBProgressHUD()
+ *
+ * Opens an MBProgressHUD in a block on the main thread from a background thread
+ * in such a way that it ought to show up instantly rather than pausing.
+ */
+#define BrynShowMBProgressHUD(onView, block_setupHUD, block_afterShowingHUD) \
+  ({ \
+    dispatch_queue_t q = dispatch_queue_create("com.brynkit.SetupHUDQueue", 0); \
+    dispatch_set_target_queue(q, dispatch_get_main_queue()); \
+    \
+    dispatch_async(q, ^{ \
+      if (onView == nil) \
+        return; \
+      \
+      MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:onView animated:YES]; \
+      block_setupHUD(hud); \
+    }); \
+    \
+    dispatch_async(q, block_afterShowingHUD); \
+    dispatch_release(q); \
+    NULL; \
+  })
 
 
 #endif // __Bryn__
