@@ -8,7 +8,7 @@
 
 #import "Bryn.h"
 
-#if MB_PROGRESS_HUD_INCLUDED == 1
+#if BRYNKIT_MB_PROGRESS_HUD_INCLUDED == 1
 void BrynShowMBProgressHUD(UIView *onView, SetupHUDBlock block_setupHUD, dispatch_block_t block_afterShowingHUD) {
   dispatch_queue_t q = dispatch_queue_create("com.brynkit.SetupHUDQueue", 0);
   dispatch_set_target_queue(q, dispatch_get_main_queue());
