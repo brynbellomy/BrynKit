@@ -3,13 +3,7 @@
 # what
 
 a collection of macros and other helpers that have made developing in
-objective-c and iOS less excruciating.  the CocoaPods podspec also contains a
-few subspecs for libraries that i tend to use a lot:
-
-- ObjC-DesignByContract ([brynbellomy/ObjC-DesignByContract](http://github.com/brynbellomy/ObjC-DesignByContract))
-- Underscore.m ([underscorem.org](http://underscorem.org))
-- ConciseKit ([petejkim/ConciseKit](http://github.com/petejkim/ConciseKit))
-- MAObjCRuntime ([mikeash/MAObjCRuntime](http://github.com/mikeash/MAObjCRuntime))
+objective-c and iOS less excruciating.
 
 
 # settable settings
@@ -109,26 +103,20 @@ exceptions get thrown for a reason, y'heard?
 
 
 
-# license
+# license (WTFPL v2)
 
-Copyright (c) 2012 bryn austin bellomy < <bryn.bellomy@gmail.com> >
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+Version 2, December 2004
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in the
-Software without restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
-Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
+Copyright (C) 2004 Sam Hocevar <[sam@hocevar.net](mailto:sam@hocevar.net)>
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Everyone is permitted to copy and distribute verbatim or modified 
+copies of this license document, and changing it is allowed as long 
+as the name is changed. 
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
-AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+0. You just DO WHAT THE FUCK YOU WANT TO. 
 
 
 
