@@ -1,8 +1,8 @@
 //
-//  Bryn.h  
+//  Bryn.h
 //  BrynKit
-//  
-//  Created by bryn austin bellomy on 7/18/12.  
+//
+//  Created by bryn austin bellomy on 7/18/12.
 //  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
@@ -45,7 +45,7 @@
 
 /**!
  * # Misc. stuff
- * 
+ *
  * #### Key()
  *
  * Defines a pointer to a static NSString literal to be used for key-value stuff,
@@ -69,7 +69,7 @@
 
 /**!
  * ### Blocks
- * 
+ *
  * Saves a little bit of tedious typing.
  */
 typedef void(^BoolBlock)(BOOL success);
@@ -78,7 +78,7 @@ typedef void(^NotificationBlock)(NSNotification *);
 
 /**!
  * ### enum DispatchSourceState
- * 
+ *
  * Use this to keep track of the state of `dispatch_source` objects so that you don't
  * over-resume them, try to cancel them when they're suspended, etc.
  */
@@ -147,7 +147,7 @@ typedef enum : NSUInteger {
 
 /**!
  * ### BrynEnableColorLogging()
- * 
+ *
  * Enables XcodeColors (you obviously have to install it too).  Call this from
  * your `main()` function, or something else sufficiently early.
  */
@@ -155,14 +155,14 @@ typedef enum : NSUInteger {
 
 /**!
  * ### BrynDisableColorLogging()
- * 
+ *
  * Disables XcodeColors.
  */
 #define BrynDisableColorLogging() setenv("XcodeColors", "NO", 0);
 
 /**!
  * ### \_\_JUST_FILENAME\_\_
- * 
+ *
  * `__FILE__` contains the entire path to a file.  this `#define` only gives you the file's actual name.
  */
 #define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
@@ -226,7 +226,7 @@ typedef enum : NSUInteger {
  * load a UIImage the 'right' way.  With a macro like this, there's no excuse.
  * Note: the image filename you pass to this macro should not contain its file
  * extension (".png").
- * 
+ *
  * @param {NSString*} filename The filename of the image without its ".png" extension.
  */
 #if !defined(UIImageWithBundlePNG)
@@ -287,12 +287,12 @@ typedef enum : NSUInteger {
 
   // redefining `YES` and `NO` allows us to use `@YES` and
   // `@NO` for `NSNumber`-ified `BOOL`s.  (Provided by James Webster on StackOverflow)
-  #if __has_feature(objc_bool) 
+  #if __has_feature(objc_bool)
     #undef YES
-    #undef NO 
-    #define YES __objc_yes 
-    #define NO __objc_no 
-  #endif 
+    #undef NO
+    #define YES __objc_yes
+    #define NO __objc_no
+  #endif
 
   // These methods are implemented in `Bryn.m`.
 
@@ -425,7 +425,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
  */
   static inline void startOccasionalMemoryLog() {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    
+
     // create our timer source
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     NSUInteger step = 3; // 3 seconds
@@ -433,7 +433,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
                               dispatch_time(DISPATCH_TIME_NOW, step * NSEC_PER_SEC),
                               step * NSEC_PER_SEC,
                               step * NSEC_PER_SEC);
-    
+
     dispatch_source_set_event_handler(timer, ^{
       natural_t freeMemBytes = get_free_memory();
 #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1
@@ -442,7 +442,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
       NSLog(@"Free memory: %f\n", (double)(freeMemBytes / (1024 * 1024)));
 #endif
     });
-    
+
     // now that our timer is all set to go, start it
     dispatch_resume(timer);
   }
