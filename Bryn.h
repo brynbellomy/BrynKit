@@ -456,7 +456,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
  * in such a way that it ought to show up instantly rather than pausing.
  */
 #define BrynShowMBProgressHUD(onView, block_setupHUD, block_afterShowingHUD) \
-  ({ \
+  do { \
     dispatch_queue_t q = dispatch_queue_create("com.brynkit.SetupHUDQueue", 0); \
     dispatch_set_target_queue(q, dispatch_get_main_queue()); \
     \
@@ -470,7 +470,7 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
     \
     dispatch_async(q, block_afterShowingHUD); \
     NULL; \
-  })
+  } while(0)
 
 
 #endif // __Bryn__
