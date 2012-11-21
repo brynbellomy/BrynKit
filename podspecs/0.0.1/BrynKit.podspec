@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "BrynKit"
-  s.version      = "0.0.1"
+  s.version      = "1.0.1"
   s.author       = { "bryn austin bellomy" => "bryn.bellomy@gmail.com" }
   s.summary      = "Macros and helpers for logging, debugging, and metaprogramming."
   s.homepage     = "http://brynbellomy.github.com/BrynKit"
