@@ -1,14 +1,14 @@
-<!DOCTYPE html><html><head><title>Bryn.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#settable-settings">Settable settings</a></div><div class="heading h1"><a href="#misc.-stuff">Misc. stuff</a></div><div class="heading h4"><a href="#key--">Key()</a></div><div class="heading h1"><a href="#typedefs">Typedefs</a></div><div class="heading h3"><a href="#blocks">Blocks</a></div><div class="heading h3"><a href="#enum-dispatchsourcestate">enum DispatchSourceState</a></div><div class="heading h1"><a href="#logging-and-debug-macros">Logging and debug macros</a></div><div class="heading h3"><a href="#color-logging">color logging</a></div><div class="heading h3"><a href="#predefined-rgb-colors">predefined rgb colors</a></div><div class="heading h3"><a href="#a-simple-predefined-color-logging--theme-">a simple predefined color logging 'theme'</a></div><div class="heading h3"><a href="#brynenablecolorlogging--">BrynEnableColorLogging()</a></div><div class="heading h3"><a href="#bryndisablecolorlogging--">BrynDisableColorLogging()</a></div><div class="heading h3"><a href="#__just_filename__">__JUST_FILENAME__</a></div><div class="heading h1"><a href="#image-related-macros">Image-related macros</a></div><div class="heading h3"><a href="#uiimagewithbundlepng--">UIImageWithBundlePNG()</a></div><div class="heading h1"><a href="#container-related-macros">Container-related macros</a></div><div class="heading h3"><a href="#seobjectatindex--">SEObjectAtIndex()</a></div><div class="heading h1"><a href="#objective-c-literals-on-ios--lt--6">Objective-c literals on iOS &lt; 6</a></div><div class="heading h1"><a href="#arc-non-arc-compatibility-helpers">ARC/non-ARC compatibility helpers</a></div><div class="heading h1"><a href="#gcd-concurrency-helpers">GCD/concurrency helpers</a></div><div class="heading h3"><a href="#dispatch_safe_sync--">dispatch_safe_sync()</a></div><div class="heading h1"><a href="#memory-tools">Memory tools</a></div><div class="heading h3"><a href="#get_free_memory--">get_free_memory()</a></div><div class="heading h3"><a href="#startoccasionalmemorylog--">startOccasionalMemoryLog()</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>Bryn.h</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<!DOCTYPE html><html><head><title>Bryn.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#settable-settings">Settable settings</a></div><div class="heading h1"><a href="#misc.-stuff">Misc. stuff</a></div><div class="heading h4"><a href="#key--">Key()</a></div><div class="heading h1"><a href="#typedefs">Typedefs</a></div><div class="heading h3"><a href="#blocks">Blocks</a></div><div class="heading h3"><a href="#enum-dispatchsourcestate">enum DispatchSourceState</a></div><div class="heading h1"><a href="#logging-and-debug-macros">Logging and debug macros</a></div><div class="heading h3"><a href="#color-logging">color logging</a></div><div class="heading h3"><a href="#predefined-rgb-colors">predefined rgb colors</a></div><div class="heading h3"><a href="#a-simple-predefined-color-logging--theme-">a simple predefined color logging 'theme'</a></div><div class="heading h3"><a href="#brynenablecolorlogging--">BrynEnableColorLogging()</a></div><div class="heading h3"><a href="#bryndisablecolorlogging--">BrynDisableColorLogging()</a></div><div class="heading h3"><a href="#__just_filename__">__JUST_FILENAME__</a></div><div class="heading h1"><a href="#image-related-macros">Image-related macros</a></div><div class="heading h3"><a href="#uiimagewithbundlepng--">UIImageWithBundlePNG()</a></div><div class="heading h1"><a href="#container-related-macros">Container-related macros</a></div><div class="heading h3"><a href="#seobjectatindex--">SEObjectAtIndex()</a></div><div class="heading h1"><a href="#objective-c-literals-on-ios--lt--6">Objective-c literals on iOS &lt; 6</a></div><div class="heading h1"><a href="#arc-non-arc-compatibility-helpers">ARC/non-ARC compatibility helpers</a></div><div class="heading h1"><a href="#gcd-concurrency-helpers">GCD/concurrency helpers</a></div><div class="heading h3"><a href="#dispatch_safe_sync--">dispatch_safe_sync()</a></div><div class="heading h1"><a href="#memory-tools">Memory tools</a></div><div class="heading h3"><a href="#get_free_memory--">get_free_memory()</a></div><div class="heading h3"><a href="#startoccasionalmemorylog--">startOccasionalMemoryLog()</a></div><div class="heading h3"><a href="#brynshowmbprogresshud--">BrynShowMBProgressHUD()</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>Bryn.h</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
 </div>
-</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
-<span class="cp">//  Bryn.h  </span>
-<span class="cp">//  BrynKit</span>
-<span class="cp">//  </span>
-<span class="cp">//  Created by bryn austin bellomy on 7/18/12.  </span>
-<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
-<span class="cp">//</span>
+</td><td class="code highlight"><div class="highlight"><pre><span class="c1">//</span>
+<span class="c1">//  Bryn.h</span>
+<span class="c1">//  BrynKit</span>
+<span class="c1">//</span>
+<span class="c1">//  Created by bryn austin bellomy on 7/18/12.</span>
+<span class="c1">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="c1">//</span>
 
 <span class="cp">#ifndef __Bryn__</span>
 <span class="cp">#define __Bryn__  </span><span class="c1">// is this even possible????</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
@@ -24,7 +24,6 @@
 <li><strong>BRYNKIT_LOG_MACROS_ARE_ACTIVE</strong>: easily turn off all changes to logging</li>
 <li><strong>BRYNKIT_NSLOG_TO_TESTFLIGHT</strong>: redirect all <code>NSLog()</code> calls to <code>TFLog()</code>, which sends them to TestFlight</li>
 <li><strong>BRYNKIT_AUTOMATIC_LOG_COLORS</strong>: automatically colorize <code>NSLog()</code> output in the xcode console</li>
-<li><strong>BRYNKIT_MB_PROGRESS_HUD_INCLUDED</strong>: set this to 1 if you want to use the <code>BrynShowMBProgressHUD()</code> helper function.</li>
 </ul></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- settable settings</span>
 <span class="cp">#pragma mark-</span>
 
@@ -46,10 +45,6 @@
 
 <span class="cp">#ifndef BRYNKIT_AUTOMATIC_LOG_COLORS</span>
 <span class="cp">#  define BRYNKIT_AUTOMATIC_LOG_COLORS 1</span>
-<span class="cp">#endif</span>
-
-<span class="cp">#ifndef BRYNKIT_MB_PROGRESS_HUD_INCLUDED</span>
-<span class="cp">#  define BRYNKIT_MB_PROGRESS_HUD_INCLUDED 1</span>
 <span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="misc.-stuff">
   <h1>
@@ -87,12 +82,9 @@ NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserI
     Blocks
   </h3>
 </div>
-</div><div class="body"><p>Saves a little bit of tedious typing.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">typedef</span> <span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">BoolBlock</span><span class="p">)(</span><span class="kt">BOOL</span> <span class="n">success</span><span class="p">);</span>
-<span class="k">typedef</span> <span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">UIntBlock</span><span class="p">)(</span><span class="n">NSUInteger</span> <span class="n">i</span><span class="p">);</span>
-<span class="k">typedef</span> <span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">NotificationBlock</span><span class="p">)(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">);</span>
-
-<span class="k">@class</span> <span class="nc">MBProgressHUD</span>;  
-<span class="k">typedef</span> <span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">SetupHUDBlock</span><span class="p">)</span>     <span class="p">(</span><span class="n">MBProgressHUD</span> <span class="o">*</span><span class="n">hud</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+</div><div class="body"><p>Saves a little bit of tedious typing.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">BoolBlock</span><span class="p">)(</span><span class="kt">BOOL</span> <span class="n">success</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">UIntBlock</span><span class="p">)(</span><span class="n">NSUInteger</span> <span class="n">i</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">NotificationBlock</span><span class="p">)(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="enum-dispatchsourcestate">
   <h3>
     <a href="#enum-dispatchsourcestate" class="pilcrow">&#182;</a>
@@ -100,11 +92,7 @@ NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserI
   </h3>
 </div>
 </div><div class="body"><p>Use this to keep track of the state of <code>dispatch_source</code> objects so that you don't
-over-resume them, try to cancel them when they're suspended, etc.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">typedef</span> <span class="k">enum</span>
-<span class="cp">#ifdef __IPHONE_6_0</span>
-     <span class="o">:</span><span class="n">NSUInteger</span>
-<span class="cp">#endif</span>
-<span class="p">{</span>
+over-resume them, try to cancel them when they're suspended, etc.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">typedef</span> <span class="k">enum</span> <span class="o">:</span> <span class="n">NSUInteger</span> <span class="p">{</span>
   <span class="n">DispatchSourceState_Suspended</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">),</span>
   <span class="n">DispatchSourceState_Resumed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">),</span>
   <span class="n">DispatchSourceState_Canceled</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
@@ -163,7 +151,8 @@ these into a plain ol' NSString expression:</p>
 <span class="cp">#define COLOR_SUCCESS(x)  COLOR_GREEN  x XCODE_COLORS_RESET</span>
 <span class="cp">#define COLOR_FILENAME(x) COLOR_PURPLE x XCODE_COLORS_RESET</span>
 <span class="cp">#define COLOR_LINE(x)     COLOR_YELLOW x XCODE_COLORS_RESET</span>
-<span class="cp">#define COLOR_FUNC(x)     COLOR_BLUE   x XCODE_COLORS_RESET</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<span class="cp">#define COLOR_FUNC(x)     COLOR_BLUE   x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_SEL(x)      XCODE_COLORS_RESET @&quot;[&quot; COLOR_BLUE x XCODE_COLORS_RESET @&quot;]&quot; XCODE_COLORS_RESET</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="brynenablecolorlogging--">
   <h3>
     <a href="#brynenablecolorlogging--" class="pilcrow">&#182;</a>
@@ -191,42 +180,42 @@ your <code>main()</code> function, or something else sufficiently early.</p></di
 
 <span class="cp">#if BRYNKIT_LOG_MACROS_ARE_ACTIVE == 1</span>
 
-<span class="cp">  // redirect all NSLog() calls to TFLog(), the TestFlight logging function</span>
-<span class="cp">  #if BRYNKIT_NSLOG_TO_TESTFLIGHT == 1</span>
-<span class="cp">    #define NSLog TFLog</span>
-<span class="cp">  #endif</span>
+  <span class="c1">// redirect all NSLog() calls to TFLog(), the TestFlight logging function</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">BRYNKIT_NSLOG_TO_TESTFLIGHT</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">NSLog</span> <span class="n">TFLog</span>
+  <span class="err">#</span><span class="n">endif</span>
 
-<span class="cp">  // this is the macro that replaces NSLog if you have BRYNKIT_VERBOSE_NSLOG set to 1.  if you want to use it</span>
-<span class="cp">  // without replacing NSLog, leave BRYNKIT_VERBOSE_NSLOG set to 0 and just call BrynLog.</span>
-<span class="cp">  #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1</span>
-<span class="cp">    #define BrynLog(__FORMAT__, ...) (NSLog(@&quot;[&quot; COLOR_FILENAME(@&quot;%@&quot;) @&quot;:&quot; COLOR_LINE(@&quot;%d&quot;) @&quot;] %@&quot;, \</span>
-<span class="cp">                                              __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))</span>
-<span class="cp">  #else</span>
-<span class="cp">    #define BrynLog(__FORMAT__, ...) (NSLog(@&quot;[%@:%d] %@&quot;, __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:__FORMAT__, ##__VA_ARGS__]))</span>
-<span class="cp">  #endif</span>
+  <span class="c1">// this is the macro that replaces NSLog if you have BRYNKIT_VERBOSE_NSLOG set to 1.  if you want to use it</span>
+  <span class="c1">// without replacing NSLog, leave BRYNKIT_VERBOSE_NSLOG set to 0 and just call BrynLog.</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">BRYNKIT_AUTOMATIC_LOG_COLORS</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="p">(</span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;[&quot;</span> <span class="n">COLOR_FILENAME</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">)</span> <span class="s">@&quot;:&quot;</span> <span class="n">COLOR_LINE</span><span class="p">(</span><span class="s">@&quot;%d&quot;</span><span class="p">)</span> <span class="s">@&quot;] %@&quot;</span><span class="p">,</span> \
+                                              <span class="n">__JUST_FILENAME__</span><span class="p">,</span> <span class="n">__LINE__</span><span class="p">,</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="err">##</span><span class="n">__VA_ARGS__</span><span class="p">]))</span>
+  <span class="err">#</span><span class="k">else</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="p">(</span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;[%@:%d] %@&quot;</span><span class="p">,</span> <span class="n">__JUST_FILENAME__</span><span class="p">,</span> <span class="n">__LINE__</span><span class="p">,</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="err">##</span><span class="n">__VA_ARGS__</span><span class="p">]))</span>
+  <span class="err">#</span><span class="n">endif</span>
 
-<span class="cp">  // replace NSLog with BrynLog</span>
-<span class="cp">  #if BRYNKIT_VERBOSE_NSLOG == 1</span>
-<span class="cp">    #define NSLog(__FORMAT__, ...) BrynLog(__FORMAT__, ##__VA_ARGS__)</span>
-<span class="cp">  #endif</span>
+  <span class="c1">// replace NSLog with BrynLog</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">BRYNKIT_VERBOSE_NSLOG</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">NSLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="n">BrynLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="err">##</span><span class="n">__VA_ARGS__</span><span class="p">)</span>
+  <span class="err">#</span><span class="n">endif</span>
 
-<span class="cp">  // replace NSLog with a no-op</span>
-<span class="cp">  #if BRYNKIT_SILENCE_NSLOG == 1</span>
-<span class="cp">    #define NSLog(__FORMAT__, ...) do{}while(0)</span>
-<span class="cp">  #endif</span>
+  <span class="c1">// replace NSLog with a no-op</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">BRYNKIT_SILENCE_NSLOG</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">NSLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="k">do</span><span class="p">{}</span><span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+  <span class="err">#</span><span class="n">endif</span>
 
-<span class="cp">  // like BrynLog except it logs the function/selector name instead of the file and line num.</span>
-<span class="cp">  #if BRYNKIT_AUTOMATIC_LOG_COLORS == 1</span>
-<span class="cp">    #define BrynFnLog(__FORMAT__, ...) (NSLog( \</span>
-<span class="cp">                                          COLOR_FUNC(@&quot;%s &quot;) @&quot;%@&quot;, \</span>
-<span class="cp">                                          __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))</span>
-<span class="cp">  #else</span>
-<span class="cp">    #define BrynFnLog(__FORMAT__, ...) (NSLog(@&quot;%s %@&quot;, __func__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__]))</span>
-<span class="cp">  #endif</span>
+  <span class="c1">// like BrynLog except it logs the function/selector name instead of the file and line num.</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">BRYNKIT_AUTOMATIC_LOG_COLORS</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynFnLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="p">(</span><span class="n">NSLog</span><span class="p">(</span> \
+                                          <span class="n">COLOR_FUNC</span><span class="p">(</span><span class="s">@&quot;%s &quot;</span><span class="p">)</span> <span class="s">@&quot;%@&quot;</span><span class="p">,</span> \
+                                          <span class="n">__func__</span><span class="p">,</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">),</span> <span class="err">##</span><span class="n">__VA_ARGS__</span><span class="p">]))</span>
+  <span class="err">#</span><span class="k">else</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynFnLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="p">(</span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%s %@&quot;</span><span class="p">,</span> <span class="n">__func__</span><span class="p">,</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">),</span> <span class="err">##</span><span class="n">__VA_ARGS__</span><span class="p">]))</span>
+  <span class="err">#</span><span class="n">endif</span>
 <span class="cp">#else</span>
 
-<span class="cp">  #define BrynLog(__FORMAT__, ...) do{}while(0)</span>
-<span class="cp">  #define BrynFnLog(__FORMAT__, ...) do{}while(0)</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="k">do</span><span class="p">{}</span><span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynFnLog</span><span class="p">(</span><span class="n">__FORMAT__</span><span class="p">,</span> <span class="p">...)</span> <span class="k">do</span><span class="p">{}</span><span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="image-related-macros">
@@ -248,7 +237,7 @@ because it's much easier than the (minimum) method calls you have to make to
 load a UIImage the 'right' way.  With a macro like this, there's no excuse.
 Note: the image filename you pass to this macro should not contain its file
 extension (".png").</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">filename</code> &mdash; <span class="description">The filename of the image without its ".png" extension.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if !defined(UIImageWithBundlePNG)</span>
-<span class="cp">  #define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:(x) ofType: @&quot;png&quot;]])</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">UIImageWithBundlePNG</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">([</span><span class="n">UIImage</span> <span class="nl">imageWithContentsOfFile:</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nl">ofType:</span> <span class="s">@&quot;png&quot;</span><span class="p">]])</span>
 <span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="container-related-macros">
   <h1>
@@ -268,7 +257,7 @@ extension (".png").</p></div><div class="details"><div class="dox_tag_title">Par
 array contains enough elements to even HAVE an object at the given index.
 Warning: you may fail to notice bugs in your code when using this macro.
 Exceptions get thrown for a reason, y'heard?</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span><code class="name">array</code> &mdash; <span class="description">The array to be queried.</span></div><div class="dox_tag_detail"><span class="dox_type">NSUInteger</span><code class="name">index</code> &mdash; <span class="description">The index of the item.</span></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSObject*</span> &mdash; <span class="description">Either <code>nil</code> or the object at the specified index in the array.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if !defined (SEObjectAtIndex)</span>
-<span class="cp">  #define SEObjectAtIndex(array, index) (array.count &gt;= (index + 1) ? array[ index ] : nil)</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">SEObjectAtIndex</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">array</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="o">:</span> <span class="nb">nil</span><span class="p">)</span>
 <span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="objective-c-literals-on-ios--lt--6">
   <h1>
@@ -279,7 +268,7 @@ Exceptions get thrown for a reason, y'heard?</p></div><div class="details"><div 
 </div><div class="body"><p>This is just a band-aid until Xcode 4.5 is released.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- objective-c literal support on iOS &lt; 6</span>
 <span class="cp">#pragma mark-</span>
 
-<span class="cp">// Shorthand for boxed values until we can use `@(...)`</span>
+<span class="c1">// Shorthand for boxed values until we can use `@(...)`</span>
 <span class="cp">#if __has_feature(objc_boxed_expressions)</span>
 <span class="cp">#  define b(x)  @(x)</span>
 <span class="cp">#  define bu(x) @(x)</span>
@@ -297,14 +286,14 @@ Exceptions get thrown for a reason, y'heard?</p></div><div class="details"><div 
 
 <span class="cp">#ifndef __IPHONE_6_0</span>
 
-<span class="cp">  // redefining `YES` and `NO` allows us to use `@YES` and</span>
-<span class="cp">  // `@NO` for `NSNumber`-ified `BOOL`s.  (Provided by James Webster on StackOverflow)</span>
-<span class="cp">  #if __has_feature(objc_bool) </span>
-<span class="cp">    #undef YES</span>
-<span class="cp">    #undef NO </span>
-<span class="cp">    #define YES __objc_yes </span>
-<span class="cp">    #define NO __objc_no </span>
-<span class="cp">  #endif </span>
+  <span class="c1">// redefining `YES` and `NO` allows us to use `@YES` and</span>
+  <span class="c1">// `@NO` for `NSNumber`-ified `BOOL`s.  (Provided by James Webster on StackOverflow)</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_bool</span><span class="p">)</span>
+    <span class="err">#</span><span class="n">undef</span> <span class="n">YES</span>
+    <span class="err">#</span><span class="n">undef</span> <span class="n">NO</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">YES</span> <span class="n">__objc_yes</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">NO</span> <span class="n">__objc_no</span>
+  <span class="err">#</span><span class="n">endif</span>
 
   <span class="c1">// These methods are implemented in `Bryn.m`.</span>
 
@@ -337,34 +326,34 @@ class by matej bukovinski [<a href='http://github.com/jdg/MBProgressHUD'>http://
 
 
 <span class="cp">#ifndef bryn_strong</span>
-<span class="cp">  #if __has_feature(objc_arc)</span>
-<span class="cp">    #define bryn_strong strong</span>
-<span class="cp">  #else</span>
-<span class="cp">    #define bryn_strong retain</span>
-<span class="cp">  #endif</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc</span><span class="p">)</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">bryn_strong</span> <span class="n">strong</span>
+  <span class="err">#</span><span class="k">else</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">bryn_strong</span> <span class="n">retain</span>
+  <span class="err">#</span><span class="n">endif</span>
 <span class="cp">#endif</span>
 
 <span class="cp">#ifndef bryn_weak</span>
-<span class="cp">  #if __has_feature(objc_arc_weak)</span>
-<span class="cp">    #define   bryn_weak   weak</span>
-<span class="cp">    #define __bryn_weak __weak</span>
-<span class="cp">  #elif __has_feature(objc_arc)</span>
-<span class="cp">    #define   bryn_weak   unsafe_unretained</span>
-<span class="cp">    #define __bryn_weak __unsafe_unretained</span>
-<span class="cp">  #else</span>
-<span class="cp">    #define   bryn_weak   assign</span>
-<span class="cp">    #define __bryn_weak __assign</span>
-<span class="cp">  #endif</span>
+  <span class="err">#</span><span class="k">if</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc_weak</span><span class="p">)</span>
+    <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">weak</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__weak</span>
+  <span class="err">#</span><span class="n">elif</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc</span><span class="p">)</span>
+    <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">unsafe_unretained</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__unsafe_unretained</span>
+  <span class="err">#</span><span class="k">else</span>
+    <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">assign</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__assign</span>
+  <span class="err">#</span><span class="n">endif</span>
 <span class="cp">#endif</span>
 
 <span class="cp">#if __has_feature(objc_arc)</span>
-<span class="cp">  #define BrynAutorelease(exp) exp</span>
-<span class="cp">  #define BrynRelease(exp) exp</span>
-<span class="cp">  #define BrynRetain(exp) exp</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynAutorelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynRelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynRetain</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
 <span class="cp">#else</span>
-<span class="cp">  #define BrynAutorelease(exp) [exp autorelease]</span>
-<span class="cp">  #define BrynRelease(exp) [exp release]</span>
-<span class="cp">  #define BrynRetain(exp) [exp retain]</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynAutorelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">autorelease</span><span class="p">]</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynRelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">release</span><span class="p">]</span>
+  <span class="err">#</span><span class="n">define</span> <span class="n">BrynRetain</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">retain</span><span class="p">]</span>
 <span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="gcd-concurrency-helpers">
   <h1>
@@ -382,11 +371,11 @@ class by matej bukovinski [<a href='http://github.com/jdg/MBProgressHUD'>http://
 </div>
 </div><div class="body"><p>Exactly like <code>dispatch_sync()</code>, except that it prevents you from deadlocking
 the current queue by calling <code>dispatch_sync()</code> on it.  If the <code>queue</code>
-parameter turns out to be the current queue, it will just call <code>block()</code>.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">dispatch_queue_t</span><code class="name">queue</code> &mdash; <span class="description">The queue on which to execute the block.</span></div><div class="dox_tag_detail"><span class="dox_type">dispatch_block_t</span><code class="name">block</code> &mdash; <span class="description">The block to execute.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">dispatch_safe_sync</span><span class="p">(</span><span class="n">dispatch_queue_t</span> <span class="n">queue</span><span class="p">,</span> <span class="n">dispatch_block_t</span> <span class="n">block</span><span class="p">)</span> <span class="p">{</span>
+parameter turns out to be the current queue, it will just call <code>block()</code>.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">dispatch_queue_t</span><code class="name">queue</code> &mdash; <span class="description">The queue on which to execute the block.</span></div><div class="dox_tag_detail"><span class="dox_type">dispatch_block_t</span><code class="name">block</code> &mdash; <span class="description">The block to execute.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">dispatch_safe_sync</span><span class="p">(</span><span class="n">dispatch_queue_t</span> <span class="n">queue</span><span class="p">,</span> <span class="n">dispatch_block_t</span> <span class="n">block</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">dispatch_get_current_queue</span><span class="p">()</span> <span class="o">==</span> <span class="n">queue</span><span class="p">)</span>
     <span class="n">block</span><span class="p">();</span>
   <span class="k">else</span>
-    <span class="n">dispatch_sync</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">block</span><span class="p">);</span>
+    <span class="nf">dispatch_sync</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">block</span><span class="p">);</span>
 <span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="memory-tools">
   <h1>
@@ -398,15 +387,15 @@ parameter turns out to be the current queue, it will just call <code>block()</co
 <span class="cp">#pragma mark-</span>
 
 <span class="cp">#if DEBUG</span>
-<span class="cp">  #import &lt;mach/mach.h&gt;</span>
-<span class="cp">  #import &lt;mach/mach_host.h&gt;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+  <span class="err">#</span><span class="n">import</span> <span class="o">&lt;</span><span class="n">mach</span><span class="o">/</span><span class="n">mach</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+  <span class="err">#</span><span class="n">import</span> <span class="o">&lt;</span><span class="n">mach</span><span class="o">/</span><span class="n">mach_host</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
 <div class="pilwrap" id="get_free_memory--">
   <h3>
     <a href="#get_free_memory--" class="pilcrow">&#182;</a>
     get_free_memory()
   </h3>
 </div>
-</div><div class="body"><p>Returns the amount of free memory on the device.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">natural_t</span> &mdash; <span class="description">The amount of free memory in bytes.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">static</span> <span class="kr">inline</span> <span class="n">natural_t</span> <span class="nf">get_free_memory</span><span class="p">()</span> <span class="p">{</span>
+</div><div class="body"><p>Returns the amount of free memory on the device.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">natural_t</span> &mdash; <span class="description">The amount of free memory in bytes.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">static</span> <span class="kr">inline</span> <span class="n">natural_t</span> <span class="n">get_free_memory</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">mach_port_t</span> <span class="n">host_port</span><span class="p">;</span>
     <span class="n">mach_msg_type_number_t</span> <span class="n">host_size</span><span class="p">;</span>
     <span class="n">vm_size_t</span> <span class="n">pagesize</span><span class="p">;</span>
@@ -429,9 +418,9 @@ parameter turns out to be the current queue, it will just call <code>block()</co
   </h3>
 </div>
 </div><div class="body"><p>Starts a GCD timer that spits out the memory currently available on the
-device every few seconds.</p></div></div></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">startOccasionalMemoryLog</span><span class="p">()</span> <span class="p">{</span>
+device every few seconds.</p></div></div></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">startOccasionalMemoryLog</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    
+
     <span class="c1">// create our timer source</span>
     <span class="n">dispatch_source_t</span> <span class="n">timer</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_TIMER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span>
     <span class="n">NSUInteger</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// 3 seconds</span>
@@ -439,7 +428,7 @@ device every few seconds.</p></div></div></td><td class="code highlight"><div cl
                               <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">step</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">),</span>
                               <span class="n">step</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">,</span>
                               <span class="n">step</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">);</span>
-    
+
     <span class="n">dispatch_source_set_event_handler</span><span class="p">(</span><span class="n">timer</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
       <span class="n">natural_t</span> <span class="n">freeMemBytes</span> <span class="o">=</span> <span class="n">get_free_memory</span><span class="p">();</span>
 <span class="cp">#if BRYNKIT_AUTOMATIC_LOG_COLORS == 1</span>
@@ -448,16 +437,34 @@ device every few seconds.</p></div></div></td><td class="code highlight"><div cl
       <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Free memory: %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">freeMemBytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)));</span>
 <span class="cp">#endif</span>
     <span class="p">});</span>
-    
+
     <span class="c1">// now that our timer is all set to go, start it</span>
     <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">timer</span><span class="p">);</span>
   <span class="p">}</span>
-<span class="cp">#endif</span>
-
-<span class="cp">#if BRYNKIT_MB_PROGRESS_HUD_INCLUDED == 1</span>
-<span class="cp">  #import &lt;MBProgressHUD/MBProgressHUD.h&gt;</span>
-  <span class="kt">void</span> <span class="n">BrynShowMBProgressHUD</span><span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="n">onView</span><span class="p">,</span> <span class="n">SetupHUDBlock</span> <span class="n">block_setupHUD</span><span class="p">,</span> <span class="n">dispatch_block_t</span> <span class="n">block_afterShowingHUD</span><span class="p">);</span>
-<span class="cp">#endif</span>
+<span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="brynshowmbprogresshud--">
+  <h3>
+    <a href="#brynshowmbprogresshud--" class="pilcrow">&#182;</a>
+    BrynShowMBProgressHUD()
+  </h3>
+</div>
+</div><div class="body"><p>Opens an MBProgressHUD in a block on the main thread from a background thread
+in such a way that it ought to show up instantly rather than pausing.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BrynShowMBProgressHUD(onView, block_setupHUD, block_afterShowingHUD) \</span>
+<span class="cp">  do { \</span>
+<span class="cp">    dispatch_queue_t q = dispatch_queue_create(&quot;com.brynkit.SetupHUDQueue&quot;, 0); \</span>
+<span class="cp">    dispatch_set_target_queue(q, dispatch_get_main_queue()); \</span>
+<span class="cp">    \</span>
+<span class="cp">    dispatch_async(q, ^{ \</span>
+<span class="cp">      if (onView == nil) \</span>
+<span class="cp">        return; \</span>
+<span class="cp">      \</span>
+<span class="cp">      MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:onView animated:YES]; \</span>
+<span class="cp">      block_setupHUD(hud); \</span>
+<span class="cp">    }); \</span>
+<span class="cp">    \</span>
+<span class="cp">    dispatch_async(q, block_afterShowingHUD); \</span>
+<span class="cp">    NULL; \</span>
+<span class="cp">  } while(0)</span>
 
 
 <span class="cp">#endif </span><span class="c1">// __Bryn__</span>

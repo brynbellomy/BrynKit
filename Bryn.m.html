@@ -2,33 +2,16 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
 </div>
-</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
-<span class="cp">//  Bryn.m  </span>
-<span class="cp">//  BrynKit  </span>
-<span class="cp">//  </span>
-<span class="cp">//  Created by bryn austin bellomy on 7/29/12.  </span>
-<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
-<span class="cp">//</span>
+</td><td class="code highlight"><div class="highlight"><pre><span class="c1">//</span>
+<span class="c1">//  Bryn.m  </span>
+<span class="c1">//  BrynKit  </span>
+<span class="c1">//  </span>
+<span class="c1">//  Created by bryn austin bellomy on 7/29/12.  </span>
+<span class="c1">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="c1">//</span>
 
 <span class="cp">#import &quot;Bryn.h&quot;</span>
 
-<span class="cp">#if MB_PROGRESS_HUD_INCLUDED == 1</span>
-<span class="kt">void</span> <span class="nf">BrynShowMBProgressHUD</span><span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="n">onView</span><span class="p">,</span> <span class="n">SetupHUDBlock</span> <span class="n">block_setupHUD</span><span class="p">,</span> <span class="n">dispatch_block_t</span> <span class="n">block_afterShowingHUD</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">dispatch_queue_t</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">&quot;com.brynkit.SetupHUDQueue&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="n">dispatch_set_target_queue</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">dispatch_get_main_queue</span><span class="p">());</span>
-  
-  <span class="n">dispatch_async</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">onView</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
-      <span class="k">return</span><span class="p">;</span>
-    
-    <span class="n">MBProgressHUD</span> <span class="o">*</span><span class="n">hud</span> <span class="o">=</span> <span class="p">[</span><span class="n">MBProgressHUD</span> <span class="nl">showHUDAddedTo:</span><span class="n">onView</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
-    <span class="n">block_setupHUD</span><span class="p">(</span><span class="n">hud</span><span class="p">);</span>
-  <span class="p">});</span>
-  
-  <span class="n">dispatch_async</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">block_afterShowingHUD</span><span class="p">);</span>
-  <span class="n">dispatch_release</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="cp">#endif</span>
 
 
 <span class="cm">/**</span>

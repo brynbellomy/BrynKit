@@ -2,13 +2,13 @@
 <div class="pilwrap">
   <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
 </div>
-</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
-<span class="cp">//  NSString+BrynKit.m</span>
-<span class="cp">//  BrynKit</span>
-<span class="cp">//  </span>
-<span class="cp">//  Created by bryn austin bellomy on 7/18/12.</span>
-<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
-<span class="cp">//</span>
+</td><td class="code highlight"><div class="highlight"><pre><span class="c1">//</span>
+<span class="c1">//  NSString+BrynKit.m</span>
+<span class="c1">//  BrynKit</span>
+<span class="c1">//  </span>
+<span class="c1">//  Created by bryn austin bellomy on 7/18/12.</span>
+<span class="c1">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="c1">//</span>
 
 <span class="cp">#import &quot;NSString+BrynKit.h&quot;</span>
 
@@ -17,7 +17,7 @@
 <span class="k">+</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">stringWithUUID</span> <span class="p">{</span>
    <span class="n">CFUUIDRef</span> <span class="n">uuidObj</span> <span class="o">=</span> <span class="n">CFUUIDCreate</span><span class="p">(</span><span class="nb">nil</span><span class="p">);</span> <span class="c1">// create a new UUID</span>
    <span class="c1">// get the string representation of the UUID</span>
-   <span class="n">NSString</span> <span class="o">*</span><span class="n">uuidString</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">CFUUIDCreateString</span><span class="p">(</span><span class="nb">nil</span><span class="p">,</span> <span class="n">uuidObj</span><span class="p">);</span>
+   <span class="n">NSString</span> <span class="o">*</span><span class="n">uuidString</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">CFUUIDCreateString</span><span class="p">(</span><span class="nb">nil</span><span class="p">,</span> <span class="n">uuidObj</span><span class="p">);</span>
    <span class="n">CFRelease</span><span class="p">(</span><span class="n">uuidObj</span><span class="p">);</span>
    <span class="k">return</span> <span class="n">uuidString</span><span class="p">;</span>
 <span class="p">}</span>
