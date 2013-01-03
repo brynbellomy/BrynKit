@@ -3,7 +3,7 @@
 //  BrynKit
 //
 //  Created by bryn austin bellomy on 7/18/12.
-//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
 #ifndef __Bryn__
@@ -75,6 +75,7 @@
 typedef void(^BoolBlock)(BOOL success);
 typedef void(^UIntBlock)(NSUInteger i);
 typedef void(^NotificationBlock)(NSNotification *);
+typedef void(^DictionaryBlock)(NSDictionary *);
 
 /**!
  * ### enum DispatchSourceState
@@ -149,7 +150,8 @@ typedef enum : NSUInteger {
  * ### BrynEnableColorLogging()
  *
  * Enables XcodeColors (you obviously have to install it too).  Call this from
- * your `main()` function, or something else sufficiently early.
+ * your app delegate's `-applicationDidFinishLoading:` function, or something
+ * else sufficiently early.
  */
 #define BrynEnableColorLogging() setenv("XcodeColors", "YES", 0);
 
@@ -468,8 +470,9 @@ static inline void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t b
       block_setupHUD(hud); \
     }); \
     \
-    dispatch_async(q, block_afterShowingHUD); \
-    NULL; \
+    if (block_afterShowingHUD != nil) { \
+        dispatch_async(q, block_afterShowingHUD); \
+    } \
   } while(0)
 
 

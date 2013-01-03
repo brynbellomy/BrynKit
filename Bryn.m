@@ -3,7 +3,7 @@
 //  BrynKit  
 //  
 //  Created by bryn austin bellomy on 7/29/12.  
-//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
 #import "Bryn.h"
