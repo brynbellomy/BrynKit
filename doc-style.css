@@ -420,3 +420,9 @@ pre, tt, code {
 .code.highlight {
   padding-bottom: 60px;
 }
+
+td.docs {
+  background: white !important;
+  max-width: 600px !important;
+  min-width: 600px !important;
+}
