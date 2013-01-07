@@ -1,1 +1,1 @@
-podspecs/1.0.2/BrynKit.podspec
+podspecs/1.0.3/BrynKit.podspec
