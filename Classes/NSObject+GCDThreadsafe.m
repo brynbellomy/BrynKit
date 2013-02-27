@@ -8,7 +8,7 @@
 
 #import "NSObject+GCDThreadsafe.h"
 
-@implementation NSObject (Threadsafe)
+@implementation NSObject (GCDThreadsafe)
 
 /**
  * # Instance methods
@@ -53,10 +53,9 @@
 
 
 /**
- * runCriticalReadonlySection:
+ * #### runCriticalReadonlySection:
  *
- * Runs the given block on the critical section queue synchronously so that surrounding code
- * can make use of
+ * Runs the given block on the critical section queue synchronously.
  *
  * @param {dispatch_block_t} blockCritical
  * @return {void}

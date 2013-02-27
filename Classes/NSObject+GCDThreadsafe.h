@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (Threadsafe)
+@interface NSObject (GCDThreadsafe)
     @property (nonatomic, assign, readonly) dispatch_queue_t queueCritical;
 
     - (void) runCriticalMutableSection:(dispatch_block_t)blockCritical;

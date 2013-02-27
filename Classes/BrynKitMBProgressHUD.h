@@ -12,12 +12,10 @@
 
 typedef void(^MBProgressHUDBlock)(MBProgressHUD *hud);
 
-/**!
- * ### BrynShowMBProgressHUD()
- *
- * Opens an MBProgressHUD in a block on the main thread from a background thread
- * in such a way that it ought to show up instantly rather than pausing.
- */
+@interface MBProgressHUD (BrynKitThreadsafe)
 
-extern void BrynShowMBProgressHUD(UIView *onView, MBProgressHUDBlock block_setupHUD, dispatch_block_t block_afterShowingHUD);
++ (void) threadsafeShowHUDOnView: (UIView *)onView
+                        setupHUD: (MBProgressHUDBlock)block_setupHUD;
+
+@end
 

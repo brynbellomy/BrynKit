@@ -8,7 +8,17 @@
 
 #import <libextobjc/metamacros.h>
 
+/**
+ * # Debugging macros
+ */
+
 #ifdef DEBUG
+
+/**
+ * #### ALog(...)
+ *
+ * For internal use, mainly.
+ */
 #   define ALog(...) \
         metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \
         ( [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:@""] )\
@@ -32,7 +42,7 @@
  * logs the failure to `stdout` (using the message specified by the format
  * string) and proceeds with execution.
  *
- * @param {expression} A condition to test.
+ * @param {expression} expr A condition to test.
  * @param {format-str} format A format string to print when `condition` is FALSE.
  */
 #define yssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)

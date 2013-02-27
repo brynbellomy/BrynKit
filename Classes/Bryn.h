@@ -33,8 +33,8 @@
  * NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserInfoKey_Clowns]);
  * ```
 
- * @param {identifier} The name of the NSString variable.
- * @param {value} The contents of the NSString (optional).
+ * @param {identifier} identifier The name of the NSString variable.
+ * @param {NSString*} value The contents of the NSString (optional).
  */
 
 #define Key(...) \

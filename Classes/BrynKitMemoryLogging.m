@@ -2,17 +2,20 @@
 //  BrynKitMemoryLogging.m
 //  BrynKit
 //
-//  Created by bryn austin bellomy on 2/27/2013
+//  Created by bryn austin bellomy on 2.27.2013
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
 #import <mach/mach.h>
 #import <mach/mach_host.h>
-
 #import "BrynKitLogging.h"
 
-/**!
- * ### BrynKit_GetFreeMemory()
+/**
+ * # Memory logging helpers
+ */
+
+/**
+ * #### BrynKit_GetFreeMemory()
  *
  * Returns the amount of free memory on the device.
  *
@@ -37,8 +40,8 @@ natural_t BrynKit_GetFreeMemory() {
 
 
 
-/**!
- * ### BrynKit_StartOccasionalMemoryLog()
+/**
+ * #### BrynKit_StartOccasionalMemoryLog()
  *
  * Starts a GCD timer that spits out the memory currently available on the
  * device every few seconds.

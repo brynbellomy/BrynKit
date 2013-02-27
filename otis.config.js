@@ -1,12 +1,12 @@
 module.exports = {
   inDir: "./",
   outDir: "../gh-pages",
-  index: "Bryn.h.html",
+  index: "Classes/Bryn.h.html",
   markdownEngine: "showdown",
   onlyUpdated: false,
   colourScheme: "friendly",
   ignoreHidden: true,
   sidebarState: true,
-  tolerant: false,
-  exclude: "otis.config.js,README.md,podspecs,doc"
+  tolerant: true,
+  exclude: "otis.config.js,*.md,*.podspec"
 };
