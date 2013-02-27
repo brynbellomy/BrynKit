@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
+#import "BrynKitDebugging.h"
 #import "NSObject+GCDThreadsafe.h"
 
 @implementation NSObject (GCDThreadsafe)
