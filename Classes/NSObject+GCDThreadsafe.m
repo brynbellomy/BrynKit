@@ -47,7 +47,14 @@
 
 - (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
 {
-    dispatch_barrier_async(self.queueCritical, blockCritical);
+    yssert(self.queueCritical != nil);
+
+    if (dispatch_get_current_queue() == self.queueCritical) {
+        blockCritical();
+    }
+    else {
+        dispatch_barrier_async(self.queueCritical, blockCritical);
+    }
 }
 
 
@@ -63,6 +70,8 @@
 
 - (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
 {
+    yssert(self.queueCritical != nil);
+
     if (dispatch_get_current_queue() == self.queueCritical) {
         blockCritical();
     }
