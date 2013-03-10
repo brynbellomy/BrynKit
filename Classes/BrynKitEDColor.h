@@ -21,33 +21,33 @@
  * @param {NSString*} msg The string to colorize.
  * @return {NSString*} The colorized string.
  */
-#define CCCrayola(whichColor, msg) \
+#define CCCrayola(whichColor, msg, ...) \
     ({ \
         UIColor *c = [UIColor colorWithCrayola: (whichColor)]; \
         CGFloat r, g, b, a; \
         [c getRed:&r green:&g blue:&b alpha:&a]; \
-        r *= 255; \
-        g *= 255; \
-        b *= 255; \
-        [NSString stringWithFormat: XCODE_COLORS_ESCAPE @"fg%d,%d,%d;%@" XCODE_COLORS_RESET, (int)r, (int)g, (int)b, (msg)]; \
+        r *= 255.0f; \
+        g *= 255.0f; \
+        b *= 255.0f; \
+        [NSString stringWithFormat: XCODE_COLORS_ESCAPE @"fg%d,%d,%d;%@" XCODE_COLORS_RESET, (int)r, (int)g, (int)b, [NSString stringWithFormat:msg, ## __VA_ARGS__]]; \
     })
 
 
 
 #ifndef COLOR_ERROR
-#   define COLOR_ERROR(x) CCCrayola(@"Scarlet", (x))
+#   define COLOR_ERROR(x) CCCrayola(@"Scarlet", x)
 #endif
 #ifndef COLOR_SUCCESS
-#   define COLOR_SUCCESS(x) CCCrayola(@"Screamin'Green", (x))
+#   define COLOR_SUCCESS(x) CCCrayola(@"Screamin'Green", x)
 #endif
 #ifndef COLOR_FILENAME
-#   define COLOR_FILENAME(x) CCCrayola(@"PurpleHeart", (x))
+#   define COLOR_FILENAME(x) CCCrayola(@"PurpleHeart", x)
 #endif
 #ifndef COLOR_LINE
-#   define COLOR_LINE(x) CCCrayola(@"Sunglow", (x))
+#   define COLOR_LINE(x) CCCrayola(@"Sunglow", x)
 #endif
 #ifndef COLOR_FUNC
-#   define COLOR_FUNC(x) CCCrayola(@"Aquamarine", (x))
+#   define COLOR_FUNC(x) CCCrayola(@"Aquamarine", x)
 #endif
 #ifndef COLOR_SEL
 #   define COLOR_SEL(x)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"PacificBlue", (x))]

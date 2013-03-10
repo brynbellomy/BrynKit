@@ -9,6 +9,7 @@
 #import <libextobjc/EXTScope.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "BrynKit.h"
 #import "BrynKitMBProgressHUD.h"
 
 /**
@@ -35,17 +36,36 @@
  * @param onView {UIView*} The view on which to display the HUD.
  * @param block_setupHUD {MBProgressHUDBlock} A block in which the HUD can be customized or updated.
  */
-+ (void) threadsafeShowHUDOnView: (UIView *)onView
-                        setupHUD: (MBProgressHUDBlock)block_setupHUD
++ (void) threadsafeShowHUDOnView: (UIView *)_onView
+                        setupHUD: (MBProgressHUDBlock)_block_setupHUD
 {
-    @weakify(onView);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        @strongify(onView);
+    __block UIView *onView = _onView;
+    __block MBProgressHUDBlock block_setupHUD = [_block_setupHUD copy];
 
+    dispatch_block_t block = ^{
         if (onView != nil) {
-            block_setupHUD([MBProgressHUD HUDForView:onView] ?: [MBProgressHUD showHUDAddedTo:onView animated:YES]);
+            MBProgressHUD *hud = [MBProgressHUD HUDForView:onView];
+            if (hud == nil) {
+                hud = [MBProgressHUD showHUDAddedTo:onView animated:YES];
+            }
+            yssert(hud != nil, @"hud is nil.");
+
+            block_setupHUD(hud);
         }
-    });
+    };
+
+    if ([NSThread isMainThread]) {
+        block();
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
 }
 
 @end
+
+
+
+
+
+

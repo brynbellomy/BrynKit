@@ -37,7 +37,7 @@
  * These macros evaluate to a regular NSString literal, so you can simply
  * concatenate them into an NSString expression like so:
  *
- * `NSLog(@"Blah blah" COLOR_RED @"This will be red" XCODE_COLORS_RESET @"This will not");`
+ * `NSLog(@"Blah blah" COLOR_RED(@"This will be red") @"This will not");`
  */
 #define COLOR_RED(x)       XCODE_COLORS_FG(178,34,34) x XCODE_COLORS_RESET
 #define COLOR_YELLOW(x)    XCODE_COLORS_FG(255,185,0) x XCODE_COLORS_RESET
@@ -117,10 +117,10 @@
 #define BrynFnLog(fmt, ...) NSLog(COLOR_FUNC(@"%s ") @"%@", __func__, [NSString stringWithFormat:(fmt), ##__VA_ARGS__])
 
 #define BrynFnLogString(severity, __FORMAT__, ...) metamacro_concat(BrynFnLogString_,severity)((__FORMAT__), ## __VA_ARGS__)
-#define BrynFnLogString_error(__FORMAT__, ...)   ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_warning(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_info(__FORMAT__, ...)    ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_verbose(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
+#define BrynFnLogString_Error(__FORMAT__, ...)   ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
+#define BrynFnLogString_Warning(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
+#define BrynFnLogString_Info(__FORMAT__, ...)    ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
+#define BrynFnLogString_Verbose(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
 
 
 

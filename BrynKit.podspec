@@ -19,21 +19,23 @@ Pod::Spec.new do |s|
   s.dependency 'libextobjc/EXTScope', '>= 0.2.0'
 
   #
-  # subspecs
+  # main subspec
   #
   s.preferred_dependency = 'Main'
-
   s.subspec 'Main' do |subspec|
     subspec.source_files = 'Classes/{Bryn.{h,m},BrynKit.h,BrynKitDebugging.h,BrynKitLogging.h}'
   end
 
+  #
+  # subspecs
+  #
   s.subspec 'MBProgressHUD' do |subspec|
     subspec.source_files = 'Classes/BrynKitMBProgressHUD.{h,m}'
     subspec.dependency 'MBProgressHUD'
   end
 
   s.subspec 'GCDThreadsafe' do |subspec|
-    subspec.source_files = 'Classes/NSObject+GCDThreadsafe.{h,m}'
+    subspec.source_files = 'Classes/GCDThreadsafe.{h,m}'
   end
 
   s.subspec 'SEDispatchSource' do |subspec|
