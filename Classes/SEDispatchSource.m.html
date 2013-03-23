@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>SEDispatchSource.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#sedispatchsource">SEDispatchSource</a></div><div class="heading h4"><a href="#initwithsource-onqueue-">initWithSource:onQueue:</a></div><div class="heading h4"><a href="#dealloc">dealloc</a></div><div class="heading h4"><a href="#state">state</a></div><div class="heading h4"><a href="#stop">stop</a></div><div class="heading h4"><a href="#resume">resume</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;SEDispatchSource.h&quot;</span>
+<span class="cp">#import &quot;Bryn.h&quot;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="sedispatchsource">
+  <h1>
+    <a href="#sedispatchsource" class="pilcrow">&#182;</a>
+    SEDispatchSource
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">@implementation</span> <span class="nc">SEDispatchSource</span> <span class="p">{</span>
+    <span class="n">BrynKitDispatchSourceState</span> <span class="n">_state</span><span class="p">;</span>
+    <span class="n">dispatch_queue_t</span>           <span class="n">_queue</span><span class="p">;</span>
+    <span class="n">dispatch_source_t</span>          <span class="n">_source</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="initwithsource-onqueue-">
+  <h4>
+    <a href="#initwithsource-onqueue-" class="pilcrow">&#182;</a>
+    initWithSource:onQueue:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">dispatch_source_t</span><code class="name">source</code></div><div class="dox_tag_detail"><span class="dox_type">dispatch_queue_t</span><code class="name">queue</code></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nl">initWithSource:</span> <span class="p">(</span><span class="n">dispatch_source_t</span><span class="p">)</span><span class="n">source</span>
+                        <span class="nl">onQueue:</span> <span class="p">(</span><span class="n">dispatch_queue_t</span><span class="p">)</span><span class="n">queue</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="p">;</span>
+        <span class="n">dispatch_retain</span><span class="p">(</span><span class="n">_queue</span><span class="p">);</span>
+        <span class="n">_state</span>  <span class="o">=</span> <span class="n">BrynKitDispatchSourceState_Canceled</span><span class="p">;</span>
+        <span class="n">_source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_DATA_OR</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">_queue</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="dealloc">
+  <h4>
+    <a href="#dealloc" class="pilcrow">&#182;</a>
+    dealloc
+  </h4>
+</div>
+</div><div class="body"><p>Automatically cancels the <code>dispatch_source_t</code> correctly upon <code>dealloc</code>-ing.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">dealloc</span>
+<span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>when cancelling, must make sure we resume first if we're suspended</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="n">_state</span> <span class="o">==</span> <span class="n">BrynKitDispatchSourceState_Suspended</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">_source</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">dispatch_source_cancel</span><span class="p">(</span><span class="n">_source</span><span class="p">);</span>
+    <span class="n">dispatch_release</span><span class="p">(</span><span class="n">_source</span><span class="p">);</span>
+    <span class="n">_source</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+    <span class="n">dispatch_release</span><span class="p">(</span><span class="n">_queue</span><span class="p">);</span>
+    <span class="n">_queue</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+    <span class="n">_state</span> <span class="o">=</span> <span class="n">BrynKitDispatchSourceState_Canceled</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="state">
+  <h4>
+    <a href="#state" class="pilcrow">&#182;</a>
+    state
+  </h4>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="n">BrynKitDispatchSourceState</span><span class="p">)</span> <span class="n">state</span>
+<span class="p">{</span>
+    <span class="n">BrynKitDispatchSourceState</span> <span class="n">state</span><span class="p">;</span>
+
+    <span class="k">@synchronized</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">_state</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">state</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="stop">
+  <h4>
+    <a href="#stop" class="pilcrow">&#182;</a>
+    stop
+  </h4>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">stop</span>
+<span class="p">{</span>
+    <span class="k">@synchronized</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_state</span> <span class="o">==</span> <span class="n">BrynKitDispatchSourceState_Resumed</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dispatch_suspend</span><span class="p">(</span><span class="n">_source</span><span class="p">);</span>
+            <span class="n">_state</span> <span class="o">=</span> <span class="n">BrynKitDispatchSourceState_Suspended</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="resume">
+  <h4>
+    <a href="#resume" class="pilcrow">&#182;</a>
+    resume
+  </h4>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">resume</span>
+<span class="p">{</span>
+    <span class="k">@synchronized</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">_state</span> <span class="o">==</span> <span class="n">BrynKitDispatchSourceState_Suspended</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">_state</span> <span class="o">==</span> <span class="n">BrynKitDispatchSourceState_Canceled</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">dispatch_resume</span><span class="p">(</span><span class="n">_source</span><span class="p">);</span>
+            <span class="n">_state</span> <span class="o">=</span> <span class="n">BrynKitDispatchSourceState_Resumed</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

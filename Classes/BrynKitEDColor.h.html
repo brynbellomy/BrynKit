@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><title>BrynKitEDColor.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#edcolor-extensions">EDColor extensions</a></div><div class="heading h4"><a href="#cccrayola--">CCCrayola()</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitEDColor.h
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2/27/2013.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;EDColor/EDColor.h&gt;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="edcolor-extensions">
+  <h1>
+    <a href="#edcolor-extensions" class="pilcrow">&#182;</a>
+    EDColor extensions
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="cccrayola--">
+  <h4>
+    <a href="#cccrayola--" class="pilcrow">&#182;</a>
+    CCCrayola()
+  </h4>
+</div>
+</div><div class="body"><p>Another color-logging macro.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">whichColor</code> &mdash; <span class="description">The name of the Crayola color (from <code>EDColor/Crayola.h</code>) in which to print the string.</span></div><div class="dox_tag_detail"><span class="dox_type">NSString*</span><code class="name">msg</code> &mdash; <span class="description">The string to colorize.</span></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span> &mdash; <span class="description">The colorized string.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define CCCrayola(whichColor, msg, ...) \</span>
+<span class="cp">    ({ \</span>
+<span class="cp">        UIColor *c = [UIColor colorWithCrayola: (whichColor)]; \</span>
+<span class="cp">        CGFloat r, g, b, a; \</span>
+<span class="cp">        [c getRed:&amp;r green:&amp;g blue:&amp;b alpha:&amp;a]; \</span>
+<span class="cp">        r *= 255.0f; \</span>
+<span class="cp">        g *= 255.0f; \</span>
+<span class="cp">        b *= 255.0f; \</span>
+<span class="cp">        [NSString stringWithFormat: XCODE_COLORS_ESCAPE @&quot;fg%d,%d,%d;%@&quot; XCODE_COLORS_RESET, (int)r, (int)g, (int)b, [NSString stringWithFormat:msg, ## __VA_ARGS__]]; \</span>
+<span class="cp">    })</span>
+
+
+
+<span class="cp">#ifndef COLOR_ERROR</span>
+<span class="cp">#   define COLOR_ERROR(x) CCCrayola(@&quot;Scarlet&quot;, x)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_SUCCESS</span>
+<span class="cp">#   define COLOR_SUCCESS(x) CCCrayola(@&quot;Screamin&#39;Green&quot;, x)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_FILENAME</span>
+<span class="cp">#   define COLOR_FILENAME(x) CCCrayola(@&quot;PurpleHeart&quot;, x)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_LINE</span>
+<span class="cp">#   define COLOR_LINE(x) CCCrayola(@&quot;Sunglow&quot;, x)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_FUNC</span>
+<span class="cp">#   define COLOR_FUNC(x) CCCrayola(@&quot;Aquamarine&quot;, x)</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_SEL</span>
+<span class="cp">#   define COLOR_SEL(x)   [NSString stringWithFormat:@&quot;[%@]&quot;, CCCrayola(@&quot;PacificBlue&quot;, (x))]</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_QUEUE</span>
+<span class="cp">#   define COLOR_QUEUE(x)   [NSString stringWithFormat:@&quot;[%@]&quot;, CCCrayola(@&quot;Dandelion&quot;, (x))]</span>
+<span class="cp">#endif</span>
+</pre></div></td></tr></tbody></table></div></body></html>

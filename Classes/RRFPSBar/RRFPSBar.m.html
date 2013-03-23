@@ -1,0 +1,229 @@
+<!DOCTYPE html><html><head><title>RRFPSBar.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../../doc-style.css"><script src="../../doc-filelist.js"></script><script>var relativeDir = '../../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>RRFPSBar.m</p>
+
+<p>Created by Rolandas Razma on 07/03/2013.
+ Copyright 2013 Rolandas Razma. All rights reserved.</p>
+
+<p>Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;RRFPSBar.h&quot;</span>
+<span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+
+
+<span class="k">@implementation</span> <span class="nc">RRFPSBar</span> <span class="p">{</span>
+    <span class="n">CADisplayLink</span>          <span class="o">*</span><span class="n">_displayLink</span><span class="p">;</span>
+    <span class="n">NSUInteger</span>              <span class="n">_historyDTLength</span><span class="p">;</span>
+    <span class="n">CFTimeInterval</span>          <span class="n">_historyDT</span><span class="p">[</span><span class="mi">320</span><span class="p">];</span>
+    <span class="n">CFTimeInterval</span>          <span class="n">_displayLinkTickTimeLast</span><span class="p">;</span>
+    <span class="n">CFTimeInterval</span>          <span class="n">_lastUIUpdateTime</span><span class="p">;</span>
+    
+    <span class="n">CATextLayer</span>            <span class="o">*</span><span class="n">_fpsTextLayer</span><span class="p">;</span>
+    <span class="n">CAShapeLayer</span>           <span class="o">*</span><span class="n">_linesLayer</span><span class="p">;</span>
+    <span class="n">CAShapeLayer</span>           <span class="o">*</span><span class="n">_chartLayer</span><span class="p">;</span>
+    
+    <span class="kt">BOOL</span>                    <span class="n">_showsAverage</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cp">#pragma mark -</span>
+<span class="cp">#pragma mark NSObject</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dealloc</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">setPaused:</span><span class="n">YES</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">removeFromRunLoop:</span><span class="p">[</span><span class="n">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">forMode:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">init</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">statusBarFrame</span><span class="p">]])</span> <span class="p">){</span>
+        <span class="n">_historyDTLength</span>        <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">_displayLinkTickTimeLast</span><span class="o">=</span> <span class="n">CACurrentMediaTime</span><span class="p">();</span>
+        
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setWindowLevel:</span> <span class="n">UIWindowLevelStatusBar</span> <span class="o">+</span><span class="mf">1.0f</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setBackgroundColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">blackColor</span><span class="p">]];</span>
+        
+        <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver:</span> <span class="n">self</span>
+                                                 <span class="nl">selector:</span> <span class="k">@selector</span><span class="p">(</span><span class="n">applicationDidBecomeActiveNotification</span><span class="p">)</span>
+                                                     <span class="nl">name:</span> <span class="n">UIApplicationDidBecomeActiveNotification</span>
+                                                   <span class="nl">object:</span> <span class="nb">nil</span><span class="p">];</span>
+        
+        <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver:</span> <span class="n">self</span>
+                                                 <span class="nl">selector:</span> <span class="k">@selector</span><span class="p">(</span><span class="n">applicationWillResignActiveNotification</span><span class="p">)</span>
+                                                     <span class="nl">name:</span> <span class="n">UIApplicationWillResignActiveNotification</span>
+                                                   <span class="nl">object:</span> <span class="nb">nil</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Track FPS using display link</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">_displayLink</span> <span class="o">=</span> <span class="p">[</span><span class="n">CADisplayLink</span> <span class="nl">displayLinkWithTarget:</span><span class="n">self</span> <span class="nl">selector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">displayLinkTick</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">setPaused:</span><span class="n">YES</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">addToRunLoop:</span><span class="p">[</span><span class="n">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">forMode:</span><span class="n">NSRunLoopCommonModes</span><span class="p">];</span>
+        </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>Lines Layer</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">_linesLayer</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAShapeLayer</span> <span class="n">layer</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_linesLayer</span> <span class="nl">setFrame:</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_linesLayer</span> <span class="nl">setStrokeColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorWithRed:</span><span class="mf">1.0f</span> <span class="nl">green:</span><span class="mf">1.0f</span> <span class="nl">blue:</span><span class="mf">1.0f</span> <span class="nl">alpha:</span><span class="mf">0.5f</span><span class="p">].</span><span class="n">CGColor</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_linesLayer</span> <span class="nl">setContentsScale:</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">];</span>
+        
+        <span class="n">UIBezierPath</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBezierPath</span> <span class="n">bezierPath</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">path</span> <span class="nl">moveToPoint:</span><span class="n">CGPointZero</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">path</span> <span class="nl">addLineToPoint:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">path</span> <span class="nl">moveToPoint:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">path</span> <span class="nl">addLineToPoint:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">path</span> <span class="n">closePath</span><span class="p">];</span>
+        
+        <span class="p">[</span><span class="n">_linesLayer</span> <span class="nl">setPath:</span><span class="n">path</span><span class="p">.</span><span class="n">CGPath</span><span class="p">];</span>
+
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="nl">addSublayer:</span><span class="n">_linesLayer</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Chart Layer</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">_chartLayer</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAShapeLayer</span> <span class="n">layer</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_chartLayer</span> <span class="nl">setFrame:</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_chartLayer</span> <span class="nl">setStrokeColor:</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_chartLayer</span> <span class="nl">setContentsScale:</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="nl">addSublayer:</span><span class="n">_chartLayer</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Info Layer</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">_fpsTextLayer</span> <span class="o">=</span> <span class="p">[</span><span class="n">CATextLayer</span> <span class="n">layer</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setFrame:</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">5.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span><span class="mf">9.0f</span><span class="p">,</span> <span class="mf">100.0f</span><span class="p">,</span> <span class="mf">10.0f</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setFontSize:</span> <span class="mf">9.0f</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setForegroundColor:</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setContentsScale:</span> <span class="p">[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">scale</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="nl">addSublayer:</span><span class="n">_fpsTextLayer</span><span class="p">];</span>
+        </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Draw asynchronously on iOS6+</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span><span class="p">(</span> <span class="p">[</span><span class="n">_chartLayer</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">setDrawsAsynchronously:</span><span class="p">)]</span> <span class="p">){</span>
+            <span class="p">[</span><span class="n">_linesLayer</span> <span class="nl">setDrawsAsynchronously:</span><span class="n">YES</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">_chartLayer</span> <span class="nl">setDrawsAsynchronously:</span><span class="n">YES</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setDrawsAsynchronously:</span><span class="n">YES</span><span class="p">];</span>
+        <span class="p">}</span>
+        
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setDesiredChartUpdateInterval:</span> <span class="mf">1.0f</span> <span class="o">/</span><span class="mf">60.0f</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="cp">#pragma mark -</span>
+<span class="cp">#pragma mark RRFPSBar</span>
+
+
+<span class="o">+</span> <span class="p">(</span><span class="n">RRFPSBar</span> <span class="o">*</span><span class="p">)</span><span class="n">sharedInstance</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">RRFPSBar</span> <span class="o">*</span><span class="n">_sharedInstance</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">_sharedInstance</span> <span class="o">=</span> <span class="p">[[</span><span class="n">RRFPSBar</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">_sharedInstance</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">applicationDidBecomeActiveNotification</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">setPaused:</span><span class="n">NO</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">applicationWillResignActiveNotification</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">_displayLink</span> <span class="nl">setPaused:</span><span class="n">YES</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">displayLinkTick</span> <span class="p">{</span>
+    </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Shift up the buffer</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">_historyDTLength</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">_historyDT</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_historyDT</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+    <span class="p">}</span>
+    </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>Store new state</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">_historyDT</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_displayLink</span><span class="p">.</span><span class="n">timestamp</span> <span class="o">-</span><span class="n">_displayLinkTickTimeLast</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Update length if there is more place</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span> <span class="n">_historyDTLength</span> <span class="o">&lt;</span> <span class="mi">319</span> <span class="p">)</span> <span class="n">_historyDTLength</span><span class="o">++</span><span class="p">;</span>
+    </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Store last timestamp</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">_displayLinkTickTimeLast</span> <span class="o">=</span> <span class="n">_displayLink</span><span class="p">.</span><span class="n">timestamp</span><span class="p">;</span>
+    </pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>Update UI</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">CFTimeInterval</span> <span class="n">timeSinceLastUIUpdate</span> <span class="o">=</span> <span class="n">_displayLinkTickTimeLast</span> <span class="o">-</span><span class="n">_lastUIUpdateTime</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">_historyDT</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.1f</span> <span class="o">&amp;&amp;</span> <span class="n">timeSinceLastUIUpdate</span> <span class="o">&gt;=</span> <span class="n">_desiredChartUpdateInterval</span> <span class="p">){</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">updateChartAndText</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">updateChartAndText</span> <span class="p">{</span>
+    
+    <span class="n">UIBezierPath</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIBezierPath</span> <span class="n">bezierPath</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">path</span> <span class="nl">moveToPoint:</span><span class="n">CGPointZero</span><span class="p">];</span>
+
+    <span class="n">CFTimeInterval</span> <span class="n">maxDT</span> <span class="o">=</span> <span class="n">CGFLOAT_MIN</span><span class="p">;</span>
+    <span class="n">CFTimeInterval</span> <span class="n">avgDT</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+        
+    <span class="k">for</span><span class="p">(</span> <span class="n">NSUInteger</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">_historyDTLength</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">){</span>
+        <span class="n">maxDT</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="n">maxDT</span><span class="p">,</span> <span class="n">_historyDT</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">avgDT</span> <span class="o">+=</span> <span class="n">_historyDT</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        
+        <span class="n">CGFloat</span> <span class="n">fraction</span> <span class="o">=</span>  <span class="n">roundf</span><span class="p">(</span><span class="mf">1.0f</span> <span class="o">/</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">_historyDT</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span><span class="mf">60.0f</span><span class="p">;</span>
+        <span class="n">CGFloat</span> <span class="n">y</span> <span class="o">=</span> <span class="n">_chartLayer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span><span class="n">_chartLayer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">*</span><span class="n">fraction</span><span class="p">;</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="n">MIN</span><span class="p">(</span><span class="n">_chartLayer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+        
+        <span class="p">[</span><span class="n">path</span> <span class="nl">addLineToPoint:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span><span class="mf">1.0f</span><span class="p">,</span> <span class="n">y</span><span class="p">)];</span>
+    <span class="p">}</span>
+
+    <span class="n">avgDT</span> <span class="o">/=</span> <span class="n">_historyDTLength</span><span class="p">;</span>
+    <span class="n">_chartLayer</span><span class="p">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">CGPath</span><span class="p">;</span>
+    
+    <span class="n">CFTimeInterval</span> <span class="n">minFPS</span> <span class="o">=</span> <span class="n">roundf</span><span class="p">(</span><span class="mf">1.0f</span> <span class="o">/</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">maxDT</span><span class="p">);</span>
+    <span class="n">CFTimeInterval</span> <span class="n">avgFPS</span> <span class="o">=</span> <span class="n">roundf</span><span class="p">(</span><span class="mf">1.0f</span> <span class="o">/</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">avgDT</span><span class="p">);</span>
+
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">text</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">_showsAverage</span> <span class="p">){</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;low: %.f | avg: %.f&quot;</span><span class="p">,</span> <span class="n">minFPS</span><span class="p">,</span> <span class="n">avgFPS</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;low %.f&quot;</span><span class="p">,</span> <span class="n">minFPS</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="n">_fpsTextLayer</span> <span class="nl">setString:</span> <span class="n">text</span><span class="p">];</span>
+    
+    <span class="n">_lastUIUpdateTime</span> <span class="o">=</span> <span class="n">_displayLinkTickTimeLast</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

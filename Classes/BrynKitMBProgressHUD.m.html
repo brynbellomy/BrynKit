@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>BrynKitMBProgressHUD.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#mbprogresshud-helpers">MBProgressHUD helpers</a></div><div class="heading h4"><a href="#threadsafeshowhudonview-setuphud-">threadsafeShowHUDOnView:setupHUD:</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitMBProgressHUD.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2/27/2013.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;libextobjc/EXTScope.h&gt;</span>
+<span class="cp">#import &lt;MBProgressHUD/MBProgressHUD.h&gt;</span>
+
+<span class="cp">#import &quot;BrynKit.h&quot;</span>
+<span class="cp">#import &quot;BrynKitMBProgressHUD.h&quot;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="mbprogresshud-helpers">
+  <h1>
+    <a href="#mbprogresshud-helpers" class="pilcrow">&#182;</a>
+    MBProgressHUD helpers
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">@implementation</span> <span class="nc">MBProgressHUD</span> <span class="nl">(BrynKitThreadsafe)</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="threadsafeshowhudonview-setuphud-">
+  <h4>
+    <a href="#threadsafeshowhudonview-setuphud-" class="pilcrow">&#182;</a>
+    threadsafeShowHUDOnView:setupHUD:
+  </h4>
+</div>
+</div><div class="body"><p>Opens an <code>MBProgressHUD</code> on the main thread.  If an <code>MBProgressHUD</code> is already
+visible on the provided <code>UIView</code>, that HUD is used instead of opening a new
+one.  If the provided <code>UIView</code> is <code>nil</code>, the method simply returns.</p>
+
+<div class='highlight'><pre><code language=''>[MBProgressHUD threadsafeShowHUDOnView: someView
+                              setupHUD:^(MBProgressHUD *hud) {
+                                  hud.text = @"Blah";
+                                  hud.mode = MBProgressHUDModeIndeterminate;
+                              }];
+</code></pre></div></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">onView</span><code class="name">{UIView*}</code> &mdash; <span class="description">The view on which to display the HUD.</span></div><div class="dox_tag_detail"><span class="dox_type">block_setupHUD</span><code class="name">{MBProgressHUDBlock}</code> &mdash; <span class="description">A block in which the HUD can be customized or updated.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">threadsafeShowHUDOnView:</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">_onView</span>
+                        <span class="nf">setupHUD:</span> <span class="p">(</span><span class="n">MBProgressHUDBlock</span><span class="p">)</span><span class="nv">_block_setupHUD</span>
+<span class="p">{</span>
+    <span class="n">__block</span> <span class="n">UIView</span> <span class="o">*</span><span class="n">onView</span> <span class="o">=</span> <span class="n">_onView</span><span class="p">;</span>
+    <span class="n">__block</span> <span class="n">MBProgressHUDBlock</span> <span class="n">block_setupHUD</span> <span class="o">=</span> <span class="p">[</span><span class="n">_block_setupHUD</span> <span class="n">copy</span><span class="p">];</span>
+
+    <span class="n">dispatch_block_t</span> <span class="n">block</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">onView</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">MBProgressHUD</span> <span class="o">*</span><span class="n">hud</span> <span class="o">=</span> <span class="p">[</span><span class="n">MBProgressHUD</span> <span class="nl">HUDForView:</span><span class="n">onView</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">hud</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">hud</span> <span class="o">=</span> <span class="p">[</span><span class="n">MBProgressHUD</span> <span class="nl">showHUDAddedTo:</span><span class="n">onView</span> <span class="nl">animated:</span><span class="n">YES</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="n">yssert</span><span class="p">(</span><span class="n">hud</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;hud is nil.&quot;</span><span class="p">);</span>
+
+            <span class="n">block_setupHUD</span><span class="p">(</span><span class="n">hud</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">if</span> <span class="p">([</span><span class="n">NSThread</span> <span class="n">isMainThread</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">block</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span> <span class="n">block</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><title>RACSubject+SERACHelpers.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>RACSubject+SERACHelpers.m
+ Stan</p>
+
+<p>Created by bryn austin bellomy on 3.13.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;ReactiveCocoa/ReactiveCocoa.h&gt;</span>
+<span class="cp">#import &quot;RACSubject+SERACHelpers.h&quot;</span>
+<span class="cp">#import &quot;BrynKit.h&quot;</span>
+
+
+<span class="k">@implementation</span> <span class="nc">RACFuture</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">RACSubject</span> <span class="nl">(SERACHelpers)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">sendUnit</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">sendNext:</span><span class="n">RACUnit</span><span class="p">.</span><span class="n">defaultUnit</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">sendUnitAndComplete</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">sendUnit</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">sendCompleted</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">await</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">first</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<ul>
+<li>(RACDisposable *) then: (dispatch_block_t)block
+{
+return [self subscribeCompleted:block];
+}</li>
+</ul></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">resolve</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">sendUnitAndComplete</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">RACSignal</span> <span class="nl">(SERACHelpers)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">notNil</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="nl">filter:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="kt">id</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+    <span class="p">}]</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;[%@] -notNil&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">filterGreaterThanZero</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="nl">filter:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">yssert</span><span class="p">([</span><span class="n">value</span> <span class="nl">isKindOfClass:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="n">class</span><span class="p">]],</span> <span class="s">@&quot;Signals sent to -[RACSignal filterGreaterThanZero] must contain values that are NSNumbers.&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">([</span><span class="n">value</span> <span class="nl">compare:</span> <span class="err">@</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">NSOrderedDescending</span><span class="p">);</span>
+    <span class="p">}]</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;[%@] -filterGreaterThanZero&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">filterZeroOrGreater</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="nl">filter:</span><span class="o">^</span><span class="kt">BOOL</span><span class="p">(</span><span class="n">NSNumber</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">yssert</span><span class="p">([</span><span class="n">value</span> <span class="nl">isKindOfClass:</span><span class="p">[</span><span class="n">NSNumber</span> <span class="n">class</span><span class="p">]],</span> <span class="s">@&quot;Signals sent to -[RACSignal filterGreaterThanZero] must contain values that are NSNumbers.&quot;</span><span class="p">);</span>
+        <span class="n">NSComparisonResult</span> <span class="n">comparison</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="nl">compare:</span> <span class="err">@</span><span class="mi">0</span><span class="p">];</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">comparison</span> <span class="o">==</span> <span class="n">NSOrderedDescending</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">comparison</span> <span class="o">==</span> <span class="n">NSOrderedSame</span><span class="p">);</span>
+    <span class="p">}]</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;[%@] -filterGreaterThanZero&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">assertIsKindOfClass:</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span><span class="nv">klass</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="nl">map:</span><span class="o">^</span><span class="kt">id</span> <span class="p">(</span><span class="kt">id</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">yssert</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">||</span> <span class="p">[</span><span class="n">value</span> <span class="nl">isKindOfClass:</span><span class="n">klass</span><span class="p">],</span> <span class="s">@&quot;Signal sent an object of class %@.  It must instead send objects of class %@.&quot;</span><span class="p">,</span> <span class="n">NSStringFromClass</span><span class="p">([</span><span class="n">value</span> <span class="n">class</span><span class="p">]),</span> <span class="n">NSStringFromClass</span><span class="p">(</span><span class="n">klass</span><span class="p">));</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}]</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;[%@] -assertNotNilAndIsKindOfClass: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">NSStringFromClass</span><span class="p">(</span><span class="n">klass</span><span class="p">)];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">assertNotNilAndIsKindOfClass:</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span><span class="nv">klass</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="nl">map:</span><span class="o">^</span><span class="kt">id</span> <span class="p">(</span><span class="kt">id</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">klass</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}]</span> <span class="nl">setNameWithFormat:</span><span class="s">@&quot;[%@] -assertNotNilAndIsKindOfClass: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">NSStringFromClass</span><span class="p">(</span><span class="n">klass</span><span class="p">)];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

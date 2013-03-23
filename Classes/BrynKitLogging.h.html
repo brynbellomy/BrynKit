@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><title>BrynKitLogging.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#logging-and-debug-macros">Logging and debug macros</a></div><div class="heading h3"><a href="#color-logging">color logging</a></div><div class="heading h3"><a href="#predefined-rgb-colors">predefined rgb colors</a></div><div class="heading h3"><a href="#a-simple-predefined-color-logging--theme-">a simple predefined color logging 'theme'</a></div><div class="heading h3"><a href="#brynenablecolorlogging--">BrynEnableColorLogging()</a></div><div class="heading h3"><a href="#bryndisablecolorlogging--">BrynDisableColorLogging()</a></div><div class="heading h3"><a href="#__just_filename__">__JUST_FILENAME__</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitLogging.h
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2/27/2013.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="logging-and-debug-macros">
+  <h1>
+    <a href="#logging-and-debug-macros" class="pilcrow">&#182;</a>
+    Logging and debug macros
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- logging and debug macros</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="color-logging">
+  <h3>
+    <a href="#color-logging" class="pilcrow">&#182;</a>
+    color logging
+  </h3>
+</div>
+</div><div class="body"><p>These macros and <code>#define</code>s help to integrate with the XcodeColors plugin.</p>
+
+<p><strong>IMPORTANT:</strong> XcodeColors currently only works with <code>lldb</code>.  If you're
+using <code>gdb</code>, you'll just see a bunch of garbage surrounding your NSLog output.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define XCODE_COLORS_ESCAPE_OSX @&quot;\033[&quot;</span>
+<span class="cp">#define XCODE_COLORS_ESCAPE_IOS @&quot;\xC2\xA0[&quot;</span>
+
+<span class="cp">#define XCODE_COLORS_ESCAPE  XCODE_COLORS_ESCAPE_OSX</span>
+
+<span class="cp">#define XCODE_COLORS_RESET_FG  XCODE_COLORS_ESCAPE @&quot;fg;&quot; </span><span class="c1">// Clear any foreground color</span>
+<span class="cp">#define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @&quot;bg;&quot; </span><span class="c1">// Clear any background color</span>
+<span class="cp">#define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @&quot;;&quot;   </span><span class="c1">// Clear any foreground or background color</span>
+<span class="cp">#define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @&quot;fg&quot; @#r @&quot;,&quot; @#g @&quot;,&quot; @#b @&quot;;&quot;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="predefined-rgb-colors">
+  <h3>
+    <a href="#predefined-rgb-colors" class="pilcrow">&#182;</a>
+    predefined rgb colors
+  </h3>
+</div>
+</div><div class="body"><p>These macros evaluate to a regular NSString literal, so you can simply
+concatenate them into an NSString expression like so:</p>
+
+<p><code>NSLog(@"Blah blah" COLOR_RED(@"This will be red") @"This will not");</code></p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define COLOR_WHITE(x)       XCODE_COLORS_FG(255,255,255) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_RED(x)       XCODE_COLORS_FG(178,34,34) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_YELLOW(x)    XCODE_COLORS_FG(255,185,0) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_ORANGE(x)    XCODE_COLORS_FG(225,135,0) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_OLIVE(x)     XCODE_COLORS_FG(85,107,47) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_GREEN(x)     XCODE_COLORS_FG(34,139,34) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_PURPLE(x)    XCODE_COLORS_FG(132,112,255) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_BLUE(x)      XCODE_COLORS_FG(30,144,255) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_LIGHTBLUE(x) XCODE_COLORS_FG(130,244,255) x XCODE_COLORS_RESET</span>
+<span class="cp">#define COLOR_GREY(x)      XCODE_COLORS_FG(160,160,160) x XCODE_COLORS_RESET</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="a-simple-predefined-color-logging--theme-">
+  <h3>
+    <a href="#a-simple-predefined-color-logging--theme-" class="pilcrow">&#182;</a>
+    a simple predefined color logging 'theme'
+  </h3>
+</div>
+</div><div class="body"><p>Just as with the predefined RGB colors above, you can concatenate
+these into a plain ol' NSString expression:</p>
+
+<p><code>NSLog(COLOR_ERROR(@"You screwed up") @"... but it'll be okay.");</code></p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#ifndef COLOR_ERROR</span>
+<span class="cp">#   define COLOR_ERROR    COLOR_RED</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_SUCCESS</span>
+<span class="cp">#   define COLOR_SUCCESS  COLOR_GREEN</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_WARN</span>
+<span class="cp">#   define COLOR_WARN     COLOR_ORANGE</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_INFO</span>
+<span class="cp">#   define COLOR_INFO     COLOR_LIGHTBLUE</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_VERBOSE</span>
+<span class="cp">#   define COLOR_VERBOSE  COLOR_GREY</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_FILENAME</span>
+<span class="cp">#   define COLOR_FILENAME COLOR_PURPLE</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_LINE</span>
+<span class="cp">#   define COLOR_LINE     COLOR_YELLOW</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_FUNC</span>
+<span class="cp">#   define COLOR_FUNC     COLOR_BLUE</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_SEL</span>
+<span class="cp">#   define COLOR_SEL(x)   @&quot;[&quot; COLOR_BLUE(x) @&quot;]&quot;</span>
+<span class="cp">#endif</span>
+<span class="cp">#ifndef COLOR_QUEUE</span>
+<span class="cp">#   define COLOR_QUEUE(x)   @&quot;[&quot; COLOR_YELLOW(x) @&quot;]&quot;</span>
+<span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="brynenablecolorlogging--">
+  <h3>
+    <a href="#brynenablecolorlogging--" class="pilcrow">&#182;</a>
+    BrynEnableColorLogging()
+  </h3>
+</div>
+</div><div class="body"><p>Enables XcodeColors (you obviously have to install it too).  Call this from
+your app delegate's <code>-applicationDidFinishLoading:</code> function, or something
+else sufficiently early.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BrynEnableColorLogging() do{ setenv(&quot;XcodeColors&quot;, &quot;YES&quot;, 0); }while(0)</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="bryndisablecolorlogging--">
+  <h3>
+    <a href="#bryndisablecolorlogging--" class="pilcrow">&#182;</a>
+    BrynDisableColorLogging()
+  </h3>
+</div>
+</div><div class="body"><p>Disables XcodeColors.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BrynDisableColorLogging() do{ setenv(&quot;XcodeColors&quot;, &quot;NO&quot;, 0) }while(0)</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="__just_filename__">
+  <h3>
+    <a href="#__just_filename__" class="pilcrow">&#182;</a>
+    __JUST_FILENAME__
+  </h3>
+</div>
+</div><div class="body"><p><code>__FILE__</code> contains the entire path to a file.  this <code>#define</code> only gives you the file's actual name.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]</span>
+
+
+
+<span class="cp">#define BrynLog(__FORMAT__, ...)   NSLog(@&quot;[&quot; COLOR_FILENAME(@&quot;%@&quot;) @&quot;:&quot; COLOR_LINE(@&quot;%d&quot;) @&quot;] %@&quot;, __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__])</span>
+
+<span class="cp">#define BrynFnLog(fmt, ...) NSLog(COLOR_FUNC(@&quot;%s &quot;) @&quot;%@&quot;, __func__, [NSString stringWithFormat:(fmt), ##__VA_ARGS__])</span>
+
+<span class="cp">#define BrynFnLogString(severity, __FORMAT__, ...) metamacro_concat(BrynFnLogString_,severity)((__FORMAT__), ## __VA_ARGS__)</span>
+<span class="cp">#define BrynFnLogString_Error(__FORMAT__, ...)   ([NSString stringWithFormat: COLOR_FUNC(@&quot;%s &quot;) COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])</span>
+<span class="cp">#define BrynFnLogString_Success(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@&quot;%s &quot;) COLOR_SUCCESS(__FORMAT__), __func__, ## __VA_ARGS__])</span>
+<span class="cp">#define BrynFnLogString_Warning(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@&quot;%s &quot;) COLOR_WARN(__FORMAT__), __func__, ## __VA_ARGS__])</span>
+<span class="cp">#define BrynFnLogString_Info(__FORMAT__, ...)    ([NSString stringWithFormat: COLOR_FUNC(@&quot;%s &quot;) COLOR_INFO(__FORMAT__), __func__, ## __VA_ARGS__])</span>
+<span class="cp">#define BrynFnLogString_Verbose(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@&quot;%s &quot;) COLOR_VERBOSE(__FORMAT__), __func__, ## __VA_ARGS__])</span>
+</pre></div></td></tr></tbody></table></div></body></html>
