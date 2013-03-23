@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
 //
 
-#import <BrynKit/GCDThreadsafe.h>
+#import "GCDThreadsafe.h"
 #import "RACScheduler.h"
 
 @interface RACScheduler (SECriticalSectionScheduler)

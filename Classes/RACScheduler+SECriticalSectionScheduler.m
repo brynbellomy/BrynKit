@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
 //
 
-#import <BrynKit/BrynKit.h>
-#import <BrynKit/GCDThreadsafe.h>
 #import <ReactiveCocoa/RACQueueScheduler.h>
+#import "BrynKit.h"
+#import "GCDThreadsafe.h"
 #import "RACScheduler+SECriticalSectionScheduler.h"
 
 @implementation RACScheduler (SECriticalSectionScheduler)
 
-+ (RACScheduler *) rac_criticalSectionSchedulerFor:(id<GCDThreadsafe>)object {
-
-    yssert(object != nil, @"object is nil.");
++ (RACScheduler *) rac_criticalSectionSchedulerFor:(id<GCDThreadsafe>)object
+{
+    yssert_notNilAndConformsToProtocol(object, GCDThreadsafe);
     yssert(object.queueCritical != nil, @"object.queueCritical is nil.");
 
     return [[RACQueueScheduler alloc] initWithName: @"com.signalenvelope.RACScheduler.criticalSectionScheduler"

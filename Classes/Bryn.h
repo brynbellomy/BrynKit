@@ -43,6 +43,13 @@
         ( static NSString *const metamacro_head(__VA_ARGS__) = metamacro_tail(__VA_ARGS__) )
 
 
+/**
+ * # Macros from ConciseKit
+ *
+ * I can't always justify including the whole of [ConciseKit](http://github.com/petejkim/ConciseKit)
+ * just because I want to use `$new(...)` a few times in a helper library.  So these are here mainly
+ * for me to be able to have my cake and eat it too.
+ */
 
 #ifndef __has_feature
 #   define __has_feature(x) 0
