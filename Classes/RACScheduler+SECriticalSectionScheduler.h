@@ -11,6 +11,6 @@
 
 @interface RACScheduler (SECriticalSectionScheduler)
 
-+ (RACScheduler *) rac_criticalSectionSchedulerFor:(id<GCDThreadsafe>)object;
++ (RACScheduler *) rac_criticalSectionSchedulerFor:(NSObject<GCDThreadsafe> *)object;
 
 @end

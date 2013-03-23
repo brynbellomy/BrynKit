@@ -13,7 +13,7 @@
 
 @implementation RACScheduler (SECriticalSectionScheduler)
 
-+ (RACScheduler *) rac_criticalSectionSchedulerFor:(id<GCDThreadsafe>)object
++ (RACScheduler *) rac_criticalSectionSchedulerFor:(NSObject<GCDThreadsafe> *)object
 {
     yssert_notNilAndConformsToProtocol(object, GCDThreadsafe);
     yssert(object.queueCritical != nil, @"object.queueCritical is nil.");
