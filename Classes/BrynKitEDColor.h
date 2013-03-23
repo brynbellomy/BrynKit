@@ -52,6 +52,9 @@
 #ifndef COLOR_SEL
 #   define COLOR_SEL(x)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"PacificBlue", (x))]
 #endif
+#ifndef COLOR_QUEUE
+#   define COLOR_QUEUE(x)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"Dandelion", (x))]
+#endif
 
 
 

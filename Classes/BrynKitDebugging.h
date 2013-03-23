@@ -49,4 +49,21 @@
 
 
 
+#define yssert_notNilAndIsClass(obj, klass) \
+    yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
+    yssert([obj isKindOfClass: [klass class]], @ metamacro_stringify(obj) @" is not an instance of " @ metamacro_stringify(klass));
+
+#define yssert_notNilAndConformsToProtocol(obj, proto) \
+    yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
+    yssert([obj conformsToProtocol: @protocol(proto)], @ metamacro_stringify(obj) @" does not conform to protocol " @ metamacro_stringify(proto));
+
+
+
+
+
+
+
+
+
+
 

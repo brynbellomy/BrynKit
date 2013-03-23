@@ -44,6 +44,33 @@
 
 
 
+#ifndef __has_feature
+#   define __has_feature(x) 0
+#endif
+
+#if __has_feature(objc_arc)
+#   define IF_ARC(with, without) with
+#else
+#   define IF_ARC(with, without) without
+#endif
+
+#ifndef $new
+#   define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])
+#endif
+
+#ifndef $str
+#   define $str(...)   [NSString stringWithFormat:__VA_ARGS__]
+#endif
+
+#ifndef $point
+#   define $point(val)       [NSValue valueWithCGPoint:(val)]
+#endif
+
+#ifndef $selector
+#   define $selector(val)    [NSValue valueWithPointer:@selector(val)]
+#endif
+
+
 /**
  * # Typedefs
  */
@@ -57,6 +84,7 @@
  */
 typedef void(^BoolBlock)(BOOL);
 typedef void(^UIntBlock)(NSUInteger);
+typedef void(^ErrorBlock)(NSError *);
 typedef void(^NotificationBlock)(NSNotification *);
 typedef void(^DictionaryBlock)(NSDictionary *);
 typedef void(^IdBlock)(id);

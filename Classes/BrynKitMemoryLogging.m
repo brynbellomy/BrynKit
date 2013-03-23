@@ -21,7 +21,8 @@
  *
  * @return {natural_t} The amount of free memory in bytes.
  */
-natural_t BrynKit_GetFreeMemory() {
+natural_t BrynKit_GetFreeMemory()
+{
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
     vm_size_t pagesize;
@@ -46,7 +47,9 @@ natural_t BrynKit_GetFreeMemory() {
  * Starts a GCD timer that spits out the memory currently available on the
  * device every few seconds.
  */
-void BrynKit_StartOccasionalMemoryLog() {
+void BrynKit_StartOccasionalMemoryLog()
+{
+#if DEBUG
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
     // create our timer source
@@ -64,5 +67,6 @@ void BrynKit_StartOccasionalMemoryLog() {
 
     // now that our timer is all set to go, start it
     dispatch_resume(timer);
+#endif
 }
 

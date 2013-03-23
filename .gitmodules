@@ -1,0 +1,3 @@
+[submodule "Classes/RRFPSBar"]
+	path = Classes/RRFPSBar
+	url = git://github.com/RolandasRazma/RRFPSBar.git

@@ -5,18 +5,18 @@
 
 Pod::Spec.new do |s|
   s.platform     = :ios, '5.1'
-  s.name         = "BrynKit"
-  s.version      = "1.2.0"
-  s.author       = { "bryn austin bellomy" => "bryn.bellomy@gmail.com" }
-  s.summary      = "Macros and helpers for logging, debugging, and metaprogramming."
-  s.homepage     = "http://brynbellomy.github.com/BrynKit"
-  s.license      = './LICENSE.md'
+  s.name         = 'BrynKit'
+  s.version      = '1.2.1'
+  s.author       = { 'bryn austin bellomy' => 'bryn.bellomy@gmail.com' }
+  s.summary      = 'Macros and helpers for logging, debugging, and metaprogramming.'
+  s.homepage     = 'http://brynbellomy.github.com/BrynKit'
+  s.license      = { :type => 'WTFPL', :file => 'LICENSE.md' }
 
-  s.source       = { :git => "https://github.com/brynbellomy/BrynKit.git", :tag => "v#{s.version.to_s}" }
+  s.source       = { :git => 'https://github.com/brynbellomy/BrynKit.git', :tag => "v#{s.version.to_s}" }
   s.requires_arc = true
   s.xcconfig = { 'PUBLIC_HEADERS_FOLDER_PATH' => 'include/$(TARGET_NAME)' }
 
-  s.dependency 'libextobjc/EXTScope', '>= 0.2.0'
+  s.dependency 'libextobjc/EXTScope', '>= 0.2.5'
 
   #
   # main subspec
@@ -32,6 +32,10 @@ Pod::Spec.new do |s|
   s.subspec 'MBProgressHUD' do |subspec|
     subspec.source_files = 'Classes/BrynKitMBProgressHUD.{h,m}'
     subspec.dependency 'MBProgressHUD'
+  end
+
+  s.subspec 'RACHelpers' do |subspec|
+    subspec.source_files = 'Classes/RAC*.{m,h}'
   end
 
   s.subspec 'GCDThreadsafe' do |subspec|
@@ -54,6 +58,10 @@ Pod::Spec.new do |s|
   s.subspec 'CocoaLumberjack' do |subspec|
     subspec.source_files = 'Classes/{BrynKitCocoaLumberjack.h,BrynKitDDLogColorFormatter.{m,h}}'
     subspec.dependency 'CocoaLumberjack'
+  end
+
+  s.subspec 'RRFPSBar' do |subspec|
+    subspec.source_files = 'Classes/RRFPSBar/*.{h,m}'
   end
 end
 
