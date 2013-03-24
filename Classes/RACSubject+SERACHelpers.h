@@ -3,7 +3,7 @@
 //  Stan
 //
 //  Created by bryn austin bellomy on 3.13.13.
-//  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
+//  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
