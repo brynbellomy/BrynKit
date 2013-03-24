@@ -48,6 +48,8 @@
 #define yssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
 
 
+#define yssert_notNil(obj) \
+    yssert(obj != nil, @ metamacro_stringify(obj) @" is nil.");
 
 #define yssert_notNilAndIsClass(obj, klass) \
     yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
