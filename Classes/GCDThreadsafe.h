@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <libextobjc/metamacros.h>
+#import "BrynKitLogging.h"
 
 @protocol GCDThreadsafe
 
@@ -21,6 +22,7 @@
     try{}@finally{} \
     do { \
         _queueCritical = dispatch_queue_create(queueLabel, metamacro_concat(DISPATCH_QUEUE_,concurrency)); \
+        yssert_notNil(_queueCritical); \
     } while(0)
 
 #define gcd_threadsafe \
