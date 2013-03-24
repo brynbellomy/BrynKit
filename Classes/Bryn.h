@@ -44,6 +44,14 @@
 
 
 /**
+ * Misc. macros
+ */
+
+#define $url(str) ({ [NSURL URLWithString:(str)]; })
+
+
+
+/**
  * # Macros from ConciseKit
  *
  * I can't always justify including the whole of [ConciseKit](http://github.com/petejkim/ConciseKit)
