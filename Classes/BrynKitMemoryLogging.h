@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
-extern natural_t BrynKit_GetFreeMemory();
-extern void      BrynKit_StartOccasionalMemoryLog();
+#import "SEDispatchSource.h"
+
+typedef void(^MemoryLogDispatchBlock)(NSString *logMessage);
+
+extern natural_t         BrynKit_GetFreeMemory();
+extern SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, MemoryLogDispatchBlock dispatchTheLog);
 

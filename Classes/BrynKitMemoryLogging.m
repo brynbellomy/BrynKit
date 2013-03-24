@@ -8,7 +8,12 @@
 
 #import <mach/mach.h>
 #import <mach/mach_host.h>
+
+#import "BrynKit.h"
+#import "BrynKitMemoryLogging.h"
 #import "BrynKitLogging.h"
+#import "BrynKitEDColor.h"
+#import "SEDispatchSource.h"
 
 /**
  * # Memory logging helpers
@@ -44,29 +49,63 @@ natural_t BrynKit_GetFreeMemory()
 /**
  * #### BrynKit_StartOccasionalMemoryLog()
  *
- * Starts a GCD timer that spits out the memory currently available on the
- * device every few seconds.
+ * Starts a GCD timer that barfs to the console the amount of memory
+ * currently available on the device every so often.
+ *
+ * @param {Float32} intervalInSeconds
+ * @param {MemoryLogDispatchBlock} dispatchTheLog
+ * @return {SEDispatchSource*}
  */
-void BrynKit_StartOccasionalMemoryLog()
+SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, MemoryLogDispatchBlock dispatchTheLog)
 {
+    SEDispatchSource  *timer = nil;
+
 #if DEBUG
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
+    //
     // create our timer source
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-    NSUInteger step = 3; // 3 seconds
-    dispatch_source_set_timer(timer,
-                              dispatch_time(DISPATCH_TIME_NOW, step * NSEC_PER_SEC),
-                              step * NSEC_PER_SEC,
-                              step * NSEC_PER_SEC);
+    //
+    dispatch_queue_t   queue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);         yssert_notNil(queue);
+    dispatch_source_t  source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
 
-    dispatch_source_set_event_handler(timer, ^{
-        natural_t freeMemBytes = BrynKit_GetFreeMemory();
-        BrynFnLog(COLOR_OLIVE(@"Free memory: %f"), (double)(freeMemBytes / (1024 * 1024)));
+    uint64_t intervalInNanoseconds = (uint64_t)(intervalInSeconds * NSEC_PER_SEC);
+    dispatch_source_set_timer(source,
+                              dispatch_time(DISPATCH_TIME_NOW, intervalInNanoseconds),
+                              intervalInNanoseconds,
+                              intervalInNanoseconds);
+
+    //
+    // provide a default log-dispatching block in case the user can't be bothered
+    //
+    if (dispatchTheLog == nil) {
+        dispatchTheLog = ^(NSString *logMessage) {
+            BrynFnLog(@"%@", logMessage);
+        };
+    }
+
+    //
+    // set the event handler that logs the memory usage
+    //
+    dispatch_source_set_event_handler(source, ^{
+        natural_t freeMemBytes     = BrynKit_GetFreeMemory();
+        NSString *memoryReadout    = CCCrayola(@"MacaroniAndCheese", @"%.3fmb free", (double)(freeMemBytes / (1024 * 1024)));
+        NSString *logMessagePrefix = CCCrayola(@"SeaGreen", @"[ BrynKit.OccasionalMemoryLog ] = %@", memoryReadout);
+        dispatchTheLog(logMessagePrefix);
     });
 
+    timer = [[SEDispatchSource alloc] initWithSource:source onQueue:queue];
+
+    //
     // now that our timer is all set to go, start it
-    dispatch_resume(timer);
+    //
+    [timer resume];
+
+
 #endif
+
+    return timer;
 }
+
+
+
 

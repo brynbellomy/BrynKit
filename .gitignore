@@ -16,3 +16,5 @@ profile
 
 # sublimetext 2
 *.sublime-workspace
+
+.DS_Store

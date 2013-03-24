@@ -67,8 +67,8 @@
 - (BrynKitDispatchSourceState) state
 {
     BrynKitDispatchSourceState state;
-
-    @synchronized(self) {
+    @synchronized(self)
+    {
         state = _state;
     }
     return state;
@@ -82,7 +82,8 @@
 
 - (void) stop
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         if (_state == BrynKitDispatchSourceState_Resumed) {
             dispatch_suspend(_source);
             _state = BrynKitDispatchSourceState_Suspended;
@@ -98,7 +99,8 @@
 
 - (void) resume
 {
-    @synchronized(self) {
+    @synchronized(self)
+    {
         if ((_state == BrynKitDispatchSourceState_Suspended) || (_state == BrynKitDispatchSourceState_Canceled)) {
             dispatch_resume(_source);
             _state = BrynKitDispatchSourceState_Resumed;
@@ -109,3 +111,9 @@
 
 
 @end
+
+
+
+
+
+
