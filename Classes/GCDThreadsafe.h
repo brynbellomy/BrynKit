@@ -15,6 +15,13 @@
     @property (nonatomic, assign, readonly) dispatch_queue_t queueCritical;
     - (void) runCriticalMutableSection:(dispatch_block_t)criticalMutation;
     - (void) runCriticalReadonlySection:(dispatch_block_t)criticalRead;
+@end
+
+#define gcd_threadsafe_init(concurrency, queueLabel) \
+    try{}@finally{} \
+    do { \
+        _queueCritical = dispatch_queue_create(queueLabel, metamacro_concat(DISPATCH_QUEUE_,concurrency)); \
+    } while(0)
 
 #define gcd_threadsafe \
     class NSObject;\
@@ -44,6 +51,3 @@
         } \
     }
 
-
-
-@end
