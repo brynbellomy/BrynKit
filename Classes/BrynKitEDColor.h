@@ -34,27 +34,55 @@
 
 
 
-#ifndef COLOR_ERROR
-#   define COLOR_ERROR(x) CCCrayola(@"Scarlet", x)
-#endif
-#ifndef COLOR_SUCCESS
-#   define COLOR_SUCCESS(x) CCCrayola(@"Screamin'Green", x)
-#endif
-#ifndef COLOR_FILENAME
-#   define COLOR_FILENAME(x) CCCrayola(@"PurpleHeart", x)
-#endif
-#ifndef COLOR_LINE
-#   define COLOR_LINE(x) CCCrayola(@"Sunglow", x)
-#endif
-#ifndef COLOR_FUNC
-#   define COLOR_FUNC(x) CCCrayola(@"Aquamarine", x)
-#endif
-#ifndef COLOR_SEL
-#   define COLOR_SEL(x)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"PacificBlue", (x))]
-#endif
-#ifndef COLOR_QUEUE
-#   define COLOR_QUEUE(x)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"Dandelion", (x))]
-#endif
+#undef COLOR_ERROR
+#define COLOR_ERROR(fmt, ...) CCCrayola(@"Scarlet", fmt, ## __VA_ARGS__)
+
+#undef COLOR_SUCCESS
+#define COLOR_SUCCESS(fmt) CCCrayola(@"Screamin'Green", fmt, ## __VA_ARGS__)
+
+#undef COLOR_FILENAME
+#define COLOR_FILENAME(fmt) CCCrayola(@"PurpleHeart", fmt, ## __VA_ARGS__)
+
+#undef COLOR_LINE
+#define COLOR_LINE(fmt) CCCrayola(@"Sunglow", fmt, ## __VA_ARGS__)
+
+#undef COLOR_FUNC
+#define COLOR_FUNC(fmt) CCCrayola(@"Aquamarine", fmt, ## __VA_ARGS__)
+
+#undef COLOR_SEL
+#define COLOR_SEL(fmt)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"PacificBlue", fmt, ## __VA_ARGS__)]
+
+#undef COLOR_QUEUE
+#define COLOR_QUEUE(fmt)   [NSString stringWithFormat:@"[%@]", CCCrayola(@"Dandelion", fmt, ## __VA_ARGS__)]
+
+
+
+static NSArray* SEMakeSwatch(NSUInteger numSteps, CGFloat redStart, CGFloat redEnd, CGFloat greenStart, CGFloat greenEnd, CGFloat blueStart, CGFloat blueEnd)
+{
+    NSMutableArray *swatch = @[].mutableCopy;
+
+    for (NSUInteger i = 0; i < numSteps; i++)
+    {
+        CGFloat redStepSize   = (redEnd   - redStart)   / (CGFloat)numSteps;
+        CGFloat blueStepSize  = (blueEnd  - blueStart)  / (CGFloat)numSteps;
+        CGFloat greenStepSize = (greenEnd - greenStart) / (CGFloat)numSteps;
+
+        CGFloat redValue   = redStart   + (redStepSize   * i);
+        CGFloat greenValue = greenStart + (greenStepSize * i);
+        CGFloat blueValue  = blueStart  + (blueStepSize  * i);
+
+        UIColor *color = [UIColor colorWithRed: redValue green: greenValue blue: blueValue alpha: 1.0f];
+        yssert_notNilAndIsClass(color, UIColor);
+        [swatch addObject: color];
+    }
+
+    return [NSArray arrayWithArray: swatch];
+}
+
+
+
+
+
 
 
 
