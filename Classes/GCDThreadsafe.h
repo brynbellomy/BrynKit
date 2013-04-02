@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <libextobjc/metamacros.h>
-#import "BrynKitLogging.h"
+
+#import "BrynKit.h"
+#import "RACHelpers.h"
+#import "RACFuture.h"
+#import "RACCriticalSectionScheduler.h"
 
 @protocol GCDThreadsafe
 
@@ -18,12 +22,25 @@
     - (void) runCriticalReadonlySection:(dispatch_block_t)criticalRead;
 @end
 
+@protocol GCDReactiveThreadsafe <GCDThreadsafe>
+
+@required
+    @property (nonatomic, strong, readwrite) RACCriticalSectionScheduler *criticalScheduler;
+
+@end
+
+
+
+
 #define gcd_threadsafe_init(concurrency, queueLabel) \
     try{}@finally{} \
     do { \
         _queueCritical = dispatch_queue_create(queueLabel, metamacro_concat(DISPATCH_QUEUE_,concurrency)); \
         yssert_notNil(_queueCritical); \
     } while(0)
+
+
+
 
 #define gcd_threadsafe \
     class NSObject;\
@@ -51,5 +68,19 @@
         else { \
             dispatch_safe_sync(self.queueCritical, criticalRead); \
         } \
-    }
+    } \
+\
+
+
+
+
+#define gcd_reactive_threadsafe_init() \
+    try{}@finally{} \
+    do { \
+        self.criticalScheduler = [RACCriticalSectionScheduler schedulerForQueue: _queueCritical]; \
+    } while(0)
+
+
+
+
 
