@@ -39,6 +39,8 @@
 + (void) threadsafeShowHUDOnView: (UIView *)_onView
                         setupHUD: (MBProgressHUDBlock)_block_setupHUD
 {
+    yssert_notNilAndIsClass(_onView, UIView);
+
     __block UIView *onView = _onView;
     __block MBProgressHUDBlock block_setupHUD = [_block_setupHUD copy];
 
@@ -48,14 +50,17 @@
             if (hud == nil) {
                 hud = [MBProgressHUD showHUDAddedTo:onView animated:YES];
             }
-            yssert(hud != nil, @"hud is nil.");
+            yssert_notNilAndIsClass(hud, MBProgressHUD);
+            [onView bringSubviewToFront: hud];
 
             block_setupHUD(hud);
         }
     };
 
     if ([NSThread isMainThread]) {
-        block();
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_async(dispatch_get_main_queue(), block);
+        });
     }
     else {
         dispatch_async(dispatch_get_main_queue(), block);
