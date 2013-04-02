@@ -9,6 +9,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 
+#import "BrynKit.h"
 #import "RACDispatchTimer.h"
 
 typedef enum : NSUInteger {
@@ -20,11 +21,11 @@ typedef enum : NSUInteger {
 @interface RACDispatchTimer ()
     @property (nonatomic, assign, readwrite) uint64_t interval;
     @property (nonatomic, assign, readwrite) uint64_t leeway;
-    @property (nonatomic, assign, readwrite) dispatch_source_t dispatchSource;
-    @property (nonatomic, assign, readwrite) dispatch_queue_t dispatchQueue;
     @property (nonatomic, assign, readwrite) SEDispatchSourceState dispatchSourceState;
     @property (nonatomic, assign, readwrite) BOOL isActive;
     @property (nonatomic, assign, readwrite) BOOL isCanceled;
+    @property (nonatomic, assign, readwrite) dispatch_source_t dispatchSource;
+    @property (nonatomic, assign, readwrite) dispatch_queue_t dispatchQueue;
 @end
 
 @implementation RACDispatchTimer
@@ -66,6 +67,20 @@ typedef enum : NSUInteger {
         _dispatchSource      = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _dispatchQueue);
         _dispatchSourceState = SEDispatchSourceState_Suspended;
 
+        dispatch_source_set_timer(_dispatchSource, dispatch_walltime(NULL, 0), interval, leeway);
+
+        @weakify(self);
+
+        dispatch_source_set_event_handler(_dispatchSource, ^{
+            @strongify(self);
+            [self execute:[NSDate date]];
+		});
+
+        dispatch_source_set_cancel_handler(_dispatchSource, ^{
+            @strongify(self);
+            [self handleCancellation];
+        });
+        
         RAC(self.isActive)   = [RACAbleWithStart(self.dispatchSourceState)
                                     map:^id (NSNumber *dispatchSourceState) {
 
@@ -93,22 +108,7 @@ typedef enum : NSUInteger {
                                                 return @NO;
                                         }
                                     }];
-
-
-        dispatch_source_set_timer(_dispatchSource, dispatch_walltime(NULL, 0), interval, leeway);
-
-        @weakify(self);
-
-        dispatch_source_set_event_handler(_dispatchSource, ^{
-            @strongify(self);
-            [self execute:[NSDate date]];
-		});
-
-        dispatch_source_set_cancel_handler(_dispatchSource, ^{
-            @strongify(self);
-            [self handleCancellation];
-        });
-
+        
     }
     return self;
 }
@@ -149,6 +149,7 @@ typedef enum : NSUInteger {
                 break;
 
             case SEDispatchSourceState_Canceled:
+                yssert(NO, @"Canceled RACDispatchTimer was told to -start.");
                 break; // @@TODO: throw exception?
 
             case SEDispatchSourceState_Resumed:
