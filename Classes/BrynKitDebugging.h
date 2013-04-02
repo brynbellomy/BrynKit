@@ -47,6 +47,17 @@
  */
 #define yssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
 
+#define yssert_onMainThread() do { \
+        if (!([NSThread isMainThread])) { \
+            ALog(@"-[%@ %s] must be called from the main thread.", [self class], __PRETTY_FUNCTION__); \
+        } \
+    } while(0)
+
+#define yssert_notOnMainThread() do { \
+        if ([NSThread isMainThread]) { \
+            ALog(@"-[%@ %s] must not be called from the main thread.", [self class], __PRETTY_FUNCTION__); \
+        } \
+    } while(0)
 
 #define yssert_notNil(obj) \
     yssert(obj != nil, @ metamacro_stringify(obj) @" is nil.");
