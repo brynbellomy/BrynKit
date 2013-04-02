@@ -1,23 +1,40 @@
 //
-//  RACSubject+SERACHelpers.m
-//  Stan
+//  RACHelpers.m
+//  BrynKit-RACHelpers
 //
 //  Created by bryn austin bellomy on 3.13.13.
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import "RACSubject+SERACHelpers.h"
+#import <libextobjc/EXTScope.h>
+#import <RACSignal+Private.h>
+
+#import "RACHelpers.h"
 #import "BrynKit.h"
 
 
-@implementation RACFuture
+
+#pragma mark- RACQueueScheduler (BrynKit_RACHelpers)
+#pragma mark-
+
+@implementation RACQueueScheduler (BrynKit_RACHelpers)
+
++ (instancetype) schedulerForQueue: (dispatch_queue_t)queue
+{
+    const char *label = dispatch_queue_get_label(queue);
+    return [[self alloc] initWithName: $str(@"%s", label)
+                          targetQueue: queue];
+}
 
 @end
 
 
 
-@implementation RACSubject (SERACHelpers)
+#pragma mark- RACSubject (BrynKit_RACHelpers)
+#pragma mark-
+
+@implementation RACSubject (BrynKit_RACHelpers)
 
 - (void) sendUnit
 {
@@ -30,34 +47,25 @@
     [self sendCompleted];
 }
 
-- (void) await
-{
-    [self first];
-}
-
-
-//- (RACDisposable *) then: (dispatch_block_t)block
-//{
-//    return [self subscribeCompleted:block];
-//}
-
-
-- (void) resolve
-{
-    [self sendUnitAndComplete];
-}
-
 @end
 
 
 
-@implementation RACSignal (SERACHelpers)
+@implementation RACStream (BrynKit_RACHelpers)
 
 - (instancetype) notNil
 {
     return [[self filter:^BOOL(id value) {
         return (value != nil);
     }] setNameWithFormat:@"[%@] -notNil", self.name];
+}
+
+- (instancetype) notNilOrRACTupleNil
+{
+    return [[self notNil]
+                  filter:^BOOL(id value) {
+                      return (value != RACTupleNil.tupleNil);
+                  }];
 }
 
 - (instancetype) filterGreaterThanZero
@@ -80,7 +88,7 @@
 - (instancetype) assertIsKindOfClass:(Class)klass
 {
     return [[self map:^id (id value) {
-        yssert(value == nil || [value isKindOfClass:klass], @"Signal sent an object of class %@.  It must instead send objects of class %@.", NSStringFromClass([value class]), NSStringFromClass(klass));
+        yssert(value == nil || [value isKindOfClass:klass], @"Signal <%@> sent an object of class %@.  It must instead send objects of class %@.", self.name, NSStringFromClass([value class]), NSStringFromClass(klass));
         return value;
     }] setNameWithFormat:@"[%@] -assertNotNilAndIsKindOfClass: %@", self.name, NSStringFromClass(klass)];
 }
@@ -91,6 +99,50 @@
         yssert_notNilAndIsClass(value, klass);
         return value;
     }] setNameWithFormat:@"[%@] -assertNotNilAndIsKindOfClass: %@", self.name, NSStringFromClass(klass)];
+}
+
+@end
+
+
+
+
+@implementation RACSignal (BrynKit_RACHelpers_BetterLogging)
+
+- (instancetype) lllogAll
+{
+	return [[[self lllogNext] lllogError] lllogCompleted];
+}
+
+- (instancetype) lllogNext
+{
+	return [[self doNext:^(id x) {
+		NSLog(COLOR_GREEN(@"%@ next: %@"), self, x);
+	}] setNameWithFormat:@"%@", self.name];
+}
+
+- (instancetype) lllogError
+{
+	return [[self doError:^(NSError *error) {
+		NSLog(COLOR_ERROR(@"%@ error: %@"), self, error);
+	}] setNameWithFormat:@"%@", self.name];
+}
+
+- (instancetype) lllogCompleted
+{
+	return [[self doCompleted:^{
+		NSLog(COLOR_PURPLE(@"%@ completed"), self);
+	}] setNameWithFormat:@"%@", self.name];
+}
+
+@end
+
+
+
+@implementation NSObject (BrynKit_RACHelpers)
+
+- (BOOL) isNotNilAndNotRACTupleNil
+{
+    return (self != nil) && (self != RACTupleNil.tupleNil);
 }
 
 @end
