@@ -26,8 +26,11 @@
     if (self) {
         _queue = queue;
         dispatch_retain(_queue);
-        _state  = BrynKitDispatchSourceState_Canceled;
-        _source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_OR, 0, 0, _queue);
+
+        _source = source;
+        dispatch_retain(_source);
+
+        _state  = BrynKitDispatchSourceState_Suspended;
     }
 
     return self;
