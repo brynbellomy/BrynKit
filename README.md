@@ -92,14 +92,28 @@ extension (".png").
 
 
 
-# container-related macros
+# system macros
 
-## SEObjectAtIndex(array, index)
+## BrynKit_StartOccasionalMemoryLog()
 
-calls `[array objectAtIndex:index]`, but first checks to make sure that the
-array contains enough elements to even HAVE an object at the given index. 
-**warning:** you may fail to notice bugs in your code when using this macro.
-exceptions get thrown for a reason, y'heard?
+Starts a timer that spits out the device's currently available memory at an interval
+you specify.
+
+```objc
+@property (nonatomic, strong, readwrite) SEDispatchSource *memoryUsageLogTimer;
+```
+
+... and then in your setup code:
+
+```objc
+NSTimeInterval intervalInSeconds = 5.0f;
+
+self.memoryUsageLogTimer =
+    BrynKit_StartOccasionalMemoryLog(intervalInSeconds, ^(NSString *msg) {
+        NSLog(@"%@", msg);
+    });
+yssert_notNilAndIsClass(self.memoryUsageLogTimer, SEDispatchSource);
+```
 
 
 
