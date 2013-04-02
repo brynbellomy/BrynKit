@@ -6,7 +6,7 @@
 Pod::Spec.new do |s|
     s.platform     = :ios, '5.1'
     s.name         = 'BrynKit'
-    s.version      = '1.2.2'
+    s.version      = '1.2.3'
     s.author       = { 'bryn austin bellomy' => 'bryn.bellomy@gmail.com' }
     s.summary      = 'Macros and helpers for logging, debugging, and metaprogramming.'
     s.homepage     = 'http://brynbellomy.github.com/BrynKit'
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
     #
     # main subspec
     #
-    s.preferred_dependency = 'Main' # deprecated in 0.17.x
+    s.preferred_dependency = 'Main' # deprecated in cocoapods 0.17.x
 
     s.subspec 'Main' do |subspec|
         subspec.source_files = 'Classes/{Bryn.{h,m},BrynKit.h,BrynKitDebugging.h,BrynKitLogging.h}'
