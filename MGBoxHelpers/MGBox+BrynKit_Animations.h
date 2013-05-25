@@ -1,5 +1,5 @@
 //
-//  MGBox+Animations.h
+//  MGBox+BrynKit_Animations.h
 //  BrynKit
 //
 //  Created by bryn austin bellomy on 4.23.13.

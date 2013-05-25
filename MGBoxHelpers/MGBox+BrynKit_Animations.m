@@ -1,12 +1,12 @@
 //
-//  MGBox+Animations.m
+//  MGBox+BrynKit_Animations.m
 //  BrynKit
 //
 //  Created by bryn austin bellomy on 4.23.13.
 //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
 //
 
-#import "MGBox+Animations.h"
+#import "MGBox+BrynKit_Animations.h"
 
 @implementation MGBox (BrynKit_Animations)
 
