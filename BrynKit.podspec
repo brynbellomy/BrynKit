@@ -25,11 +25,8 @@ Pod::Spec.new do |s|
     # cocoapods 0.17.x
     s.default_subspec = 'Main'
 
-    # cocoapods <= 0.16.x
-    # s.preferred_dependency = 'Main' # deprecated in cocoapods 0.17.x
-
     s.subspec 'Main' do |subspec|
-        subspec.source_files = 'Classes/{Bryn.{h,m},BrynKit.h,BrynKitDebugging.h,BrynKitLogging.h}'
+        subspec.source_files = "Classes/{Bryn.{h,m},BrynKit.h,BrynKitDebugging.h,BrynKitLogging.h}"
     end
 
     #
@@ -37,7 +34,7 @@ Pod::Spec.new do |s|
     #
 
     s.subspec 'MBProgressHUD' do |subspec|
-        subspec.source_files = 'Classes/BrynKitMBProgressHUD.{h,m}'
+        subspec.source_files = "Classes/BrynKitMBProgressHUD.{h,m}"
         subspec.dependency 'MBProgressHUD'
     end
 
