@@ -10,10 +10,8 @@
 #import <libextobjc/EXTScope.h>
 #import <ImageIO/ImageIO.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-//#import <BlocksKit/BlocksKit.h>
 #import "Bryn.h"
 #import "BrynKitDebugging.h"
-#import "BrynKitEDColor.h"
 
 /**!
  * ### dispatch_safe_sync()
@@ -359,7 +357,7 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 - (instancetype) bryn_sortByKey:(NSString *)key
 {
-    
+
     NSArray *array = [[self array] bryn_sortByKey:key];
     return [[NSMutableOrderedSet orderedSetWithArray:array] mutableCopy];
 }
@@ -406,44 +404,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 @end
 
-
-
-
-//NSArray* SEMakeGradientSwatch(NSUInteger numSteps, BKFloatRange red, BKFloatRange green, BKFloatRange blue, BKFloatRange alpha)
-//{
-//    CGFloat redStart    = (CGFloat)BKFloatRangeStartValue(red);
-//    CGFloat redEnd      = (CGFloat)BKFloatRangeEndValue(red);
-//
-//    CGFloat greenStart  = (CGFloat)BKFloatRangeStartValue(green);
-//    CGFloat greenEnd    = (CGFloat)BKFloatRangeEndValue(green);
-//
-//    CGFloat blueStart   = (CGFloat)BKFloatRangeStartValue(blue);
-//    CGFloat blueEnd     = (CGFloat)BKFloatRangeEndValue(blue);
-//
-//    CGFloat alphaStart  = (CGFloat)BKFloatRangeStartValue(alpha);
-//    CGFloat alphaEnd    = (CGFloat)BKFloatRangeEndValue(alpha);
-//
-//    NSMutableArray *swatch = @[].mutableCopy;
-//
-//    for (NSUInteger i = 0; i < numSteps; i++)
-//    {
-//        CGFloat redStepSize   = (redEnd   - redStart)   / (CGFloat)numSteps;
-//        CGFloat blueStepSize  = (blueEnd  - blueStart)  / (CGFloat)numSteps;
-//        CGFloat greenStepSize = (greenEnd - greenStart) / (CGFloat)numSteps;
-//        CGFloat alphaStepSize = (alphaEnd - alphaStart) / (CGFloat)numSteps;
-//
-//        CGFloat redValue   = redStart   + (redStepSize   * i);
-//        CGFloat greenValue = greenStart + (greenStepSize * i);
-//        CGFloat blueValue  = blueStart  + (blueStepSize  * i);
-//        CGFloat alphaValue = alphaStart + (alphaStepSize * i);
-//
-//        UIColor *color = [UIColor colorWithRed:redValue green:greenValue blue:blueValue alpha:alphaValue];
-//        yssert_notNilAndIsClass(color, UIColor);
-//
-//        [swatch addObject: color];
-//    }
-//    return [NSArray arrayWithArray: swatch];
-//}
 
 
 #pragma mark- BKFloatRange
