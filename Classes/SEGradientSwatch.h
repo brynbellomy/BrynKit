@@ -1,13 +1,13 @@
 //
 //  SEGradientSwatch.h
-//  BrnyKit
+//  BrynKit
 //
 //  Created by bryn austin bellomy on 5.8.13.
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <BrynKit/BrynKit.h>
+#import "BrynKit.h"
 
 @interface SEGradientSwatch : NSObject
 
