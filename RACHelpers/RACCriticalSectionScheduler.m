@@ -11,9 +11,12 @@
 #import <ReactiveCocoa/RACScheduler+Private.h>
 #import <libextobjc/EXTScope.h>
 
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACHelpers.h"
 #import "RACCriticalSectionScheduler.h"
-#import "BrynKit.h"
 #import "RACHelpers.h"
 #import "RACFuture.h"
 

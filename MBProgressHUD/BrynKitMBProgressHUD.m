@@ -9,7 +9,9 @@
 #import <libextobjc/EXTScope.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
-#import "BrynKit.h"
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
 #import "BrynKitMBProgressHUD.h"
 
 /**

@@ -9,7 +9,10 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 
-#import "BrynKit.h"
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACHelpers.h"
 #import "RACDispatchTimer.h"
 #import "SEDispatchSource.h"
@@ -118,7 +121,7 @@
                                             return @NO;
                                     }
                                 }];
-    
+
 }
 
 

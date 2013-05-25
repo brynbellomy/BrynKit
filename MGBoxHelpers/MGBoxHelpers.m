@@ -6,7 +6,10 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
-#import "BrynKit.h"
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACFuture.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>

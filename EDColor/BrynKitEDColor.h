@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
-#import "BrynKit.h"
 #import <EDColor/EDColor.h>
+#import "BrynKitLogging.h"
 
 /**
  * # EDColor extensions

@@ -7,7 +7,11 @@
 //
 
 #import <ReactiveCocoa/RACQueueScheduler.h>
-#import "BrynKit.h"
+
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "GCDThreadsafe.h"
 #import "RACScheduler+SECriticalSectionScheduler.h"
 

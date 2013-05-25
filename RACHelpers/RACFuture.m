@@ -10,7 +10,10 @@
 #import <ReactiveCocoa/RACImmediateScheduler.h>
 //#import <Brynstagram/BrynstagramCommon-Private.h>
 
-#import "BrynKit.h"
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACFuture.h"
 #import "RACCriticalSectionScheduler.h"
 

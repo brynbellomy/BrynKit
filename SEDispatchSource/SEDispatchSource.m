@@ -7,7 +7,11 @@
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import "BrynKit.h"
+
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACHelpers.h"
 #import "SEDispatchSource.h"
 

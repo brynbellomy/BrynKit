@@ -12,8 +12,11 @@
 #import <libextobjc/EXTScope.h>
 #import <objc/runtime.h>
 
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
+#import "BrynKitLogging.h"
+
 #import "RACHelpers.h"
-#import "BrynKit.h"
 
 
 

@@ -9,9 +9,10 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
-#import "BrynKit.h"
-#import "BrynKitMemoryLogging.h"
+#import "Bryn.h"
+#import "BrynKitDebugging.h"
 #import "BrynKitLogging.h"
+#import "BrynKitMemoryLogging.h"
 #import "BrynKitEDColor.h"
 #import "SEDispatchSource.h"
 
