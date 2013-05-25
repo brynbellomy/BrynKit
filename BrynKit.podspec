@@ -64,6 +64,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'MemoryLogging' do |subspec|
         subspec.source_files = 'Classes/BrynKitMemoryLogging.{h,m}'
+        subspec.dependency 'BrynKit/EDColor'
         subspec.dependency 'BrynKit/Main'
     end
 
