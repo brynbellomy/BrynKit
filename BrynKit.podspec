@@ -88,6 +88,7 @@ Pod::Spec.new do |s|
     s.subspec 'MGBoxHelpers' do |subspec|
         subspec.source_files = 'Classes/MGBoxHelpers.{h,m}'
         subspec.dependency 'BrynKit/Main'
+        subspec.dependency 'MGBox2'
     end
 
     s.subspec 'SEGradientSwatch' do |subspec|
