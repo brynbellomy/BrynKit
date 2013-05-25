@@ -27,6 +27,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'Main' do |subspec|
         subspec.source_files = "Main/*.{m,h}"
+        subspec.frameworks = 'ImageIO', 'QuartzCore'
     end
 
     #
