@@ -36,7 +36,7 @@ natural_t BrynKit_GetFreeMemory()
     host_page_size(host_port, &pagesize);
     vm_statistics_data_t vm_stat;
     if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
-        BrynFnLog(COLOR_ERROR(@"Failed to fetch vm statistics"));
+        NSLog(@"%@", COLOR_ERROR(@"Failed to fetch vm statistics"));
         return 0;
     }
     /* Stats in bytes */
@@ -65,8 +65,8 @@ SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, Me
     //
     // create our timer source
     //
-    dispatch_queue_t   queue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);         yssert_notNil(queue);
-    dispatch_source_t  source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    dispatch_queue_t   queue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);          yssert_notNil(queue);
+    dispatch_source_t  source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);        yssert_notNil(queue);
 
     uint64_t intervalInNanoseconds = (uint64_t)(intervalInSeconds * NSEC_PER_SEC);
     dispatch_source_set_timer(source,
@@ -78,22 +78,22 @@ SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, Me
     // provide a default log-dispatching block in case the user can't be bothered
     //
     if (dispatchTheLog == nil) {
-        dispatchTheLog = ^(NSString *logMessage) {
-            BrynFnLog(@"%@", logMessage);
+        dispatchTheLog = ^(natural_t freeMemBytes) {
+            NSString *memoryReadout    = $str(@"%.3fmb free", (Float32)(freeMemBytes / (1024 * 1024)));
+            NSString *logMessagePrefix = $str(@"[ BrynKit.OccasionalMemoryLog ] = %@", memoryReadout);
+            NSLog(@"%@ Current available device memory: %@", logMessagePrefix, memoryReadout);
         };
     }
 
-    //
-    // set the event handler that logs the memory usage
-    //
-    dispatch_source_set_event_handler(source, ^{
-        natural_t freeMemBytes     = BrynKit_GetFreeMemory();
-        NSString *memoryReadout    = CCCrayola(@"MacaroniAndCheese", @"%.3fmb free", (double)(freeMemBytes / (1024 * 1024)));
-        NSString *logMessagePrefix = CCCrayola(@"SeaGreen", @"[ BrynKit.OccasionalMemoryLog ] = %@", memoryReadout);
-        dispatchTheLog(logMessagePrefix);
-    });
+    timer = [[SEDispatchSource alloc] initWithSource:source
+                                             onQueue:queue
+                                             handler:^{
+                                                 natural_t freeMemBytes = BrynKit_GetFreeMemory();
+                                                 dispatchTheLog(freeMemBytes);
+                                             }
+                                         cancelation:nil];
 
-    timer = [[SEDispatchSource alloc] initWithSource:source onQueue:queue];
+    yssert_notNilAndIsClass(timer, SEDispatchSource);
 
     //
     // now that our timer is all set to go, start it

@@ -112,20 +112,23 @@
  *
  * `__FILE__` contains the entire path to a file.  this `#define` only gives you the file's actual name.
  */
-#define __JUST_FILENAME__ [[NSString stringWithUTF8String:__FILE__] lastPathComponent]
+#define __JUST_FILENAME__   $utf8(__FILE__).lastPathComponent
+
+
+//#define BrynLog(__FORMAT__, ...)   NSLog(@"[" COLOR_FILENAME(@"%@") @":" COLOR_LINE(@"%d") @"] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__])
+
+
+//#define BrynFnLog(severity, __FORMAT__, ...)   metamacro_concat(BrynFnLog_,severity)(__FORMAT__, ## __VA_ARGS__)
+
+//#if !defined(lllog)
+//#   define lllog BrynFnLog
+////(severity, __FORMAT__, ...)    metamacro_concat(BrynFnLog_,severity)(__FORMAT__, ## __VA_ARGS__)
+//#endif
 
 
 
-#define BrynLog(__FORMAT__, ...)   NSLog(@"[" COLOR_FILENAME(@"%@") @":" COLOR_LINE(@"%d") @"] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__])
 
-#define BrynFnLog(fmt, ...) NSLog(COLOR_FUNC(@"%s ") @"%@", __func__, [NSString stringWithFormat:(fmt), ##__VA_ARGS__])
 
-#define BrynFnLogString(severity, __FORMAT__, ...) metamacro_concat(BrynFnLogString_,severity)((__FORMAT__), ## __VA_ARGS__)
-#define BrynFnLogString_Error(__FORMAT__, ...)   ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_ERROR(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_Success(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_SUCCESS(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_Warning(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_WARN(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_Info(__FORMAT__, ...)    ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_INFO(__FORMAT__), __func__, ## __VA_ARGS__])
-#define BrynFnLogString_Verbose(__FORMAT__, ...) ([NSString stringWithFormat: COLOR_FUNC(@"%s ") COLOR_VERBOSE(__FORMAT__), __func__, ## __VA_ARGS__])
 
 
 

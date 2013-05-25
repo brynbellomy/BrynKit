@@ -7,7 +7,6 @@
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import "RACFuture.h"
 #import "RACHelpers.h"
 
 @class RACFuture, RACCriticalSectionScheduler;
@@ -31,7 +30,6 @@
 // semantic syrup
 //
 + (instancetype) future;
-
 - (instancetype) await;
 - (void) resolve;
 - (RACFuture *) then: (RACFutureBlock)block;

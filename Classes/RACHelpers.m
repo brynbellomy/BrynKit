@@ -7,16 +7,90 @@
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa/RACSignal+Private.h>
+#import <ReactiveCocoa/RACEventTrampoline.h>
 #import <libextobjc/EXTScope.h>
-#import <RACSignal+Private.h>
+#import <objc/runtime.h>
 
 #import "RACHelpers.h"
 #import "BrynKit.h"
 
 
 
-#pragma mark- RACQueueScheduler (BrynKit_RACHelpers)
+@implementation RACSignal (BrynKit)
+
+- (RACSignal *) onMainThreadScheduler
+{
+    return [self deliverOn:[RACScheduler mainThreadScheduler]];
+}
+
+- (RACDisposable *)then:(void (^)(void))completedBlock
+{
+	yssert_notNull(completedBlock);
+
+	RACSubscriber *o = [RACSubscriber subscriberWithNext:NULL error:NULL completed:completedBlock];
+	return [self subscribe:o];
+}
+
+@end
+
+
+
 #pragma mark-
+#pragma mark-
+
+@implementation RACEventTrampoline (BrynKit)
+
++ (instancetype) trampolineForGestureRecognizer:(UIGestureRecognizer *)recognizer
+{
+	RACEventTrampoline *trampoline = $new(self);
+	[recognizer addTarget:trampoline action:@selector(didGetGestureEvent:)];
+	return trampoline;
+}
+
+- (void) didGetGestureEvent:(UITapGestureRecognizer *)sender
+{
+	[self.subject sendNext:sender];
+}
+
+@end
+
+
+
+@implementation UIGestureRecognizer (BrynKit_RAC)
+
+- (RACSignal *) rac_signalForGestures
+{
+	RACEventTrampoline *trampoline = [RACEventTrampoline trampolineForGestureRecognizer:self];
+	[trampoline.subject setNameWithFormat:@"%@ -rac_signalForGestures", self];
+
+	NSMutableSet *controlEventTrampolines = objc_getAssociatedObject(self, RACEventTrampolinesKey);
+	if (controlEventTrampolines == nil) {
+		controlEventTrampolines = [NSMutableSet set];
+		objc_setAssociatedObject(self, RACEventTrampolinesKey, controlEventTrampolines, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+
+	[controlEventTrampolines addObject:trampoline];
+
+	return trampoline.subject;
+}
+
+@end
+
+
+
+
+#pragma mark- RACScheduler (BrynKit)
+#pragma mark-
+
+@implementation RACScheduler (BrynKit)
+
++ (RACDisposable *) onMainThread:(dispatch_block_t)block
+{
+    return [[self mainThreadScheduler] schedule:block];
+}
+
+@end
 
 @implementation RACQueueScheduler (BrynKit_RACHelpers)
 
@@ -38,7 +112,7 @@
 
 - (void) sendUnit
 {
-    [self sendNext:RACUnit.defaultUnit];
+    [self sendNext: RACDefaultUnit];
 }
 
 - (void) sendUnitAndComplete
@@ -62,16 +136,24 @@
 
 - (instancetype) notNilOrRACTupleNil
 {
-    return [[self notNil]
-                  filter:^BOOL(id value) {
-                      return (value != RACTupleNil.tupleNil);
-                  }];
+    return [[self filter:^BOOL(id value) {
+        return (value != RACTupleNil.tupleNil && value != nil);
+    }] setNameWithFormat:@"[%@] -notNilOrRACTupleNil", self.name];
+}
+
+- (instancetype) notEmpty
+{
+    return [[self filter: ^BOOL(id collection) {
+        yssert([collection respondsToSelector:@selector(count)], @"objects sent to the 'notEmpty' operator must respond to the -count selector.");
+        NSUInteger count = [collection count];
+        return (count > 0);
+    }] setNameWithFormat:@"[%@] -notEmpty", self.name];
 }
 
 - (instancetype) filterGreaterThanZero
 {
     return [[self filter:^BOOL(NSNumber *value) {
-        yssert([value isKindOfClass:[NSNumber class]], @"Signals sent to -[RACSignal filterGreaterThanZero] must contain values that are NSNumbers.");
+        yssert([value isKindOfClass:[NSNumber class]], @"Signals sent to -[RACSignal filterGreaterThanZero] must send values that are NSNumbers.");
         return ([value compare: @0] == NSOrderedDescending);
     }] setNameWithFormat:@"[%@] -filterGreaterThanZero", self.name];
 }
@@ -79,7 +161,7 @@
 - (instancetype) filterZeroOrGreater
 {
     return [[self filter:^BOOL(NSNumber *value) {
-        yssert([value isKindOfClass:[NSNumber class]], @"Signals sent to -[RACSignal filterGreaterThanZero] must contain values that are NSNumbers.");
+        yssert([value isKindOfClass:[NSNumber class]], @"Signals sent to -[RACSignal filterGreaterThanZero] must send values that are NSNumbers.");
         NSComparisonResult comparison = [value compare: @0];
         return (comparison == NSOrderedDescending) || (comparison == NSOrderedSame);
     }] setNameWithFormat:@"[%@] -filterGreaterThanZero", self.name];
@@ -95,11 +177,94 @@
 
 - (instancetype) assertNotNilAndIsKindOfClass:(Class)klass
 {
-    return [[self map:^id (id value) {
+	Class class = self.class;
+
+    return [[self flattenMap:^(id value) {
         yssert_notNilAndIsClass(value, klass);
-        return value;
+		return [class return:value];
     }] setNameWithFormat:@"[%@] -assertNotNilAndIsKindOfClass: %@", self.name, NSStringFromClass(klass)];
 }
+
+- (instancetype) mapFromFloat32:(id (^)(Float32 value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSNumber *valueObj) {
+        Float32 value = [valueObj floatValue];
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromFloat32:", self.name];
+}
+
+- (instancetype) mapFromFloat64:(id (^)(Float64 value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSNumber *valueObj) {
+        Float64 value = [valueObj floatValue];
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromFloat32:", self.name];
+}
+
+- (instancetype) mapFromInteger:(id (^)(NSInteger value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSNumber *valueObj) {
+        NSInteger value = [valueObj integerValue];
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromInteger:", self.name];
+}
+
+- (instancetype) mapFromUnsignedInteger:(id (^)(NSUInteger value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSNumber *valueObj) {
+        NSUInteger value = [valueObj integerValue];
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromUnsignedInteger:", self.name];
+}
+
+- (instancetype) mapFromBool:(id (^)(BOOL value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSNumber *valueObj) {
+        BOOL value = valueObj.boolValue;
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromBool:", self.name];
+}
+
+- (instancetype) mapFromCGRect:(id (^)(CGRect value))block
+{
+	NSParameterAssert(block != nil);
+
+	Class class = self.class;
+
+	return [[self flattenMap:^(NSValue *valueObj) {
+        CGRect value = valueObj.CGRectValue;
+		return [class return:block(value)];
+	}] setNameWithFormat:@"[%@] -mapFromCGRect:", self.name];
+}
+
+- (instancetype) pluck:(NSString *)key
+{
+    return [[self map:^id(id obj) {
+        return [obj valueForKey:key];
+    }] setNameWithFormat:@"[%@] -pluck: %@", self.name, key];
+}
+
+
 
 @end
 

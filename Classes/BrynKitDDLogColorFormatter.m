@@ -83,16 +83,15 @@
 
     NSMutableArray *parts = NSMutableArray.array;
 
-    if (self.shouldPrintDispatchQueueLabel) {
+    if (self.shouldPrintDispatchQueueLabel)
         [parts addObject: [NSString stringWithFormat: COLOR_QUEUE(@"%s"), logMessage->queueLabel]];
-    }
 
-    if (self.shouldPrintMethodName) {
+    if (self.shouldPrintMethodName)
+    {
         NSMutableArray *methodNameParts = @[].mutableCopy;
 
-        if (self.shouldPrintMostLikelyClassname) {
+        if (self.shouldPrintMostLikelyClassname)
             [methodNameParts addObject: logMessage.fileName];
-        }
 
         [methodNameParts addObject: logMessage.methodName];
         NSString *methodName = [methodNameParts componentsJoinedByString: @" "];
@@ -100,10 +99,11 @@
         [parts addObject: [NSString stringWithFormat: COLOR_SEL(@"%@"), methodName]];
     }
 
-    if (self.shouldPrintLogLevel) {
+    if (self.shouldPrintLogLevel)
         [parts addObject: [NSString stringWithFormat: @"[%@]", logLevel]];
-    }
 
+
+    
     [parts addObject: logMessageColorized];
 
     return [parts componentsJoinedByString: @" "];

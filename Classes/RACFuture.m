@@ -8,6 +8,7 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACImmediateScheduler.h>
+//#import <Brynstagram/BrynstagramCommon-Private.h>
 
 #import "BrynKit.h"
 #import "RACFuture.h"
@@ -64,6 +65,20 @@
 + (instancetype) future
 {
     return [[self class] subject];
+}
+
+//+ (instancetype) error:(NSError *)error
+//{
+//	return [[self createSignal:^ RACDisposable * (id<RACSubscriber> subscriber) {
+//		[subscriber sendError:error];
+//		return nil;
+//	}] setNameWithFormat:@"+error: %@", error];
+//}
+
+- (void) sendError:(NSError *)error
+{
+    //lllog(Error, @"ERROR ON FUTURE = %@", error);
+    [super sendError:error];
 }
 
 - (instancetype) await

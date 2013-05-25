@@ -12,10 +12,10 @@
 
 typedef void(^MBProgressHUDBlock)(MBProgressHUD *hud);
 
-@interface MBProgressHUD (BrynKitThreadsafe)
+@interface MBProgressHUD (BrynKit)
 
-+ (void) threadsafeShowHUDOnView: (UIView *)onView
-                        setupHUD: (MBProgressHUDBlock)block_setupHUD;
++ (void) bryn_threadsafeShowHUDOnView:(UIView *)onView
+                             setupHUD:(MBProgressHUDBlock)block_setupHUD;
 
 @end
 

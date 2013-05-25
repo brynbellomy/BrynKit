@@ -10,28 +10,32 @@
 #import <libextobjc/EXTScope.h>
 
 #import "BrynKit.h"
+#import "RACHelpers.h"
 #import "RACDispatchTimer.h"
+#import "SEDispatchSource.h"
 
-typedef enum : NSUInteger {
-    SEDispatchSourceState_Suspended = 1,
-    SEDispatchSourceState_Resumed   = 2,
-    SEDispatchSourceState_Canceled  = 3
-} SEDispatchSourceState;
+
 
 @interface RACDispatchTimer ()
+    @property (nonatomic, strong,          readwrite) SEDispatchSource *dispatchSource;
+    @property (nonatomic, dispatch_strong, readwrite) dispatch_source_t source;
+    @property (nonatomic, dispatch_strong, readwrite) dispatch_queue_t queue;
+
     @property (nonatomic, assign, readwrite) uint64_t interval;
     @property (nonatomic, assign, readwrite) uint64_t leeway;
-    @property (nonatomic, assign, readwrite) SEDispatchSourceState dispatchSourceState;
+    @property (nonatomic, assign, readwrite) SEDispatchSourceState state;
     @property (nonatomic, assign, readwrite) BOOL isActive;
     @property (nonatomic, assign, readwrite) BOOL isCanceled;
-    @property (nonatomic, assign, readwrite) dispatch_source_t dispatchSource;
-    @property (nonatomic, assign, readwrite) dispatch_queue_t dispatchQueue;
+    @property (nonatomic, assign, readwrite) BOOL isQueueSuspended;
 @end
 
-@implementation RACDispatchTimer
+@implementation RACDispatchTimer {}
+
+#pragma mark- Lifecycle
+#pragma mark-
 
 /**
- * #### +timerWithInterval:leeway
+ * #### timerWithIntervalInNanoseconds:leeway:
  *
  * @param {uint64_t} interval
  * @param {uint64_t} leeway
@@ -39,14 +43,14 @@ typedef enum : NSUInteger {
  * @return {instancetype}
  */
 
-+ (instancetype) timerWithInterval:(uint64_t)interval
-                            leeway:(uint64_t)leeway
++ (instancetype) timerWithIntervalInNanoseconds:(uint64_t)interval
+                                         leeway:(uint64_t)leeway
 {
-    return [[self alloc] initWithInterval:interval leeway:leeway];
+    return [[self alloc] initWithIntervalInNanoseconds:interval leeway:leeway];
 }
 
 /**
- * #### initWithInterval:leeway:
+ * #### initWithIntervalInNanoseconds:leeway:
  *
  * @param {uint64_t} interval
  * @param {uint64_t} leeway
@@ -54,8 +58,8 @@ typedef enum : NSUInteger {
  * @return {instancetype}
  */
 
-- (instancetype) initWithInterval:(uint64_t)interval
-                           leeway:(uint64_t)leeway
+- (instancetype) initWithIntervalInNanoseconds:(uint64_t)interval
+                                        leeway:(uint64_t)leeway
 {
 
     self = [super init];
@@ -63,58 +67,58 @@ typedef enum : NSUInteger {
         _interval = interval;
         _leeway   = leeway;
 
-        _dispatchQueue       = dispatch_queue_create("com.signalenvelope.RACDispatchTimer", 0);
-        _dispatchSource      = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _dispatchQueue);
-        _dispatchSourceState = SEDispatchSourceState_Suspended;
-
-        dispatch_source_set_timer(_dispatchSource, dispatch_walltime(NULL, 0), interval, leeway);
+        _queue          = dispatch_queue_create("com.signalenvelope.RACDispatchTimer", 0);
+        _source         = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _queue);
+        dispatch_source_set_timer(_source, dispatch_walltime(NULL, 0), _interval, _leeway);
 
         @weakify(self);
 
-        dispatch_source_set_event_handler(_dispatchSource, ^{
-            @strongify(self);
-            [self execute:[NSDate date]];
-		});
+        _dispatchSource = [[SEDispatchSource alloc] initWithSource:_source onQueue:_queue
+                                                           handler: ^{ @strongify(self); [self execute:[NSDate date]]; }
+                                                       cancelation: ^{ @strongify(self); [self handleCancellation];    }];
 
-        dispatch_source_set_cancel_handler(_dispatchSource, ^{
-            @strongify(self);
-            [self handleCancellation];
-        });
-        
-        RAC(self.isActive)   = [RACAbleWithStart(self.dispatchSourceState)
-                                    map:^id (NSNumber *dispatchSourceState) {
-
-                                        switch ((SEDispatchSourceState)dispatchSourceState.unsignedIntegerValue)
-                                        {
-                                            case SEDispatchSourceState_Canceled:
-                                            case SEDispatchSourceState_Suspended:
-                                                return @NO;
-
-                                            case SEDispatchSourceState_Resumed:
-                                                return @YES;
-                                        }
-                                    }];
-
-        RAC(self.isCanceled)  = [RACAbleWithStart(self.dispatchSourceState)
-                                    map:^id (NSNumber *dispatchSourceState) {
-
-                                        switch ((SEDispatchSourceState)dispatchSourceState.unsignedIntegerValue)
-                                        {
-                                            case SEDispatchSourceState_Canceled:
-                                                return @YES;
-
-                                            case SEDispatchSourceState_Suspended:
-                                            case SEDispatchSourceState_Resumed:
-                                                return @NO;
-                                        }
-                                    }];
-        
+        [self initializeReactiveKVO];
     }
     return self;
 }
 
-- (void) execute:(NSDate *)date {
-    [self sendNext:date];
+
+
+- (void) initializeReactiveKVO
+{
+    RAC(self.state) = RACAbleWithStart(_dispatchSource, state);
+
+    RAC(self.isActive)   = [RACAbleWithStart(self.state)
+                                mapFromUnsignedInteger:^id (SEDispatchSourceState state) {
+
+                                    switch (state)
+                                    {
+                                        case SEDispatchSourceState_Resumed:
+                                            return @YES;
+
+                                        case SEDispatchSourceState_Canceled:
+                                        case SEDispatchSourceState_Suspended:
+                                        default:
+                                            return @NO;
+
+                                    }
+                                }];
+
+    RAC(self.isCanceled)  = [RACAbleWithStart(self.state)
+                                mapFromUnsignedInteger:^id(SEDispatchSourceState state) {
+
+                                    switch (state)
+                                    {
+                                        case SEDispatchSourceState_Canceled:
+                                            return @YES;
+
+                                        case SEDispatchSourceState_Suspended:
+                                        case SEDispatchSourceState_Resumed:
+                                        default:
+                                            return @NO;
+                                    }
+                                }];
+    
 }
 
 
@@ -132,31 +136,25 @@ typedef enum : NSUInteger {
 
 
 
+#pragma mark- State changes
+#pragma mark-
+
 /**
- * #### start
+ * #### resume
  *
  * @return {void}
  */
 
-- (void) start
+- (void) resume
 {
     @synchronized (self)
     {
-        switch (self.dispatchSourceState)
-        {
-            case SEDispatchSourceState_Suspended:
-                dispatch_resume(self.dispatchSource);
-                break;
+//        if (self.isQueueSuspended == YES) {
+//            dispatch_resume(self.queue);
+//            self.isQueueSuspended = NO;
+//        }
 
-            case SEDispatchSourceState_Canceled:
-                yssert(NO, @"Canceled RACDispatchTimer was told to -start.");
-                break; // @@TODO: throw exception?
-
-            case SEDispatchSourceState_Resumed:
-                break; // no-op.
-        }
-
-        self.dispatchSourceState = SEDispatchSourceState_Resumed;
+        [self.dispatchSource resume];
     }
 }
 
@@ -172,20 +170,11 @@ typedef enum : NSUInteger {
 {
     @synchronized (self)
     {
-        switch (self.dispatchSourceState)
-        {
-            case SEDispatchSourceState_Resumed:
-                dispatch_suspend(self.dispatchSource);
-                break;
-
-            case SEDispatchSourceState_Canceled:
-                break; // @@TODO: throw exception?
-
-            case SEDispatchSourceState_Suspended:
-                break; // no-op.
-        }
-
-        self.dispatchSourceState = SEDispatchSourceState_Suspended;
+//        if (self.isQueueSuspended == NO) {
+//            dispatch_suspend(self.queue);
+//            self.isQueueSuspended = YES;
+//        }
+        [self.dispatchSource stop];
     }
 }
 
@@ -201,26 +190,29 @@ typedef enum : NSUInteger {
 {
     @synchronized (self)
     {
-        if (self.dispatchSource != nil)
-        {
-            switch (self.dispatchSourceState)
-            {
-                case SEDispatchSourceState_Suspended:
-                    dispatch_resume(self.dispatchSource);
-
-                // ** intentional fall through ** //
-
-                case SEDispatchSourceState_Resumed:
-                    dispatch_source_cancel(self.dispatchSource);
-                    break;
-
-                case SEDispatchSourceState_Canceled:
-                    break;
-            }
-        }
-
-        self.dispatchSourceState = SEDispatchSourceState_Canceled;
+//        if (self.isQueueSuspended == NO) {
+//            dispatch_suspend(self.queue);
+//            self.isQueueSuspended = YES;
+//        }
+        [self.dispatchSource cancel];
     }
+}
+
+
+
+#pragma mark- Doin' work
+#pragma mark-
+
+/**
+ * #### execute:
+ *
+ * @param  {NSDate*} date
+ * @return {void}
+ */
+
+- (void) execute:(NSDate *)date
+{
+    [self sendNext:date];
 }
 
 
@@ -231,19 +223,23 @@ typedef enum : NSUInteger {
  * @return {void}
  */
 
-- (void) handleCancellation {
+- (void) handleCancellation
+{
+    [self sendCompleted];
 
     @synchronized (self)
     {
-        if (self.dispatchSource != nil) {
-            dispatch_release(self.dispatchSource);
+//        if (self.dispatchSource != nil) {
+//            dispatch_release(self.source);
             self.dispatchSource = nil;
-        }
+//        }
 
-        if (self.dispatchQueue != nil) {
-            dispatch_release(self.dispatchQueue);
-            self.dispatchQueue = nil;
-        }
+//        if (self.queue != nil) {
+//            dispatch_release(self.queue);
+            self.queue = nil;
+//        }
+
+        self.source = nil;
     }
 }
 

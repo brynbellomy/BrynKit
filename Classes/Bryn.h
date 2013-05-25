@@ -47,7 +47,16 @@
  * Misc. macros
  */
 
+#define instanceOf(klass) isKindOfClass:[klass class]
+
 #define $url(str) ({ [NSURL URLWithString:(str)]; })
+
+
+#define $sortByKeyAscending(array, key) \
+    ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:YES] ]]; })
+
+#define $sortByKeyDescending(array, key) \
+    ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:NO] ]]; })
 
 
 
@@ -70,20 +79,29 @@
 #endif
 
 #ifndef $new
-#   define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])
+#define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])
 #endif
 
 #ifndef $str
-#   define $str(...)   [NSString stringWithFormat:__VA_ARGS__]
+#define $str(__FORMAT__, ...)   [NSString stringWithFormat:__FORMAT__, ## __VA_ARGS__]
+#endif
+
+#ifndef $utf8
+#define $utf8(utf8str)   [NSString stringWithCString:utf8str encoding:NSUTF8StringEncoding]
 #endif
 
 #ifndef $point
-#   define $point(val)       [NSValue valueWithCGPoint:(val)]
+#define $point(val)       [NSValue valueWithCGPoint:(val)]
+#endif
+
+#ifndef $pointer
+#define $pointer(val)       [NSValue valueWithPointer:(val)]
 #endif
 
 #ifndef $selector
-#   define $selector(val)    [NSValue valueWithPointer:@selector(val)]
+#define $selector(val)    [NSValue valueWithPointer:@selector(val)]
 #endif
+
 
 
 /**
@@ -108,20 +126,27 @@ typedef void(^UpdateCollectionBlock)(NSMutableDictionary *collection, UpdateColl
 
 
 
-/**!
- * ### enum BrynKitDispatchSourceState
- *
- * Use this to keep track of the state of `dispatch_source` objects so that you don't
- * over-resume them, try to cancel them when they're suspended, etc.
- */
-typedef enum : NSUInteger {
-    BrynKitDispatchSourceState_Suspended = 1,
-    BrynKitDispatchSourceState_Resumed = 2,
-    BrynKitDispatchSourceState_Canceled = 3
-} BrynKitDispatchSourceState;
+typedef struct _BKFloatRange {
+    Float32 location;
+    Float32 length;
+} BKFloatRange;
 
+#define BKFloatRangeZero BKMakeFloatRange(0.0f, 0.0f)
+#define BKFloatRangeOne  BKMakeFloatRange(1.0f, 0.0f)
 
+extern BKFloatRange BKMakeFloatRange(Float32 loc, Float32 len);
+extern BKFloatRange BKMakeFloatRangeWithBounds(Float32 start, Float32 end);
+extern BKFloatRange BKMakeZeroLengthFloatRange(Float32 location);
 
+extern Float32 BKFloatRangeStartValue(BKFloatRange range);
+extern Float32 BKFloatRangeEndValue(BKFloatRange range);
+extern Float32 BKMinValueInFloatRange(BKFloatRange range);
+extern Float32 BKMaxValueInFloatRange(BKFloatRange range);
+
+extern BOOL BKIsLocationInFloatRange(Float32 loc, BKFloatRange range);
+extern BOOL BKFloatRangesAreEqual(BKFloatRange range1, BKFloatRange range2);
+
+//extern NSArray* SEMakeGradientSwatch(NSUInteger numSteps, BKFloatRange red, BKFloatRange green, BKFloatRange blue, BKFloatRange alpha)
 
 
 /**!
@@ -144,6 +169,17 @@ typedef enum : NSUInteger {
 #if !defined(UIImageWithBundlePNG)
 #   define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:(x) ofType: @"png"]])
 #endif
+
+
+extern CGImageRef BrynCGImageFromFile(NSString *path);
+extern CGImageRef BrynCGImageFromBundlePNG(NSString *basename);
+extern UIImage*   BrynUIImageFromBundlePNG(NSString *basename);
+
+@interface UIImage (BrynKit)
+
++ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename;
+
+@end
 
 
 
@@ -194,7 +230,148 @@ typedef enum : NSUInteger {
 #pragma mark- GCD/concurrency helpers
 #pragma mark-
 
-extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block);
+extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); // __attribute__((deprecated));
+
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+#if !(OS_OBJECT_USE_OBJC)
+#   define dispatch_strong assign
+#else
+#   define dispatch_strong strong
+#endif
+
+
+
+/**!
+ * # Misc. (will be refactored into self-sufficient components)
+ */
+#pragma mark- Misc.
+#pragma mark-
+
+@interface NSObject (BrynKit_Description)
+
+- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties;
+- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties separator:(NSString *)separator;
+- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties separator:(NSString *)separator formatter:(NSString *(^)(NSString *property, id value))formatter;
+
+- (NSString *) bryn_descriptionWithString:(NSString *)string;
+
+@end
+
+
+
+@interface UIDevice (BrynKit)
+
++ (BOOL) bryn_isMultitaskingSupported;
++ (BOOL) bryn_isIPhone5OrTaller;
+
+@end
+
+
+
+@interface UIScreen (BrynKit)
+
+- (CGFloat) bryn_scaledHeight;
+- (CGFloat) bryn_actualHeight;
+- (CGFloat) bryn_scaledWidth;
+- (CGFloat) bryn_actualWidth;
+
+@end
+
+
+
+@interface NSString (BrynKit)
+
+- (NSString *) bryn_replace:(NSString *)strToReplace        with:(NSString *)replacementStr;
+- (NSString *) bryn_replaceRegex:(NSString *)regexToReplace with:(NSString *)replacementStr;
+
+@end
+
+
+
+#pragma mark- Categories: UIKit
+#pragma mark-
+
+@interface UILabel (BrynKit)
+
+- (void) bryn_setLabelTextAndSizeToFit:(NSString *)newText;
+
+@end
+
+
+@interface UIView (BrynKit)
+
+- (void) bryn_animateKey:(NSString *)key fromValue:(id)fromValue toValue:(id)toValue duration:(CFTimeInterval)duration autoreverses:(BOOL)autoreverses;
+- (void) bryn_animateKey:(NSString *)key toValue:(id)toValue duration:(CFTimeInterval)duration autoreverses:(BOOL)autoreverses;
+
+@end
+
+
+
+#pragma mark- Categories: collections
+#pragma mark-
+
+@protocol BKComparable <NSObject>
+
+- (NSInteger) compare:(id<BKComparable>)other;
+
+@end
+
+
+
+@interface NSArray (BrynKitSorting)
+
+- (instancetype) bryn_sortByKey:(NSString *)key;
+- (instancetype) bryn_sort:(NSComparator)comparator;
+
+@end
+
+
+
+@interface NSSet (BrynKitSorting)
+
+- (NSOrderedSet *) bryn_sortByKey:(NSString *)key;
+
+@end
+
+
+
+@interface NSMutableSet (BrynKitSorting)
+
+- (NSMutableOrderedSet *) bryn_sortByKey:(NSString *)key;
+
+@end
+
+
+
+
+@interface NSOrderedSet (BrynKit)
+
++ (instancetype) bryn_orderedSetWithIntegersInRange:(NSRange)range;
+
+@end
+
+
+
+@interface NSOrderedSet (BrynKitSorting)
+
+- (instancetype) bryn_sortByKey:(NSString *)key;
+
+@end
+
+
+
+@interface NSMutableOrderedSet (BrynKitSorting)
+
+- (instancetype) bryn_sortByKey:(NSString *)key;
+
+@end
+
+
+@interface NSDictionary (BrynKitSorting)
+
+- (NSArray *) bryn_sortedKeysByComparingSubkey:(NSString *)subkey;
+
+@end
 
 
 

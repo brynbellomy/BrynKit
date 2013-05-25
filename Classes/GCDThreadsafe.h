@@ -31,11 +31,11 @@
 
 
 
-
 #define gcd_threadsafe_init(concurrency, queueLabel) \
     try{}@finally{} \
     do { \
         _queueCritical = dispatch_queue_create(queueLabel, metamacro_concat(DISPATCH_QUEUE_,concurrency)); \
+        dispatch_queue_set_specific(_queueCritical, &GCDThreadsafeQueueKey, (__bridge void *)self, NULL); \
         yssert_notNil(_queueCritical); \
     } while(0)
 
@@ -45,12 +45,13 @@
 #define gcd_threadsafe \
     class NSObject;\
 \
+    static char GCDThreadsafeQueueKey; \
     @synthesize queueCritical = _queueCritical; \
     - (void) runCriticalMutableSection: (dispatch_block_t)criticalMutation \
     { \
-        yssert(self.queueCritical != nil, @"critical queue is nil."); \
+        yssert_notNil(self.queueCritical); \
 \
-        if (dispatch_get_current_queue() == self.queueCritical) { \
+        if (dispatch_queue_get_specific(self.queueCritical, &GCDThreadsafeQueueKey) == self.queueCritical) { \
             criticalMutation(); \
         } \
         else { \
@@ -60,9 +61,9 @@
 \
     - (void) runCriticalReadonlySection: (dispatch_block_t)criticalRead \
     { \
-        yssert(self.queueCritical != nil, @"critical queue is nil."); \
+        yssert_notNil(self.queueCritical); \
 \
-        if (dispatch_get_current_queue() == self.queueCritical) { \
+        if (dispatch_queue_get_specific(self.queueCritical, &GCDThreadsafeQueueKey) == self.queueCritical) { \
             criticalRead(); \
         } \
         else { \

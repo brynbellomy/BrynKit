@@ -8,7 +8,7 @@
 
 #import "SEDispatchSource.h"
 
-typedef void(^MemoryLogDispatchBlock)(NSString *logMessage);
+typedef void(^MemoryLogDispatchBlock)(natural_t freeMemBytes);
 
 extern natural_t         BrynKit_GetFreeMemory();
 extern SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, MemoryLogDispatchBlock dispatchTheLog);

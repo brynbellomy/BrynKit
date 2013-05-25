@@ -16,10 +16,10 @@
 @property (nonatomic, assign, readonly) BOOL isCanceled;
 
 
-+ (instancetype) timerWithInterval:(uint64_t)interval leeway:(uint64_t)leeway;
-- (instancetype)  initWithInterval:(uint64_t)interval leeway:(uint64_t)leeway;
++ (instancetype) timerWithIntervalInNanoseconds:(uint64_t)interval leeway:(uint64_t)leeway;
+- (instancetype)  initWithIntervalInNanoseconds:(uint64_t)interval leeway:(uint64_t)leeway;
 
-- (void) start;
+- (void) resume;
 - (void) stop;
 
 @end

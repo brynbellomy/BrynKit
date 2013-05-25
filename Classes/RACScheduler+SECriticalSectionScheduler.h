@@ -1,6 +1,6 @@
 //
 //  RACScheduler+SECriticalSectionScheduler.h
-//  Stan
+//  Merle
 //
 //  Created by bryn austin bellomy on 3.12.13.
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
