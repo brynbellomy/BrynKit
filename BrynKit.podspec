@@ -26,9 +26,8 @@ Pod::Spec.new do |s|
     s.default_subspec = 'Main'
 
     s.subspec 'Main' do |subspec|
-        subspec.source_files = "Main/*.{m,h}"
+        subspec.source_files = "Main/*.{m,h}", "UIColor/*.{m,h}"
         subspec.frameworks = 'ImageIO', 'QuartzCore'
-        subspec.dependency = 'BrynKit/UIColor'
     end
 
     #
@@ -72,16 +71,10 @@ Pod::Spec.new do |s|
         subspec.dependency 'BrynKit/Main'
     end
 
-    s.subspec 'UIColor' do |subspec|
-        subspec.source_files = 'UIColor/*.{m,h}'
-        subspec.dependency 'BrynKit/Main'
-    end
-
     s.subspec 'EDColor' do |subspec|
         subspec.source_files = 'EDColor/*.{m,h}'
         subspec.dependency 'EDColor'
         subspec.dependency 'BrynKit/Main'
-        subspec.dependency 'BrynKit/UIColor'
     end
 
     s.subspec 'CocoaLumberjack' do |subspec|
