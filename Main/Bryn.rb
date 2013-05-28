@@ -1,3 +1,5 @@
+
+# line 1 "/Users/bryn/projects/BrynKit/master/Main/Bryn.m"
 //
 //  Bryn.m
 //  BrynKit
@@ -98,6 +100,50 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
     yssert_notNull(pngImage);
     return pngImage;
 }
+
+
+
+@implementation UIImage (BrynKit)
+
++ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename
+{
+    CGImageRef pngImage = BrynCGImageFromBundlePNG(filename);
+    yssert_notNull(pngImage);
+
+    UIImage   *image    = [self imageWithCGImage:pngImage];
+    yssert_notNilAndIsClass(image, UIImage);
+
+    return image;
+}
+
+@end
+
+
+
+@implementation UIColor (BrynKit)
+
+- (CGFloat) red
+{
+    CGFloat value;
+    [self getRed:&value  green:NULL  blue:NULL  alpha:NULL];
+    return value;
+}
+
+- (CGFloat) green
+{
+    CGFloat value;
+    [self getRed:NULL  green:NULL  blue:NULL  alpha:NULL];
+    return value;
+}
+
+- (CGFloat) red
+{
+    CGFloat value;
+    [self getRed:&value  green:NULL  blue:NULL  alpha:NULL];
+    return value;
+}
+
+@end
 
 
 
@@ -287,12 +333,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 @implementation NSSet (BrynKitSorting)
 
-- (NSOrderedSet *) bryn_sort
-{
-    NSArray *array = [[self allObjects] bryn_sort];
-    return [[self class] orderedSetWithArray:array];
-}
-
 - (NSOrderedSet *) bryn_sortByKey:(NSString *)key
 {
     NSArray *array = [self sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:YES] ]];
@@ -304,12 +344,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 
 @implementation NSMutableSet (BrynKitSorting)
-
-- (NSMutableOrderedSet *) bryn_sort
-{
-    NSArray *array = [[self allObjects] bryn_sort];
-    return [[[self class] orderedSetWithArray:array] mutableCopy];
-}
 
 - (NSMutableOrderedSet *) bryn_sortByKey:(NSString *)key
 {
@@ -338,12 +372,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 @implementation NSOrderedSet (BrynKitSorting)
 
-- (instancetype) bryn_sort
-{
-    NSArray *array = [[self array] bryn_sort];
-    return [[self class] orderedSetWithArray:array];
-}
-
 - (instancetype) bryn_sortByKey:(NSString *)key
 {
     NSArray *array = [[self array] bryn_sortByKey:key];
@@ -356,16 +384,11 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 @implementation NSMutableOrderedSet (BrynKitSorting)
 
-- (instancetype) bryn_sort
-{
-    NSArray *array = [[self array] bryn_sort];
-    return [[[self class] orderedSetWithArray:array] mutableCopy];
-}
-
 - (instancetype) bryn_sortByKey:(NSString *)key
 {
+
     NSArray *array = [[self array] bryn_sortByKey:key];
-    return [[[self class] orderedSetWithArray:array] mutableCopy];
+    return [[NSMutableOrderedSet orderedSetWithArray:array] mutableCopy];
 }
 
 @end
@@ -373,11 +396,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
 
 @implementation NSArray (BrynKitSorting)
-
-- (instancetype) bryn_sort
-{
-    return [self sortedArrayUsingSelector:@selector(compare:)];
-}
 
 - (instancetype) bryn_sortByKey:(NSString *)key
 {
@@ -411,37 +429,6 @@ CGImageRef BrynCGImageFromBundlePNG(NSString *basename)
 
         return [key1SubkeyValue compare:key2SubkeyValue];
     }];
-}
-
-@end
-
-
-
-#pragma mark- Categories: Graphics/Quartz/etc.
-#pragma mark-
-
-@implementation UIImage (BrynKit)
-
-+ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename
-{
-    CGImageRef pngImage = BrynCGImageFromBundlePNG(filename);
-    yssert_notNull(pngImage);
-
-    UIImage   *image    = [self imageWithCGImage:pngImage];
-    yssert_notNilAndIsClass(image, UIImage);
-
-    return image;
-}
-
-@end
-
-
-
-@implementation UIColor (BrynKit)
-
-+ (instancetype) bryn_rgba:(CGFloat [4])rgba
-{
-    return [UIColor colorWithRed:rgba[0] green:rgba[1] blue:rgba[2] alpha:rgba[3]];
 }
 
 @end

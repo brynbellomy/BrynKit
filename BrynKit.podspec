@@ -42,15 +42,16 @@ Pod::Spec.new do |s|
 
     s.subspec 'RACHelpers' do |subspec|
         subspec.source_files = 'RACHelpers/*.{m,h}'
-        subspec.dependency 'ReactiveCocoa', '>= 1.5.0'
+        subspec.dependency 'ReactiveCocoa', '>= 1.8.0'
         subspec.dependency 'BrynKit/Main'
+        subspec.dependency 'BrynKit/EDColor'
     end
 
     s.subspec 'RACDispatchTimer' do |subspec|
         subspec.source_files = 'RACDispatchTimer/*.{h,m}'
         subspec.dependency 'BrynKit/RACHelpers'
         subspec.dependency 'BrynKit/SEDispatchSource'
-        subspec.dependency 'ReactiveCocoa', '>= 1.5.0'
+        subspec.dependency 'ReactiveCocoa', '>= 1.8.0'
         subspec.dependency 'BrynKit/Main'
     end
 
@@ -80,6 +81,7 @@ Pod::Spec.new do |s|
         subspec.source_files = 'CocoaLumberjack/*.{m,h}'
         subspec.dependency 'CocoaLumberjack'
         subspec.dependency 'BrynKit/Main'
+        subspec.dependency 'BrynKit/EDColor'
     end
 
     s.subspec 'RRFPSBar' do |subspec|

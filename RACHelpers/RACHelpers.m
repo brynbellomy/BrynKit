@@ -15,6 +15,7 @@
 #import "Bryn.h"
 #import "BrynKitDebugging.h"
 #import "BrynKitLogging.h"
+#import "BrynKitEDColor.h"
 
 #import "RACHelpers.h"
 
@@ -36,50 +37,6 @@
 }
 
 @end
-
-
-
-#pragma mark-
-#pragma mark-
-
-@implementation RACEventTrampoline (BrynKit)
-
-+ (instancetype) trampolineForGestureRecognizer:(UIGestureRecognizer *)recognizer
-{
-	RACEventTrampoline *trampoline = $new(self);
-	[recognizer addTarget:trampoline action:@selector(didGetGestureEvent:)];
-	return trampoline;
-}
-
-- (void) didGetGestureEvent:(UITapGestureRecognizer *)sender
-{
-	[self.subject sendNext:sender];
-}
-
-@end
-
-
-
-@implementation UIGestureRecognizer (BrynKit_RAC)
-
-- (RACSignal *) rac_signalForGestures
-{
-	RACEventTrampoline *trampoline = [RACEventTrampoline trampolineForGestureRecognizer:self];
-	[trampoline.subject setNameWithFormat:@"%@ -rac_signalForGestures", self];
-
-	NSMutableSet *controlEventTrampolines = objc_getAssociatedObject(self, RACEventTrampolinesKey);
-	if (controlEventTrampolines == nil) {
-		controlEventTrampolines = [NSMutableSet set];
-		objc_setAssociatedObject(self, RACEventTrampolinesKey, controlEventTrampolines, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	}
-
-	[controlEventTrampolines addObject:trampoline];
-
-	return trampoline.subject;
-}
-
-@end
-
 
 
 
@@ -284,7 +241,7 @@
 - (instancetype) lllogNext
 {
 	return [[self doNext:^(id x) {
-		NSLog(COLOR_GREEN(@"%@ next: %@"), self, x);
+        NSLog(COLOR_GREEN(@"%@ next: %@"), self, x);
 	}] setNameWithFormat:@"%@", self.name];
 }
 

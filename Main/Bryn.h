@@ -11,11 +11,24 @@
 
 #import <libextobjc/metamacros.h>
 
+/** @name Define macros */
+
 /**
  * # Define macros
  */
 #pragma mark- Define macros
 #pragma mark-
+
+#define CGRectWithSize(size) \
+            ({ \
+                CGRectMake(0.0f, 0.0f, size.width, size.height); \
+            })
+#define CGRectWithDimensions(width, height) \
+            ({ \
+                CGRectMake(0.0f, 0.0f, width, height); \
+            })
+
+
 
 /**
  * #### Key(...)
@@ -50,6 +63,19 @@
 #define instanceOf(klass) isKindOfClass:[klass class]
 
 #define $url(str) ({ [NSURL URLWithString:(str)]; })
+
+#define $bundleResourceURL(res, ext) [[NSBundle mainBundle] URLForResource:res withExtension:ext]
+
+#define $fileManager [NSFileManager defaultManager]
+
+#define $notificationCenter [NSNotificationCenter defaultCenter]
+
+#define $app [UIApplication sharedApplication]
+
+#define $documentDirectories \
+    ({ \
+        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); \
+    })
 
 
 #define $sortByKeyAscending(array, key) \
@@ -103,12 +129,14 @@
 #endif
 
 
-
-/**
- * # Typedefs
+/**---------------------------------------------------------------------------------------
+ * @name Typedefs
+ *  ---------------------------------------------------------------------------------------
  */
+
 #pragma mark- Typedefs
 #pragma mark-
+
 
 /**
  * ### Blocks
@@ -134,7 +162,22 @@ typedef struct _BKFloatRange {
 #define BKFloatRangeZero BKMakeFloatRange(0.0f, 0.0f)
 #define BKFloatRangeOne  BKMakeFloatRange(1.0f, 0.0f)
 
+/**
+ * Creates a `BKFloatRange` initialized with the provided `loc` (location) and `len` (length) values.
+ *
+ *  @param loc Where the range should begin.
+ *  @param len The length of the range.
+ *  @return A `BKFloatRange` representing a continuous range from `loc` to `loc + len`.
+*/
 extern BKFloatRange BKMakeFloatRange(Float32 loc, Float32 len);
+
+/**
+ * Creates a `BKFloatRange` initialized with `loc = start` and `len = end - start`.
+ *
+ * @param `start` Where the range should begin.
+ * @param `end` Where the range should end.
+ * @return A `BKFloatRange representing a continuous range from `start` to `end`.
+ **/
 extern BKFloatRange BKMakeFloatRangeWithBounds(Float32 start, Float32 end);
 extern BKFloatRange BKMakeZeroLengthFloatRange(Float32 location);
 
@@ -147,7 +190,6 @@ extern BOOL BKIsLocationInFloatRange(Float32 loc, BKFloatRange range);
 extern BOOL BKFloatRangesAreEqual(BKFloatRange range1, BKFloatRange range2);
 
 //extern NSArray* SEMakeGradientSwatch(NSUInteger numSteps, BKFloatRange red, BKFloatRange green, BKFloatRange blue, BKFloatRange alpha)
-
 
 /**!
  * # Image-related macros
@@ -174,12 +216,6 @@ extern BOOL BKFloatRangesAreEqual(BKFloatRange range1, BKFloatRange range2);
 extern CGImageRef BrynCGImageFromFile(NSString *path);
 extern CGImageRef BrynCGImageFromBundlePNG(NSString *basename);
 extern UIImage*   BrynUIImageFromBundlePNG(NSString *basename);
-
-@interface UIImage (BrynKit)
-
-+ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename;
-
-@end
 
 
 
@@ -320,6 +356,7 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 @interface NSArray (BrynKitSorting)
 
+- (instancetype) bryn_sort;
 - (instancetype) bryn_sortByKey:(NSString *)key;
 - (instancetype) bryn_sort:(NSComparator)comparator;
 
@@ -329,6 +366,7 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 @interface NSSet (BrynKitSorting)
 
+- (NSOrderedSet *) bryn_sort;
 - (NSOrderedSet *) bryn_sortByKey:(NSString *)key;
 
 @end
@@ -337,6 +375,7 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 @interface NSMutableSet (BrynKitSorting)
 
+- (NSMutableOrderedSet *) bryn_sort;
 - (NSMutableOrderedSet *) bryn_sortByKey:(NSString *)key;
 
 @end
@@ -354,6 +393,7 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 @interface NSOrderedSet (BrynKitSorting)
 
+- (instancetype) bryn_sort;
 - (instancetype) bryn_sortByKey:(NSString *)key;
 
 @end
@@ -362,14 +402,35 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 @interface NSMutableOrderedSet (BrynKitSorting)
 
+- (instancetype) bryn_sort;
 - (instancetype) bryn_sortByKey:(NSString *)key;
 
 @end
 
 
+
 @interface NSDictionary (BrynKitSorting)
 
 - (NSArray *) bryn_sortedKeysByComparingSubkey:(NSString *)subkey;
+
+@end
+
+
+
+#pragma mark- Categories: Graphics/Quartz/etc.
+#pragma mark-
+
+@interface UIImage (BrynKit)
+
++ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename;
+
+@end
+
+
+
+@interface UIColor (BrynKit)
+
++ (instancetype) bryn_rgba:(CGFloat [4])rgba;
 
 @end
 

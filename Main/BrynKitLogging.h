@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 /**!
  * # Logging and debug macros
  */
@@ -30,6 +32,8 @@
 #define XCODE_COLORS_RESET_BG  XCODE_COLORS_ESCAPE @"bg;" // Clear any background color
 #define XCODE_COLORS_RESET     XCODE_COLORS_ESCAPE @";"   // Clear any foreground or background color
 #define XCODE_COLORS_FG(r,g,b) XCODE_COLORS_ESCAPE @"fg" @#r @"," @#g @"," @#b @";"
+
+
 
 /**!
  * ### predefined rgb colors
@@ -126,6 +130,12 @@
 //#endif
 
 
+@interface UIColor (BrynKit_Logging)
+
+- (NSString *) bryn_xcodeColorsFGString;
+- (NSString *) bryn_xcodeColorsBGString;
+
+@end
 
 
 

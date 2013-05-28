@@ -11,5 +11,7 @@
 @interface NSString (NSDateExtensions)
 
 + (instancetype) bryn_stringWithDate:(NSDate *)date usingFormat:(NSString *)format;
++ (instancetype) bryn_stringWithDate:(NSDate *)date usingStyle:(NSDateFormatterStyle)style;
++ (instancetype) bryn_stringWithDate:(NSDate *)date usingDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle;
 
 @end

@@ -91,8 +91,8 @@
  * logs the failure to `stdout` (using the message specified by the format
  * string) and proceeds with execution.
  *
- * @param {expression} expr A condition to test.
- * @param {format-str} format A format string to print when `condition` is FALSE.
+ * @param expr A condition to test.
+ * @param format A format string to print when `condition` is FALSE.
  */
 #define yssert(condition, ...) \
     do { \

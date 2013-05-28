@@ -33,15 +33,6 @@ typedef void(^RACFutureBlock)(RACFuture *future);
 
 
 
-@interface RACEventTrampoline (BrynKit)
-
-+ (instancetype)trampolineForGestureRecognizer:(UIGestureRecognizer *)recognizer;
-- (void)didGetGestureEvent:(UITapGestureRecognizer *)sender;
-
-@end
-
-
-
 @interface RACScheduler (BrynKit)
 
 + (RACDisposable *) onMainThread:(dispatch_block_t)block;

@@ -7,13 +7,17 @@
 //
 
 #import <EDColor/EDColor.h>
+
+#import "Bryn.h"
 #import "BrynKitLogging.h"
+#import "BrynKitDebugging.h"
+#import "UIColor+Expanded.h"
 
 /**
  * # EDColor extensions
  */
 
-#define SEGetRGBADictionaryFromColor(uiColor) \
+#define BKRGBADictionaryFromColor(uiColor) \
     ({ \
         CGFloat r, g, b, a; \
         [uiColor getRed:&r green:&g blue:&b alpha:&a]; \
@@ -23,7 +27,6 @@
         a *= 255.0f; \
         @{ @"red": @(r), @"green": @(g), @"blue": @(b), @"alpha": @(a) }; \
     })
-
 
 
 //#undef COLOR_ERROR

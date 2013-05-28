@@ -92,10 +92,9 @@
 
 - (RACFuture *) then: (RACFutureBlock)block
 {
-    __block RACFuture *future = RACFuture.future;
+    __block RACFuture *future = [RACFuture future];
 
-    [[self future]
-           subscribeCompleted:^{
+    [self subscribeCompleted:^{
                block(future);
            }];
 

@@ -7,6 +7,7 @@
 //
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa/RACSignal+Private.h>
 #import <libextobjc/EXTScope.h>
 
 #import "Bryn.h"
@@ -17,12 +18,12 @@
 #import "RACDispatchTimer.h"
 #import "SEDispatchSource.h"
 
-
-
 @interface RACDispatchTimer ()
     @property (nonatomic, strong,          readwrite) SEDispatchSource *dispatchSource;
     @property (nonatomic, dispatch_strong, readwrite) dispatch_source_t source;
     @property (nonatomic, dispatch_strong, readwrite) dispatch_queue_t queue;
+
+    @property (nonatomic, strong, readonly) RACCompoundDisposable *disposable;
 
     @property (nonatomic, assign, readwrite) uint64_t interval;
     @property (nonatomic, assign, readwrite) uint64_t leeway;
@@ -37,36 +38,23 @@
 #pragma mark- Lifecycle
 #pragma mark-
 
-/**
- * #### timerWithIntervalInNanoseconds:leeway:
- *
- * @param {uint64_t} interval
- * @param {uint64_t} leeway
- *
- * @return {instancetype}
- */
-
 + (instancetype) timerWithIntervalInNanoseconds:(uint64_t)interval
                                          leeway:(uint64_t)leeway
 {
     return [[self alloc] initWithIntervalInNanoseconds:interval leeway:leeway];
 }
 
-/**
- * #### initWithIntervalInNanoseconds:leeway:
- *
- * @param {uint64_t} interval
- * @param {uint64_t} leeway
- *
- * @return {instancetype}
- */
+
 
 - (instancetype) initWithIntervalInNanoseconds:(uint64_t)interval
                                         leeway:(uint64_t)leeway
 {
 
     self = [super init];
-    if (self) {
+    if (self)
+    {
+        _disposable = [RACCompoundDisposable compoundDisposable];
+
         _interval = interval;
         _leeway   = leeway;
 
@@ -89,7 +77,7 @@
 
 - (void) initializeReactiveKVO
 {
-    RAC(self.state) = RACAbleWithStart(_dispatchSource, state);
+    RAC(self.state) = RACAbleWithStart(self.dispatchSource, state);
 
     RAC(self.isActive)   = [RACAbleWithStart(self.state)
                                 mapFromUnsignedInteger:^id (SEDispatchSourceState state) {
@@ -126,15 +114,42 @@
 
 
 
-/**
- * #### dealloc
- *
- * @return {void}
- */
-
 - (void) dealloc
 {
+	[self.disposable dispose];
     [self cancel];
+}
+
+
+
+#pragma mark- RACSubscriber
+#pragma mark-
+
+- (void)sendNext:(id)value
+{
+	[self performBlockOnEachSubscriber:^(id<RACSubscriber> subscriber) {
+		[subscriber sendNext:value];
+	}];
+}
+
+- (void)sendError:(NSError *)error {
+	[self.disposable dispose];
+
+	[self performBlockOnEachSubscriber:^(id<RACSubscriber> subscriber) {
+		[subscriber sendError:error];
+	}];
+}
+
+- (void)sendCompleted {
+	[self.disposable dispose];
+
+	[self performBlockOnEachSubscriber:^(id<RACSubscriber> subscriber) {
+		[subscriber sendCompleted];
+	}];
+}
+
+- (void) didSubscribeWithDisposable:(RACDisposable *)d {
+	if (d != nil) [self.disposable addDisposable:d];
 }
 
 
@@ -142,61 +157,30 @@
 #pragma mark- State changes
 #pragma mark-
 
-/**
- * #### resume
- *
- * @return {void}
- */
-
 - (void) resume
 {
     @synchronized (self)
     {
-//        if (self.isQueueSuspended == YES) {
-//            dispatch_resume(self.queue);
-//            self.isQueueSuspended = NO;
-//        }
-
         [self.dispatchSource resume];
     }
 }
 
 
 
-/**
- * #### stop
- *
- * @return {void}
- */
-
 - (void) stop
 {
     @synchronized (self)
     {
-//        if (self.isQueueSuspended == NO) {
-//            dispatch_suspend(self.queue);
-//            self.isQueueSuspended = YES;
-//        }
         [self.dispatchSource stop];
     }
 }
 
 
 
-/**
- * #### cancel
- *
- * @return {void}
- */
-
 - (void) cancel
 {
     @synchronized (self)
     {
-//        if (self.isQueueSuspended == NO) {
-//            dispatch_suspend(self.queue);
-//            self.isQueueSuspended = YES;
-//        }
         [self.dispatchSource cancel];
     }
 }
@@ -206,13 +190,6 @@
 #pragma mark- Doin' work
 #pragma mark-
 
-/**
- * #### execute:
- *
- * @param  {NSDate*} date
- * @return {void}
- */
-
 - (void) execute:(NSDate *)date
 {
     [self sendNext:date];
@@ -220,29 +197,15 @@
 
 
 
-/**
- * #### handleCancellation
- *
- * @return {void}
- */
-
 - (void) handleCancellation
 {
     [self sendCompleted];
 
     @synchronized (self)
     {
-//        if (self.dispatchSource != nil) {
-//            dispatch_release(self.source);
-            self.dispatchSource = nil;
-//        }
-
-//        if (self.queue != nil) {
-//            dispatch_release(self.queue);
-            self.queue = nil;
-//        }
-
-        self.source = nil;
+        self.dispatchSource = nil;
+        self.queue          = nil;
+        self.source         = nil;
     }
 }
 

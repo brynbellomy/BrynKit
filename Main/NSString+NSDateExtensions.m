@@ -18,4 +18,23 @@
     return [dateFormatter stringFromDate: date];
 }
 
++ (instancetype) bryn_stringWithDate: (NSDate *)date
+                          usingStyle: (NSDateFormatterStyle)style
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = style;
+    dateFormatter.timeStyle = style;
+    return [dateFormatter stringFromDate: date];
+}
+
++ (instancetype) bryn_stringWithDate: (NSDate *)date
+                      usingDateStyle: (NSDateFormatterStyle)dateStyle
+                           timeStyle: (NSDateFormatterStyle)timeStyle
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = dateStyle;
+    dateFormatter.timeStyle = timeStyle;
+    return [dateFormatter stringFromDate: date];
+}
+
 @end
