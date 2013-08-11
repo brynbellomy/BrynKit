@@ -8,26 +8,19 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACQueueScheduler.h>
-#import <ReactiveCocoa/RACEventTrampoline.h>
 
 #define RACDefaultUnit RACUnit.defaultUnit
+#define RACSignalBox(x) [RACSignal return:(x)]
 
 @class RACFuture;
-typedef void(^RACFutureBlock)(RACFuture *future);
 
+typedef void(^RACFutureBlock)(RACFuture *future);
 
 
 @interface RACSignal (BrynKit)
 
 - (RACSignal *) onMainThreadScheduler;
-- (RACDisposable *)then:(void (^)(void))completedBlock;
-
-@end
-
-
-@interface UIGestureRecognizer (BrynKit_RAC)
-
-- (RACSignal *) rac_signalForGestures;
+//- (RACDisposable *)then:(void (^)(void))completedBlock;
 
 @end
 
@@ -51,8 +44,9 @@ typedef void(^RACFutureBlock)(RACFuture *future);
 
 @interface RACSubject (BrynKit_RACHelpers)
 
-- (void) sendUnit;
-- (void) sendUnitAndComplete;
+- (void) bk_sendUnit;
+- (void) bk_sendUnitAndComplete;
+- (void) bk_sendNextAndComplete:(id)nextObject;
 
 @end
 
@@ -75,6 +69,15 @@ typedef void(^RACFutureBlock)(RACFuture *future);
 - (instancetype) mapFromBool:(id (^)(BOOL value))block;
 - (instancetype) pluck:(NSString *)key;
 
+@end
+
+@interface RACStream (BrynKit_RCLHelpers)
+
+- (instancetype) filterCGRectNull;
+- (instancetype) filterCGRectInfinite;
+- (instancetype) filterCGRectZero;
+- (instancetype) filterCGRectIsEmpty;
+- (instancetype) filterNonpositiveCGRects;
 
 @end
 

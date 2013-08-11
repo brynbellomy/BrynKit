@@ -44,6 +44,7 @@
 //#   ifndef NS_BLOCK_ASSERTIONS
 //#       define NS_BLOCK_ASSERTIONS
 //#   endif
+
 #   if defined (DDLogError)
 #       define ALog(...) \
             do { \
@@ -108,43 +109,76 @@
         } \
     } while(0)
 
+#define yssert_fail(...) \
+    do { \
+        yssert(NO, ## __VA_ARGS__); \
+    } while(0)
+
+#define yssert_singleTypeCollection(collection, klass) \
+    do { \
+        for ( id obj in collection ) { \
+            yssert( [obj instanceOf( klass )] ); \
+        } \
+    } while(0)
+
 #define yssert_onMainThread() \
     do { \
         yssert([NSThread isMainThread], @"-[%@ %s] must be called from the main thread.", NSStringFromClass(self.class), __PRETTY_FUNCTION__); \
-    } while(0) \
+    } while(0)
 
 #define yssert_notOnMainThread() \
     do { \
-        yssert(NO == [NSThread isMainThread], @"-[%@ %s] must not be called from the main thread.", NSStringFromClass(self.class), __PRETTY_FUNCTION__); \
-    } while(0) \
+        yssert( ! [NSThread isMainThread], @"-[%@ %s] must not be called from the main thread.", NSStringFromClass(self.class), __PRETTY_FUNCTION__); \
+    } while(0)
+
+#define yssert_noError(error) \
+    do { \
+        yssert(!error, @ metamacro_stringify(obj) @" is non-NULL."); \
+    } while(0)
+
+#define yssert_errorIsNil(error) \
+    do { \
+        yssert(error == nil, @ metamacro_stringify(obj) @" is not nil.  Error = %@", [ error localizedDescription ]); \
+    } while(0)
+
+
+#define yssert_isNil(obj) \
+    do { \
+        yssert(obj == nil, @ metamacro_stringify(obj) @" is not nil."); \
+    } while(0)
 
 #define yssert_notNil(obj) \
     do { \
         yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
-    } while(0) \
+    } while(0)
 
 #define yssert_notNull(obj) \
     do { \
         yssert(obj != NULL, @ metamacro_stringify(obj) @" is nil."); \
-    } while(0) \
+    } while(0)
 
 #define yssert_notNilAndIsClass(obj, klass) \
     do { \
         yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
         yssert([obj isKindOfClass: [klass class]], @ metamacro_stringify(obj) @" is not an instance of " @ metamacro_stringify(klass)); \
-    } while(0) \
+    } while(0)
 
 #define yssert_notNilAndConformsToProtocol(obj, proto) \
     do { \
         yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
         yssert([obj conformsToProtocol: @protocol(proto)], @ metamacro_stringify(obj) @" does not conform to protocol " @ metamacro_stringify(proto)); \
-    } while(0) \
+    } while(0)
 
 #define yssert_notNilAndRespondsToSelector(obj, sel) \
     do { \
         yssert(obj != nil, @ metamacro_stringify(obj) @" is nil."); \
         yssert([obj respondsToSelector: @selector(sel)], @ metamacro_stringify(obj) @" does not respond to selector " @ metamacro_stringify(sel)); \
-    } while(0) \
+    } while(0)
+
+#define yssert_fileExistsAtPath(path) \
+    do { \
+        yssert( [[NSFileManager defaultManager] fileExistsAtPath: path], @"file (%@) doesn't exist", path ); \
+    } while(0)
 
 //static int _BrynKitDebugging_ddLogLevel = LOG_LEVEL_VERBOSE;
 //

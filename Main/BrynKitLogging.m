@@ -11,12 +11,12 @@
 
 @implementation UIColor (BrynKit_Logging)
 
-- (NSString *) bryn_xcodeColorsFGString
+- (NSString *) bk_xcodeColorsFGString
 {
     return [NSString stringWithFormat:XCODE_COLORS_ESCAPE @"fg%u,%u,%u;", (NSUInteger)(self.red * 255), (NSUInteger)(self.green * 255), (NSUInteger)(self.blue * 255)];
 }
 
-- (NSString *) bryn_xcodeColorsBGString
+- (NSString *) bk_xcodeColorsBGString
 {
     return [NSString stringWithFormat:XCODE_COLORS_ESCAPE @"bg%u,%u,%u;", (NSUInteger)(self.red * 255), (NSUInteger)(self.green * 255), (NSUInteger)(self.blue * 255)];
 }

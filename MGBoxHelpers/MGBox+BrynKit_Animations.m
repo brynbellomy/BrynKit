@@ -6,15 +6,13 @@
 //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
 //
 
-#import "Bryn.h"
-#import "BrynKitLogging.h"
-#import "BrynKitDebugging.h"
+#import "BrynKit-Main.h"
 #import "MGBox+BrynKit_Animations.h"
 
 @implementation MGBox (BrynKit_Animations)
 
-- (void) bryn_pulseBackground: (UIColor *)pulseColor
-            durationInSeconds: (CFTimeInterval)durationInSeconds
+- (void) bk_pulseBackground: (UIColor *)pulseColor
+          durationInSeconds: (CFTimeInterval)durationInSeconds
 {
     yssert_notNil(self.backgroundColor);
 

@@ -8,7 +8,6 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACImmediateScheduler.h>
-//#import <Brynstagram/BrynstagramCommon-Private.h>
 
 #import "Bryn.h"
 #import "BrynKitDebugging.h"
@@ -21,9 +20,9 @@
 
 @implementation RACSignal (RACFuture)
 
-- (RACFuture *) future
+- (RACFuture *) futureFromSignal
 {
-    RACFuture *future = RACFuture.future;
+    RACFuture *future = [RACFuture future];
 
     RACDisposable *subscription =
         [self subscribeNext:^(id x) {
@@ -41,7 +40,7 @@
 
         }];
 
-    [future rac_addDeallocDisposable: subscription];
+    [[future rac_deallocDisposable] addDisposable:subscription];
 
     return future;
 }
@@ -52,37 +51,60 @@
 
 
 @interface RACFuture ()
-
-//@property (nonatomic, assign, readwrite) dispatch_queue_t queue;
-//@property (nonatomic, strong, readwrite) RACCriticalSectionScheduler *scheduler;
-
+    @property (nonatomic, assign, readwrite) BOOL resolved;
 @end
 
-
-
-@implementation RACFuture
+@implementation RACFuture {}
 
 #pragma mark- Semantic syrup
 #pragma mark-
 
 + (instancetype) future
 {
-    return [[self class] subject];
+    return [[self class] replaySubjectWithCapacity:1];
 }
 
-//+ (instancetype) error:(NSError *)error
-//{
-//	return [[self createSignal:^ RACDisposable * (id<RACSubscriber> subscriber) {
-//		[subscriber sendError:error];
-//		return nil;
-//	}] setNameWithFormat:@"+error: %@", error];
-//}
 
-- (void) sendError:(NSError *)error
+
++ (instancetype) futureOnDefaultScheduler: (RACFutureBlock)block
 {
-    //lllog(Error, @"ERROR ON FUTURE = %@", error);
-    [super sendError:error];
+    return [self futureOnScheduler: [RACScheduler scheduler]
+                             block: [block copy]];
 }
+
+
+
++ (instancetype) futureOnScheduler: (RACScheduler *)scheduler
+                             block: (RACFutureBlock)block
+{
+    __block RACFutureBlock futureBlock = [block copy];
+    __block RACFuture *future = [RACFuture future];
+
+    [scheduler schedule:^{
+        futureBlock( future );
+    }];
+
+    return future;
+}
+
+
+
++ (instancetype) futureOnMainThread:(RACFutureBlock)block
+{
+    return [self futureOnScheduler: [RACScheduler mainThreadScheduler]
+                             block: [block copy]];
+}
+
+
+
++ (instancetype) futureWithError:(NSError *)error
+{
+    id future = [self future];
+    [future sendError: error];
+    return future;
+}
+
+
 
 - (instancetype) await
 {
@@ -90,106 +112,55 @@
     return self;
 }
 
-- (RACFuture *) then: (RACFutureBlock)block
+
+
+- (instancetype) then: (RACFutureBlock)block
 {
-    __block RACFuture *future = [RACFuture future];
+    __block RACFuture *future           = [[self class] future];
+    __block RACFutureBlock futureBlock  = [block copy];
 
     [self subscribeCompleted:^{
-               block(future);
-           }];
+        yssert_notNull( futureBlock );
+        futureBlock( future );
+    }];
 
+    yssert_notNilAndIsClass( future, RACFuture );
     return future;
 }
 
-- (void) resolve
+
+- (void) sendNext:(id)value
 {
-    [self sendUnitAndComplete];
+    @synchronized (self)
+    {
+        if ( self.resolved ) {
+            yssert_fail( @"RACFuture is already resolved and cannot be resolved more than once." );
+        }
+
+        self.resolved = YES;
+        [super sendNext:value];
+        [self sendCompleted];
+    }
+}
+
+
+- (void) resolve: (id)result
+{
+    @synchronized (self)
+    {
+        [self sendNext:result];
+    }
 }
 
 
 
-#pragma mark- The meat
-#pragma mark-
-
-
-
-//+ (RACFuture *) xrac_runOnCriticalSectionScheduler: (RACScheduler *)criticalSectionScheduler
-//                             criticalMutationBlock: (RACFutureBlock)blockCritical
-//{
-//    yssert_notNil(blockCritical);
-//    yssert_notNil(criticalSectionScheduler);
-//
-//    RACFuture *subscribableFuture = RACFuture.future;                                      yssert_notNil(subscribableFuture);
-//
-//    @weakify(self, subscribableFuture);
-//    subscribableFuture.didSubscribe = ^(id<RACSubscriber> subscriber) {
-//        @strongify(self, subscribableFuture);
-//
-//        yssert_notNil(subscriber);
-//        yssert_notNil(blockCritical);
-//        yssert_notNil(criticalSectionScheduler);
-//
-//        RACFuture     *innerFuture            = RACFuture.future;                                      yssert_notNil(innerFuture);
-//        RACScheduler  *scheduler              = nil;
-//        RACDisposable *schedulerDisposable    = nil;
-//        RACDisposable *subscriptionDisposable = [subscribableFuture subscribe:subscriber];              yssert_notNil(subscriptionDisposable);
-//        RACCompoundDisposable *compoundDisposable = RACCompoundDisposable.compoundDisposable;           yssert_notNil(compoundDisposable);
-//        [compoundDisposable addDisposable:subscriptionDisposable];
-//
-//        if (RACScheduler.currentScheduler == criticalSectionScheduler || dispatch_get_current_queue() == queue)
-//        {
-//            scheduler = $new(RACImmediateScheduler);
-//        }
-//        else
-//        {
-//            scheduler = criticalSectionScheduler;
-//        }
-//
-//        //
-//        // schedule the block on whichever scheduler we prepared
-//        //
-//        schedulerDisposable = [scheduler schedule:^{
-//            yssert_notNil(blockCritical);
-//            yssert_notNil(innerFuture);
-//
-//            blockCritical(innerFuture);
-//            [innerFuture await];
-//            [subscribableFuture resolve];
-//        }];
-//
-//        [compoundDisposable addDisposable:schedulerDisposable];
-//
-//        return compoundDisposable;
-//    };
-//
-//    return [subscribableFuture setNameWithFormat:@"- rac_runOnCriticalSectionScheduler: %@ criticalMutationBlock: %@", criticalSectionScheduler, blockCritical];
-//}
-
-
-
-///**
-// * #### rac_runOnCriticalSectionQueue:criticalMutationBlock:
-// *
-// * Runs the given block on the critical section queue asynchronously, but as a barrier block
-// * that blocks any other critical operations until it completes.  This apparently has an
-// * advantage for performance.
-// *
-// * @param {dispatch_queue_t} queue
-// * @param {RACFutureBlock} blockCritical
-// * @return {RACFuture*}
-// */
-//
-//+ (RACFuture *) rac_runOnCriticalSectionQueue: (dispatch_queue_t)queue
-//                        criticalMutationBlock: (RACFutureBlock)blockCritical
-//{
-//    yssert_notNil(queue);
-//    yssert_notNil(blockCritical);
-//
-//    RACCriticalSectionScheduler *scheduler = [RACCriticalSectionScheduler schedulerForQueue: queue];
-//    yssert_notNil(scheduler);
-//
-//    return [scheduler scheduleCritical:blockCritical];
-//}
+- (void) resolve
+{
+    @synchronized (self)
+    {
+        [self resolve: RACDefaultUnit];
+    }
+}
 
 @end
 

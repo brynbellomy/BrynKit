@@ -11,11 +11,9 @@
 
 @class RACFuture, RACCriticalSectionScheduler;
 
-
-
 @interface RACSignal (RACFuture)
 
-- (RACFuture *) future;
+- (RACFuture *) futureFromSignal;
 
 @end
 
@@ -23,24 +21,23 @@
 
 @interface RACFuture : RACReplaySubject
 
-//@property (nonatomic, assign, readonly) dispatch_queue_t queue;
-//@property (nonatomic, strong, readonly) RACCriticalSectionScheduler *scheduler;
+@property (nonatomic, assign, readonly)  BOOL resolved;
 
-//
-// semantic syrup
-//
 + (instancetype) future;
-- (instancetype) await;
-- (void) resolve;
-- (RACFuture *) then: (RACFutureBlock)block;
++ (instancetype) futureOnScheduler:(RACScheduler *)scheduler block:(RACFutureBlock)block __attribute__(( nonnull (1, 2) ));
++ (instancetype) futureOnDefaultScheduler:(RACFutureBlock)block __attribute__(( nonnull (1) ));
++ (instancetype) futureOnMainThread:(RACFutureBlock)block __attribute__(( nonnull (1) ));
++ (instancetype) futureWithError:(NSError *)error __attribute__(( nonnull (1) ));
 
-//
-// the meat
-//
-//+ (RACFuture *) runOnCriticalSectionQueue: (dispatch_queue_t)queue
-//                    criticalMutationBlock: (RACFutureBlock)blockCritical;
-//
-//+ (RACFuture *) runOnCriticalSectionScheduler: (RACCriticalSectionScheduler *)criticalSectionScheduler
-//                        criticalMutationBlock: (RACFutureBlock)blockCritical;
+- (void) resolve;
+- (void) resolve: (id)result __attribute__(( nonnull (1) ));
+
+- (instancetype) await;
+- (instancetype) then: (RACFutureBlock)block __attribute__(( nonnull (1) ));
 
 @end
+
+
+
+
+

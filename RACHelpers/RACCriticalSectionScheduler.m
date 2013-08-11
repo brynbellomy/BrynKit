@@ -6,42 +6,42 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-#import <ReactiveCocoa/RACQueueScheduler.h>
+#import <ReactiveCocoa/RACTargetQueueScheduler.h>
 #import <ReactiveCocoa/RACScheduler+Private.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <GCDThreadsafe/GCDThreadsafe.h>
 #import <libextobjc/EXTScope.h>
 
-#import "Bryn.h"
-#import "BrynKitDebugging.h"
-#import "BrynKitLogging.h"
+#import "BrynKit-Main.h"
 
 #import "RACHelpers.h"
 #import "RACCriticalSectionScheduler.h"
-#import "RACHelpers.h"
 #import "RACFuture.h"
 
 
 
-@interface RACQueueScheduler ()
-
-@property (nonatomic, readonly) dispatch_queue_t queue;
-
+@interface RACTargetQueueScheduler ()
+    @property (nonatomic, readonly) dispatch_queue_t queue;
 @end
 
-static void *criticalSectionSchedulerQueueKey;
-BOOL onCriticalSectionScheduler(RACCriticalSectionScheduler *scheduler)
-{
-    dispatch_queue_t currentQueue = dispatch_get_current_queue();
-    return dispatch_get_specific(criticalSectionSchedulerQueueKey) == (__bridge void *)scheduler;
-}
 
+
+@interface RACCriticalSectionScheduler () <GCDThreadsafe>
+@end
 
 
 @implementation RACCriticalSectionScheduler
 
-static void currentSchedulerRelease(void *context) {
+static void currentSchedulerRelease(void *context)
+{
 	CFBridgingRelease(context);
 }
+
+
+BKImplementConvenienceInitializer(scheduler,WithName:, NSString *, name,
+                                         targetQueue:, dispatch_queue_t, targetQueue)
+
+
 
 - (instancetype) initWithName: (NSString *)name
                   targetQueue: (dispatch_queue_t)targetQueue
@@ -49,38 +49,26 @@ static void currentSchedulerRelease(void *context) {
     self = [super initWithName:name targetQueue:targetQueue];
     if (self)
     {
-        criticalSectionSchedulerQueueKey = &criticalSectionSchedulerQueueKey;
-        dispatch_queue_set_specific(self.queue, criticalSectionSchedulerQueueKey, (__bridge void *)self, NULL);
+        self.queueCritical = targetQueue;
+        GCDInitializeQueue( self.queueCritical );
     }
     return self;
 }
 
-/**
- * performAsCurrentScheduler:withFuture:
- *
- * @param {RACFutureBlock} block
- * @param {RACFuture*} future
- */
+
 
 - (void) performAsCurrentScheduler: (RACFutureBlock)block
                         withFuture: (RACFuture *)future
 {
-    yssert_notNull(block);
-    yssert_notNilAndIsClass(future, RACFuture);
+    yssert_notNull( block );
+    yssert_notNilAndIsClass( future, RACFuture );
 
-    dispatch_queue_set_specific(self.queue, RACSchedulerCurrentSchedulerKey, (void *)CFBridgingRetain(self), currentSchedulerRelease);
-    block(future);
-    dispatch_queue_set_specific(self.queue, RACSchedulerCurrentSchedulerKey, nil, currentSchedulerRelease);
+    dispatch_queue_set_specific( self.queue, (__bridge void *)RACSchedulerCurrentSchedulerKey, (void *)CFBridgingRetain( self ), currentSchedulerRelease );
+    block( future );
+    dispatch_queue_set_specific( self.queue, (__bridge void *)RACSchedulerCurrentSchedulerKey, nil, currentSchedulerRelease );
 }
 
 
-
-/**
- * scheduleCritical:
- *
- * @param {RACFutureBlock} block
- * @return {RACFuture*}
- */
 
 - (RACFuture *) scheduleCritical: (RACFutureBlock)block
 {
@@ -89,14 +77,14 @@ static void currentSchedulerRelease(void *context) {
     __block RACFuture *subscribableFuture = [RACFuture future];
     yssert_notNilAndIsClass(subscribableFuture, RACFuture);
 
-    if (onCriticalSectionScheduler(self))
+    if ( GCDCurrentQueueIs( self.queueCritical ) )
     {
-        block(subscribableFuture);
+        block( subscribableFuture );
     }
     else
     {
         @weakify(self)
-        dispatch_barrier_async(self.queue, ^{
+        dispatch_barrier_async(self.queueCritical, ^{
             @strongify(self);
             [self performAsCurrentScheduler:block withFuture:subscribableFuture];
         });
@@ -106,14 +94,6 @@ static void currentSchedulerRelease(void *context) {
 }
 
 
-
-/**
- * after:scheduleCritical:
- *
- * @param {dispatch_time_T} when
- * @param {RACFutureBlock} block
- * @return {RACFuture*}
- */
 
 - (RACFuture *) after: (dispatch_time_t)when
      scheduleCritical: (RACFutureBlock)block

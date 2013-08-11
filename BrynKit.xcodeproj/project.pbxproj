@@ -1,0 +1,994 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9749EE0E3A8D4198ADA5BC50 /* libPods-BrynKitTests-OCUnit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20912CF9E3D443F49FF8EFCB /* libPods-BrynKitTests-OCUnit.a */; };
+		C55C54FA17793E6000B78A60 /* Bryn+CocoaLumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F071F17793C9600F98447 /* Bryn+CocoaLumberjack.m */; };
+		C55C54FC17793E6000B78A60 /* DCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F072517793C9600F98447 /* DCControl.m */; };
+		C55C54FD17793E6000B78A60 /* DCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F072717793C9600F98447 /* DCSlider.m */; };
+		C55C54FF17793E6000B78A60 /* FIIconView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F072D17793C9600F98447 /* FIIconView+Extensions.m */; };
+		C56D7CB2179963090043222E /* Bryn.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073317793C9600F98447 /* Bryn.m */; };
+		C56D7CB4179963090043222E /* BrynKitLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073817793C9600F98447 /* BrynKitLogging.m */; };
+		C56D7CB5179963090043222E /* NSString+BrynKit_Dates.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073A17793C9600F98447 /* NSString+BrynKit_Dates.m */; };
+		C56D7CB8179963090043222E /* BrynKitMemoryLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074217793C9600F98447 /* BrynKitMemoryLogging.m */; };
+		C56D7CB9179963090043222E /* MGBox+BrynKit_Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074517793C9600F98447 /* MGBox+BrynKit_Animations.m */; };
+		C56D7CBA179963090043222E /* MGBoxHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074717793C9600F98447 /* MGBoxHelpers.m */; };
+		C56D7CBB179963090043222E /* RACCriticalSectionScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */; };
+		C56D7CBC179963090043222E /* RACFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074F17793C9600F98447 /* RACFuture.m */; };
+		C56D7CBD179963090043222E /* RACHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075117793C9600F98447 /* RACHelpers.m */; };
+		C56D7CBE179963090043222E /* RACScheduler+SECriticalSectionScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */; };
+		C56D7CBF179963090043222E /* RACTransformableBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075517793C9600F98447 /* RACTransformableBinding.m */; };
+		C56D7CC0179963090043222E /* UIButton+RACCommandSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */; };
+		C56D7CC2179963090043222E /* SEGradientSwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F076117793C9600F98447 /* SEGradientSwatch.m */; };
+		C58E26B3179E68C300CBDD0C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268101757B04F005BBB4A /* CoreGraphics.framework */; };
+		C58E26B5179E68CD00CBDD0C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C58E26B4179E68CD00CBDD0C /* CoreVideo.framework */; };
+		C58E26B8179E6DE600CBDD0C /* BKNSStringSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C58E26B7179E6DE600CBDD0C /* BKNSStringSpec.m */; };
+		C58E26BB179E724100CBDD0C /* NSString+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C58E26BA179E724100CBDD0C /* NSString+BrynKit.m */; };
+		C58F068D17792A1200F98447 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267F21757AB60005BBB4A /* SenTestingKit.framework */; };
+		C58F068E17792A1200F98447 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267E31757AB60005BBB4A /* Foundation.framework */; };
+		C58F068F17792A1200F98447 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C2680E1757B049005BBB4A /* UIKit.framework */; };
+		C58F069517792A1200F98447 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C58F069317792A1200F98447 /* InfoPlist.strings */; };
+		C58F06A217792AFB00F98447 /* BrynFUISwitchSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */; };
+		C58F06A317792AFB00F98447 /* RACTransformableBindingSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */; };
+		C58F06A417792AFB00F98447 /* RACFutureSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */; };
+		C58F06A717792CBD00F98447 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268161757B065005BBB4A /* ImageIO.framework */; };
+		C58F06A917792CBD00F98447 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C58F06A817792CBD00F98447 /* CoreImage.framework */; };
+		C58F06AA17792CC200F98447 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268121757B054005BBB4A /* QuartzCore.framework */; };
+		C58F06AB17792CC800F98447 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268181757B06D005BBB4A /* CoreText.framework */; };
+		C58F071D177939BC00F98447 /* libBrynKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267E01757AB60005BBB4A /* libBrynKit.a */; };
+		C59B180817AC4EE300B7315E /* UILabel+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B180717AC4EE300B7315E /* UILabel+BrynKit.m */; };
+		C59B180B17AC4F2500B7315E /* UIView+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B180A17AC4F2500B7315E /* UIView+BrynKit.m */; };
+		C59B181E17AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B181717AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.m */; };
+		C59B181F17AC5F2A00B7315E /* NSMutableSet+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B181917AC5F2A00B7315E /* NSMutableSet+BrynKit.m */; };
+		C59B182017AC5F2A00B7315E /* NSOrderedSet+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B181B17AC5F2A00B7315E /* NSOrderedSet+BrynKit.m */; };
+		C59B182117AC5F2A00B7315E /* NSSet+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B181D17AC5F2A00B7315E /* NSSet+BrynKit.m */; };
+		C59B182717AC604800B7315E /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B182617AC604800B7315E /* UIColor+Expanded.m */; };
+		C59B182A17AC606000B7315E /* NSArray+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B182917AC606000B7315E /* NSArray+BrynKit.m */; };
+		C59B182D17AC60C100B7315E /* NSDictionary+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C59B182C17AC60C100B7315E /* NSDictionary+BrynKit.m */; };
+		C5C05B1017995FCB00F41DA1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268101757B04F005BBB4A /* CoreGraphics.framework */; };
+		C5C05B1117995FD100F41DA1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268121757B054005BBB4A /* QuartzCore.framework */; };
+		C5C05B1217995FD800F41DA1 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268161757B065005BBB4A /* ImageIO.framework */; };
+		C5C05B1317995FE300F41DA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C2680E1757B049005BBB4A /* UIKit.framework */; };
+		C5C267E41757AB60005BBB4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267E31757AB60005BBB4A /* Foundation.framework */; };
+		C5C2680C1757AC64005BBB4A /* stub.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C2680B1757AC64005BBB4A /* stub.m */; };
+		C5DA5F6217A4961100857044 /* NSObject+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5F6117A4961100857044 /* NSObject+BrynKit.m */; };
+		C5DA5F6917A4980F00857044 /* BKFloatRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5F6817A4980F00857044 /* BKFloatRange.m */; };
+		C5DA5F6E17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5F6D17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m */; };
+		C5DA5FE017A798A500857044 /* UIDevice+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5FDB17A798A500857044 /* UIDevice+BrynKit.m */; };
+		C5DA5FE117A798A500857044 /* UIScreen+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5FDD17A798A500857044 /* UIScreen+BrynKit.m */; };
+		C5DA5FE217A798A500857044 /* UIView+Autoresizing.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5FDF17A798A500857044 /* UIView+Autoresizing.m */; };
+		C5DA5FE917A7996400857044 /* BrynKitCoreGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA5FE817A7996400857044 /* BrynKitCoreGraphics.m */; };
+		C5FF400D17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FF400C17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.m */; };
+		C5FF401017B6F8BE0038E79C /* UIImage+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FF400F17B6F8BE0038E79C /* UIImage+BrynKit.m */; };
+		C5FF401317B6FF500038E79C /* UIColor+BrynKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FF401217B6FF500038E79C /* UIColor+BrynKit.m */; };
+		C5FF401717B734260038E79C /* BrynKitMBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FF401617B734260038E79C /* BrynKitMBProgressHUD.m */; };
+		C5FF401817B744400038E79C /* BrynKitDDLogColorFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FF400917B6F0D40038E79C /* BrynKitDDLogColorFormatter.m */; };
+		F30A08C2D0FD422FBC4C0B85 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47E70A0EE9C9469D8589F4E9 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C58F069917792A1200F98447 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5C267D81757AB60005BBB4A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5C267DF1757AB60005BBB4A;
+			remoteInfo = BrynKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		20912CF9E3D443F49FF8EFCB /* libPods-BrynKitTests-OCUnit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BrynKitTests-OCUnit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E476462F1150E3F7E74B8AB /* BrynKit-Main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BrynKit-Main.h"; sourceTree = "<group>"; };
+		2E476B0A24348276DB99A866 /* BrynKitUIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrynKitUIColor.h; sourceTree = "<group>"; };
+		47E70A0EE9C9469D8589F4E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DB26C64EC6E432EA94132A8 /* libPods-BrynKitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BrynKitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F99A5E6A5FE4C148784B149 /* Pods-BrynKitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrynKitTests.xcconfig"; path = "Pods/Pods-BrynKitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		96B4DE984C3D44EB919BD75D /* Pods-BrynKitTests-OCUnit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrynKitTests-OCUnit.xcconfig"; path = "Pods/Pods-BrynKitTests-OCUnit.xcconfig"; sourceTree = SOURCE_ROOT; };
+		9B8E51CE904546A2A3CA636A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RACFutureSpec.m; path = ../BrynKitTests/RACFutureSpec.m; sourceTree = "<group>"; };
+		C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrynFUISwitchSpec.m; path = ../BrynKitTests/BrynFUISwitchSpec.m; sourceTree = "<group>"; };
+		C58E26B4179E68CD00CBDD0C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C58E26B7179E6DE600CBDD0C /* BKNSStringSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKNSStringSpec.m; path = BrynKitTests/BKNSStringSpec.m; sourceTree = SOURCE_ROOT; };
+		C58E26B9179E724100CBDD0C /* NSString+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BrynKit.h"; sourceTree = "<group>"; };
+		C58E26BA179E724100CBDD0C /* NSString+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BrynKit.m"; sourceTree = "<group>"; };
+		C58F068C17792A1200F98447 /* BrynKitTests-OCUnit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BrynKitTests-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C58F069217792A1200F98447 /* BrynKitTests-OCUnit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BrynKitTests-OCUnit-Info.plist"; sourceTree = "<group>"; };
+		C58F069417792A1200F98447 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C58F069817792A1200F98447 /* BrynKitTests-OCUnit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BrynKitTests-OCUnit-Prefix.pch"; sourceTree = "<group>"; };
+		C58F06A817792CBD00F98447 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		C58F071E17793C9600F98447 /* Bryn+CocoaLumberjack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bryn+CocoaLumberjack.h"; sourceTree = "<group>"; };
+		C58F071F17793C9600F98447 /* Bryn+CocoaLumberjack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Bryn+CocoaLumberjack.m"; sourceTree = "<group>"; };
+		C58F072017793C9600F98447 /* BrynKitCocoaLumberjack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitCocoaLumberjack.h; sourceTree = "<group>"; };
+		C58F072417793C9600F98447 /* DCControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCControl.h; sourceTree = "<group>"; };
+		C58F072517793C9600F98447 /* DCControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCControl.m; sourceTree = "<group>"; };
+		C58F072617793C9600F98447 /* DCSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCSlider.h; sourceTree = "<group>"; };
+		C58F072717793C9600F98447 /* DCSlider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCSlider.m; sourceTree = "<group>"; };
+		C58F072C17793C9600F98447 /* FIIconView+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FIIconView+Extensions.h"; sourceTree = "<group>"; };
+		C58F072D17793C9600F98447 /* FIIconView+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "FIIconView+Extensions.m"; sourceTree = "<group>"; };
+		C58F073217793C9600F98447 /* Bryn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bryn.h; sourceTree = "<group>"; };
+		C58F073317793C9600F98447 /* Bryn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bryn.m; sourceTree = "<group>"; };
+		C58F073417793C9600F98447 /* BrynKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKit.h; sourceTree = "<group>"; };
+		C58F073617793C9600F98447 /* BrynKitDebugging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitDebugging.h; sourceTree = "<group>"; };
+		C58F073717793C9600F98447 /* BrynKitLogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitLogging.h; sourceTree = "<group>"; };
+		C58F073817793C9600F98447 /* BrynKitLogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrynKitLogging.m; sourceTree = "<group>"; };
+		C58F073917793C9600F98447 /* NSString+BrynKit_Dates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+BrynKit_Dates.h"; sourceTree = "<group>"; };
+		C58F073A17793C9600F98447 /* NSString+BrynKit_Dates.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+BrynKit_Dates.m"; sourceTree = "<group>"; };
+		C58F074117793C9600F98447 /* BrynKitMemoryLogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitMemoryLogging.h; sourceTree = "<group>"; };
+		C58F074217793C9600F98447 /* BrynKitMemoryLogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrynKitMemoryLogging.m; sourceTree = "<group>"; };
+		C58F074417793C9600F98447 /* MGBox+BrynKit_Animations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MGBox+BrynKit_Animations.h"; sourceTree = "<group>"; };
+		C58F074517793C9600F98447 /* MGBox+BrynKit_Animations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MGBox+BrynKit_Animations.m"; sourceTree = "<group>"; };
+		C58F074617793C9600F98447 /* MGBoxHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGBoxHelpers.h; sourceTree = "<group>"; };
+		C58F074717793C9600F98447 /* MGBoxHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGBoxHelpers.m; sourceTree = "<group>"; };
+		C58F074917793C9600F98447 /* RACDispatchTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACDispatchTimer.h; sourceTree = "<group>"; };
+		C58F074A17793C9600F98447 /* RACDispatchTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACDispatchTimer.m; sourceTree = "<group>"; };
+		C58F074C17793C9600F98447 /* RACCriticalSectionScheduler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACCriticalSectionScheduler.h; sourceTree = "<group>"; };
+		C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACCriticalSectionScheduler.m; sourceTree = "<group>"; };
+		C58F074E17793C9600F98447 /* RACFuture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACFuture.h; sourceTree = "<group>"; };
+		C58F074F17793C9600F98447 /* RACFuture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACFuture.m; sourceTree = "<group>"; };
+		C58F075017793C9600F98447 /* RACHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACHelpers.h; sourceTree = "<group>"; };
+		C58F075117793C9600F98447 /* RACHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACHelpers.m; sourceTree = "<group>"; };
+		C58F075217793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RACScheduler+SECriticalSectionScheduler.h"; sourceTree = "<group>"; };
+		C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RACScheduler+SECriticalSectionScheduler.m"; sourceTree = "<group>"; };
+		C58F075417793C9600F98447 /* RACTransformableBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACTransformableBinding.h; sourceTree = "<group>"; };
+		C58F075517793C9600F98447 /* RACTransformableBinding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACTransformableBinding.m; sourceTree = "<group>"; };
+		C58F075617793C9600F98447 /* UIButton+RACCommandSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+RACCommandSupport.h"; sourceTree = "<group>"; };
+		C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+RACCommandSupport.m"; sourceTree = "<group>"; };
+		C58F075917793C9600F98447 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		C58F075A17793C9600F98447 /* RRFPSBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RRFPSBar.h; sourceTree = "<group>"; };
+		C58F075B17793C9600F98447 /* RRFPSBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RRFPSBar.m; sourceTree = "<group>"; };
+		C58F076017793C9600F98447 /* SEGradientSwatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEGradientSwatch.h; sourceTree = "<group>"; };
+		C58F076117793C9600F98447 /* SEGradientSwatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SEGradientSwatch.m; sourceTree = "<group>"; };
+		C59B180617AC4EE300B7315E /* UILabel+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+BrynKit.h"; sourceTree = "<group>"; };
+		C59B180717AC4EE300B7315E /* UILabel+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+BrynKit.m"; sourceTree = "<group>"; };
+		C59B180917AC4F2500B7315E /* UIView+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+BrynKit.h"; sourceTree = "<group>"; };
+		C59B180A17AC4F2500B7315E /* UIView+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+BrynKit.m"; sourceTree = "<group>"; };
+		C59B181617AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableOrderedSet+BrynKit.h"; sourceTree = "<group>"; };
+		C59B181717AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableOrderedSet+BrynKit.m"; sourceTree = "<group>"; };
+		C59B181817AC5F2A00B7315E /* NSMutableSet+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableSet+BrynKit.h"; sourceTree = "<group>"; };
+		C59B181917AC5F2A00B7315E /* NSMutableSet+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableSet+BrynKit.m"; sourceTree = "<group>"; };
+		C59B181A17AC5F2A00B7315E /* NSOrderedSet+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOrderedSet+BrynKit.h"; sourceTree = "<group>"; };
+		C59B181B17AC5F2A00B7315E /* NSOrderedSet+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOrderedSet+BrynKit.m"; sourceTree = "<group>"; };
+		C59B181C17AC5F2A00B7315E /* NSSet+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+BrynKit.h"; sourceTree = "<group>"; };
+		C59B181D17AC5F2A00B7315E /* NSSet+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+BrynKit.m"; sourceTree = "<group>"; };
+		C59B182517AC604800B7315E /* UIColor+Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Expanded.h"; sourceTree = "<group>"; };
+		C59B182617AC604800B7315E /* UIColor+Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Expanded.m"; sourceTree = "<group>"; };
+		C59B182817AC606000B7315E /* NSArray+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+BrynKit.h"; sourceTree = "<group>"; };
+		C59B182917AC606000B7315E /* NSArray+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+BrynKit.m"; sourceTree = "<group>"; };
+		C59B182B17AC60C000B7315E /* NSDictionary+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+BrynKit.h"; sourceTree = "<group>"; };
+		C59B182C17AC60C100B7315E /* NSDictionary+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+BrynKit.m"; sourceTree = "<group>"; };
+		C5C267E01757AB60005BBB4A /* libBrynKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBrynKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5C267E31757AB60005BBB4A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C5C267F21757AB60005BBB4A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		C5C267F41757AB60005BBB4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		C5C2680B1757AC64005BBB4A /* stub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stub.m; sourceTree = SOURCE_ROOT; };
+		C5C2680D1757ACE8005BBB4A /* BrynKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BrynKit-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		C5C2680E1757B049005BBB4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C5C268101757B04F005BBB4A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C5C268121757B054005BBB4A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C5C268141757B05F005BBB4A /* libPods-BrynKitTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BrynKitTests.a"; path = "Pods/build/Release-iphoneos/libPods-BrynKitTests.a"; sourceTree = "<group>"; };
+		C5C268161757B065005BBB4A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		C5C268181757B06D005BBB4A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RACTransformableBindingSpec.m; path = ../BrynKitTests/RACTransformableBindingSpec.m; sourceTree = "<group>"; };
+		C5DA5F6017A4961100857044 /* NSObject+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BrynKit.h"; sourceTree = "<group>"; };
+		C5DA5F6117A4961100857044 /* NSObject+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BrynKit.m"; sourceTree = "<group>"; };
+		C5DA5F6717A4980F00857044 /* BKFloatRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKFloatRange.h; sourceTree = "<group>"; };
+		C5DA5F6817A4980F00857044 /* BKFloatRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKFloatRange.m; sourceTree = "<group>"; };
+		C5DA5F6A17A4995600857044 /* BrynKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BrynKit.podspec; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C5DA5F6B17A4995600857044 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C5DA5F6C17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+BrynKitObjCRuntime.h"; path = "Main/NSObject+BrynKitObjCRuntime.h"; sourceTree = SOURCE_ROOT; };
+		C5DA5F6D17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+BrynKitObjCRuntime.m"; path = "Main/NSObject+BrynKitObjCRuntime.m"; sourceTree = SOURCE_ROOT; };
+		C5DA5FDA17A798A500857044 /* UIDevice+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+BrynKit.h"; sourceTree = "<group>"; };
+		C5DA5FDB17A798A500857044 /* UIDevice+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+BrynKit.m"; sourceTree = "<group>"; };
+		C5DA5FDC17A798A500857044 /* UIScreen+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+BrynKit.h"; sourceTree = "<group>"; };
+		C5DA5FDD17A798A500857044 /* UIScreen+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+BrynKit.m"; sourceTree = "<group>"; };
+		C5DA5FDE17A798A500857044 /* UIView+Autoresizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Autoresizing.h"; sourceTree = "<group>"; };
+		C5DA5FDF17A798A500857044 /* UIView+Autoresizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Autoresizing.m"; sourceTree = "<group>"; };
+		C5DA5FE717A7996400857044 /* BrynKitCoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrynKitCoreGraphics.h; sourceTree = "<group>"; };
+		C5DA5FE817A7996400857044 /* BrynKitCoreGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrynKitCoreGraphics.m; sourceTree = "<group>"; };
+		C5FF400817B6F0D40038E79C /* BrynKitDDLogColorFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrynKitDDLogColorFormatter.h; sourceTree = "<group>"; };
+		C5FF400917B6F0D40038E79C /* BrynKitDDLogColorFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrynKitDDLogColorFormatter.m; sourceTree = "<group>"; };
+		C5FF400B17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BrynKit_ColorLogging.h"; sourceTree = "<group>"; };
+		C5FF400C17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BrynKit_ColorLogging.m"; sourceTree = "<group>"; };
+		C5FF400E17B6F8BE0038E79C /* UIImage+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BrynKit.h"; sourceTree = "<group>"; };
+		C5FF400F17B6F8BE0038E79C /* UIImage+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BrynKit.m"; sourceTree = "<group>"; };
+		C5FF401117B6FF500038E79C /* UIColor+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BrynKit.h"; sourceTree = "<group>"; };
+		C5FF401217B6FF500038E79C /* UIColor+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BrynKit.m"; sourceTree = "<group>"; };
+		C5FF401517B734260038E79C /* BrynKitMBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrynKitMBProgressHUD.h; sourceTree = "<group>"; };
+		C5FF401617B734260038E79C /* BrynKitMBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrynKitMBProgressHUD.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C58F068917792A1200F98447 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C58E26B5179E68CD00CBDD0C /* CoreVideo.framework in Frameworks */,
+				C58E26B3179E68C300CBDD0C /* CoreGraphics.framework in Frameworks */,
+				C58F071D177939BC00F98447 /* libBrynKit.a in Frameworks */,
+				C58F06AB17792CC800F98447 /* CoreText.framework in Frameworks */,
+				C58F06AA17792CC200F98447 /* QuartzCore.framework in Frameworks */,
+				C58F06A917792CBD00F98447 /* CoreImage.framework in Frameworks */,
+				C58F06A717792CBD00F98447 /* ImageIO.framework in Frameworks */,
+				C58F068D17792A1200F98447 /* SenTestingKit.framework in Frameworks */,
+				C58F068F17792A1200F98447 /* UIKit.framework in Frameworks */,
+				C58F068E17792A1200F98447 /* Foundation.framework in Frameworks */,
+				9749EE0E3A8D4198ADA5BC50 /* libPods-BrynKitTests-OCUnit.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5C267DD1757AB60005BBB4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5C05B1317995FE300F41DA1 /* UIKit.framework in Frameworks */,
+				C5C05B1217995FD800F41DA1 /* ImageIO.framework in Frameworks */,
+				C5C05B1117995FD100F41DA1 /* QuartzCore.framework in Frameworks */,
+				C5C05B1017995FCB00F41DA1 /* CoreGraphics.framework in Frameworks */,
+				C5C267E41757AB60005BBB4A /* Foundation.framework in Frameworks */,
+				F30A08C2D0FD422FBC4C0B85 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C58F069017792A1200F98447 /* BrynKitTests-OCUnit */ = {
+			isa = PBXGroup;
+			children = (
+				C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */,
+				C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */,
+				C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */,
+				C58E26B7179E6DE600CBDD0C /* BKNSStringSpec.m */,
+				C58F069117792A1200F98447 /* Supporting Files */,
+			);
+			path = "BrynKitTests-OCUnit";
+			sourceTree = "<group>";
+		};
+		C58F069117792A1200F98447 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C58F069217792A1200F98447 /* BrynKitTests-OCUnit-Info.plist */,
+				C58F069317792A1200F98447 /* InfoPlist.strings */,
+				C58F069817792A1200F98447 /* BrynKitTests-OCUnit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C58F072317793C9600F98447 /* CocoaLumberjack */ = {
+			isa = PBXGroup;
+			children = (
+				C58F071E17793C9600F98447 /* Bryn+CocoaLumberjack.h */,
+				C58F071F17793C9600F98447 /* Bryn+CocoaLumberjack.m */,
+				C58F072017793C9600F98447 /* BrynKitCocoaLumberjack.h */,
+			);
+			path = CocoaLumberjack;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F072817793C9600F98447 /* DCSlider */ = {
+			isa = PBXGroup;
+			children = (
+				C58F072417793C9600F98447 /* DCControl.h */,
+				C58F072517793C9600F98447 /* DCControl.m */,
+				C58F072617793C9600F98447 /* DCSlider.h */,
+				C58F072717793C9600F98447 /* DCSlider.m */,
+			);
+			path = DCSlider;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F072E17793C9600F98447 /* FontasticIcons */ = {
+			isa = PBXGroup;
+			children = (
+				C58F072C17793C9600F98447 /* FIIconView+Extensions.h */,
+				C58F072D17793C9600F98447 /* FIIconView+Extensions.m */,
+			);
+			path = FontasticIcons;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F073D17793C9600F98447 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				C58F073217793C9600F98447 /* Bryn.h */,
+				C58F073317793C9600F98447 /* Bryn.m */,
+				2E476462F1150E3F7E74B8AB /* BrynKit-Main.h */,
+				C58F073417793C9600F98447 /* BrynKit.h */,
+				C58F073617793C9600F98447 /* BrynKitDebugging.h */,
+				C58F073717793C9600F98447 /* BrynKitLogging.h */,
+				C58F073817793C9600F98447 /* BrynKitLogging.m */,
+				C5DA5F6C17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.h */,
+				C5DA5F6D17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m */,
+				C58E26B9179E724100CBDD0C /* NSString+BrynKit.h */,
+				C58E26BA179E724100CBDD0C /* NSString+BrynKit.m */,
+				C5DA5F6017A4961100857044 /* NSObject+BrynKit.h */,
+				C5DA5F6117A4961100857044 /* NSObject+BrynKit.m */,
+				C58F073917793C9600F98447 /* NSString+BrynKit_Dates.h */,
+				C58F073A17793C9600F98447 /* NSString+BrynKit_Dates.m */,
+			);
+			path = Main;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F074317793C9600F98447 /* MemoryLogging */ = {
+			isa = PBXGroup;
+			children = (
+				C58F074117793C9600F98447 /* BrynKitMemoryLogging.h */,
+				C58F074217793C9600F98447 /* BrynKitMemoryLogging.m */,
+			);
+			path = MemoryLogging;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F074817793C9600F98447 /* MGBoxHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				C58F074417793C9600F98447 /* MGBox+BrynKit_Animations.h */,
+				C58F074517793C9600F98447 /* MGBox+BrynKit_Animations.m */,
+				C58F074617793C9600F98447 /* MGBoxHelpers.h */,
+				C58F074717793C9600F98447 /* MGBoxHelpers.m */,
+			);
+			path = MGBoxHelpers;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F074B17793C9600F98447 /* RACDispatchTimer */ = {
+			isa = PBXGroup;
+			children = (
+				C58F074917793C9600F98447 /* RACDispatchTimer.h */,
+				C58F074A17793C9600F98447 /* RACDispatchTimer.m */,
+			);
+			path = RACDispatchTimer;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F075817793C9600F98447 /* RACHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				C58F074C17793C9600F98447 /* RACCriticalSectionScheduler.h */,
+				C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */,
+				C58F074E17793C9600F98447 /* RACFuture.h */,
+				C58F074F17793C9600F98447 /* RACFuture.m */,
+				C58F075017793C9600F98447 /* RACHelpers.h */,
+				C58F075117793C9600F98447 /* RACHelpers.m */,
+				C58F075217793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.h */,
+				C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */,
+				C58F075417793C9600F98447 /* RACTransformableBinding.h */,
+				C58F075517793C9600F98447 /* RACTransformableBinding.m */,
+				C58F075617793C9600F98447 /* UIButton+RACCommandSupport.h */,
+				C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */,
+			);
+			path = RACHelpers;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F075C17793C9600F98447 /* RRFPSBar */ = {
+			isa = PBXGroup;
+			children = (
+				C58F075917793C9600F98447 /* README.md */,
+				C58F075A17793C9600F98447 /* RRFPSBar.h */,
+				C58F075B17793C9600F98447 /* RRFPSBar.m */,
+			);
+			path = RRFPSBar;
+			sourceTree = SOURCE_ROOT;
+		};
+		C58F076217793C9600F98447 /* SEGradientSwatch */ = {
+			isa = PBXGroup;
+			children = (
+				C58F076017793C9600F98447 /* SEGradientSwatch.h */,
+				C58F076117793C9600F98447 /* SEGradientSwatch.m */,
+			);
+			path = SEGradientSwatch;
+			sourceTree = SOURCE_ROOT;
+		};
+		C59B181517AC5F2A00B7315E /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				C59B182817AC606000B7315E /* NSArray+BrynKit.h */,
+				C59B182917AC606000B7315E /* NSArray+BrynKit.m */,
+				C59B182B17AC60C000B7315E /* NSDictionary+BrynKit.h */,
+				C59B182C17AC60C100B7315E /* NSDictionary+BrynKit.m */,
+				C59B181617AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.h */,
+				C59B181717AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.m */,
+				C59B181817AC5F2A00B7315E /* NSMutableSet+BrynKit.h */,
+				C59B181917AC5F2A00B7315E /* NSMutableSet+BrynKit.m */,
+				C59B181A17AC5F2A00B7315E /* NSOrderedSet+BrynKit.h */,
+				C59B181B17AC5F2A00B7315E /* NSOrderedSet+BrynKit.m */,
+				C59B181C17AC5F2A00B7315E /* NSSet+BrynKit.h */,
+				C59B181D17AC5F2A00B7315E /* NSSet+BrynKit.m */,
+			);
+			path = Collections;
+			sourceTree = SOURCE_ROOT;
+		};
+		C5C267D71757AB60005BBB4A = {
+			isa = PBXGroup;
+			children = (
+				C5C267E51757AB60005BBB4A /* BrynKit */,
+				C58F069017792A1200F98447 /* BrynKitTests-OCUnit */,
+				C5C267E21757AB60005BBB4A /* Frameworks */,
+				C5C267E11757AB60005BBB4A /* Products */,
+				9B8E51CE904546A2A3CA636A /* Pods.xcconfig */,
+				7F99A5E6A5FE4C148784B149 /* Pods-BrynKitTests.xcconfig */,
+				96B4DE984C3D44EB919BD75D /* Pods-BrynKitTests-OCUnit.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		C5C267E11757AB60005BBB4A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5C267E01757AB60005BBB4A /* libBrynKit.a */,
+				C58F068C17792A1200F98447 /* BrynKitTests-OCUnit.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C5C267E21757AB60005BBB4A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C58E26B4179E68CD00CBDD0C /* CoreVideo.framework */,
+				C58F06A817792CBD00F98447 /* CoreImage.framework */,
+				C5C268181757B06D005BBB4A /* CoreText.framework */,
+				C5C268161757B065005BBB4A /* ImageIO.framework */,
+				C5C268141757B05F005BBB4A /* libPods-BrynKitTests.a */,
+				C5C268121757B054005BBB4A /* QuartzCore.framework */,
+				C5C268101757B04F005BBB4A /* CoreGraphics.framework */,
+				C5C2680E1757B049005BBB4A /* UIKit.framework */,
+				C5C267E31757AB60005BBB4A /* Foundation.framework */,
+				C5C267F21757AB60005BBB4A /* SenTestingKit.framework */,
+				C5C267F41757AB60005BBB4A /* UIKit.framework */,
+				47E70A0EE9C9469D8589F4E9 /* libPods.a */,
+				5DB26C64EC6E432EA94132A8 /* libPods-BrynKitTests.a */,
+				20912CF9E3D443F49FF8EFCB /* libPods-BrynKitTests-OCUnit.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C5C267E51757AB60005BBB4A /* BrynKit */ = {
+			isa = PBXGroup;
+			children = (
+				C5DA5F6A17A4995600857044 /* BrynKit.podspec */,
+				C5DA5F6B17A4995600857044 /* Podfile */,
+				C5DA5F6617A4980F00857044 /* BKFloatRange */,
+				C59B181517AC5F2A00B7315E /* Collections */,
+				C58F072317793C9600F98447 /* CocoaLumberjack */,
+				C5FF400717B6F0D40038E79C /* ColorLogging */,
+				C5DA5FE617A7996400857044 /* CoreGraphics */,
+				C58F072817793C9600F98447 /* DCSlider */,
+				C58F072E17793C9600F98447 /* FontasticIcons */,
+				C58F073D17793C9600F98447 /* Main */,
+				C58F074317793C9600F98447 /* MemoryLogging */,
+				C58F074817793C9600F98447 /* MGBoxHelpers */,
+				C5FF401417B734260038E79C /* MBProgressHUDHelpers */,
+				C58F074B17793C9600F98447 /* RACDispatchTimer */,
+				C58F075817793C9600F98447 /* RACHelpers */,
+				C58F075C17793C9600F98447 /* RRFPSBar */,
+				C58F076217793C9600F98447 /* SEGradientSwatch */,
+				C5DA5FD917A798A500857044 /* UIKit */,
+				C5C2680B1757AC64005BBB4A /* stub.m */,
+				C5C267E61757AB60005BBB4A /* Supporting Files */,
+			);
+			path = BrynKit;
+			sourceTree = "<group>";
+		};
+		C5C267E61757AB60005BBB4A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C5C2680D1757ACE8005BBB4A /* BrynKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C5DA5F6617A4980F00857044 /* BKFloatRange */ = {
+			isa = PBXGroup;
+			children = (
+				C5DA5F6717A4980F00857044 /* BKFloatRange.h */,
+				C5DA5F6817A4980F00857044 /* BKFloatRange.m */,
+			);
+			path = BKFloatRange;
+			sourceTree = SOURCE_ROOT;
+		};
+		C5DA5FD917A798A500857044 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				C5FF401117B6FF500038E79C /* UIColor+BrynKit.h */,
+				C5FF401217B6FF500038E79C /* UIColor+BrynKit.m */,
+				C5FF400E17B6F8BE0038E79C /* UIImage+BrynKit.h */,
+				C5FF400F17B6F8BE0038E79C /* UIImage+BrynKit.m */,
+				C59B182517AC604800B7315E /* UIColor+Expanded.h */,
+				C59B182617AC604800B7315E /* UIColor+Expanded.m */,
+				C59B180917AC4F2500B7315E /* UIView+BrynKit.h */,
+				C59B180A17AC4F2500B7315E /* UIView+BrynKit.m */,
+				C59B180617AC4EE300B7315E /* UILabel+BrynKit.h */,
+				C59B180717AC4EE300B7315E /* UILabel+BrynKit.m */,
+				C5DA5FDA17A798A500857044 /* UIDevice+BrynKit.h */,
+				C5DA5FDB17A798A500857044 /* UIDevice+BrynKit.m */,
+				C5DA5FDC17A798A500857044 /* UIScreen+BrynKit.h */,
+				C5DA5FDD17A798A500857044 /* UIScreen+BrynKit.m */,
+				C5DA5FDE17A798A500857044 /* UIView+Autoresizing.h */,
+				C5DA5FDF17A798A500857044 /* UIView+Autoresizing.m */,
+				2E476B0A24348276DB99A866 /* BrynKitUIColor.h */,
+			);
+			path = UIKit;
+			sourceTree = SOURCE_ROOT;
+		};
+		C5DA5FE617A7996400857044 /* CoreGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				C5DA5FE717A7996400857044 /* BrynKitCoreGraphics.h */,
+				C5DA5FE817A7996400857044 /* BrynKitCoreGraphics.m */,
+			);
+			path = CoreGraphics;
+			sourceTree = SOURCE_ROOT;
+		};
+		C5FF400717B6F0D40038E79C /* ColorLogging */ = {
+			isa = PBXGroup;
+			children = (
+				C5FF400817B6F0D40038E79C /* BrynKitDDLogColorFormatter.h */,
+				C5FF400917B6F0D40038E79C /* BrynKitDDLogColorFormatter.m */,
+				C5FF400B17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.h */,
+				C5FF400C17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.m */,
+			);
+			path = ColorLogging;
+			sourceTree = SOURCE_ROOT;
+		};
+		C5FF401417B734260038E79C /* MBProgressHUDHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				C5FF401517B734260038E79C /* BrynKitMBProgressHUD.h */,
+				C5FF401617B734260038E79C /* BrynKitMBProgressHUD.m */,
+			);
+			path = MBProgressHUDHelpers;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C58F068B17792A1200F98447 /* BrynKitTests-OCUnit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C58F069B17792A1200F98447 /* Build configuration list for PBXNativeTarget "BrynKitTests-OCUnit" */;
+			buildPhases = (
+				39529D0A3B84419EA0D38123 /* Check Pods Manifest.lock */,
+				C58F068817792A1200F98447 /* Sources */,
+				C58F068917792A1200F98447 /* Frameworks */,
+				C58F068A17792A1200F98447 /* Resources */,
+				93E64820F0034C21B20A8628 /* Copy Pods Resources */,
+				C58F06AC17792F7B00F98447 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C58F069A17792A1200F98447 /* PBXTargetDependency */,
+			);
+			name = "BrynKitTests-OCUnit";
+			productName = "BrynKitTests-OCUnit";
+			productReference = C58F068C17792A1200F98447 /* BrynKitTests-OCUnit.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		C5C267DF1757AB60005BBB4A /* BrynKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5C268051757AB60005BBB4A /* Build configuration list for PBXNativeTarget "BrynKit" */;
+			buildPhases = (
+				E5688B6FBAAB4099BD954448 /* Check Pods Manifest.lock */,
+				C5C267DC1757AB60005BBB4A /* Sources */,
+				C5C267DD1757AB60005BBB4A /* Frameworks */,
+				4134E64EF5004597B77F839C /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BrynKit;
+			productName = BrynKit;
+			productReference = C5C267E01757AB60005BBB4A /* libBrynKit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C5C267D81757AB60005BBB4A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SE;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "signalenvelope llc";
+				TargetAttributes = {
+					C58F068B17792A1200F98447 = {
+						TestTargetID = C5C267DF1757AB60005BBB4A;
+					};
+				};
+			};
+			buildConfigurationList = C5C267DB1757AB60005BBB4A /* Build configuration list for PBXProject "BrynKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C5C267D71757AB60005BBB4A;
+			productRefGroup = C5C267E11757AB60005BBB4A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C5C267DF1757AB60005BBB4A /* BrynKit */,
+				C58F068B17792A1200F98447 /* BrynKitTests-OCUnit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C58F068A17792A1200F98447 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C58F069517792A1200F98447 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		39529D0A3B84419EA0D38123 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+		};
+		4134E64EF5004597B77F839C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+		93E64820F0034C21B20A8628 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-BrynKitTests-OCUnit-resources.sh\"\n";
+		};
+		C58F06AC17792F7B00F98447 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#open -a Xcoverage.app \"$OBJECT_FILE_DIR-normal/$CURRENT_ARCH\"\n\n";
+		};
+		E5688B6FBAAB4099BD954448 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C58F068817792A1200F98447 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C58F06A417792AFB00F98447 /* RACFutureSpec.m in Sources */,
+				C58F06A317792AFB00F98447 /* RACTransformableBindingSpec.m in Sources */,
+				C58F06A217792AFB00F98447 /* BrynFUISwitchSpec.m in Sources */,
+				C58E26B8179E6DE600CBDD0C /* BKNSStringSpec.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5C267DC1757AB60005BBB4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C56D7CB2179963090043222E /* Bryn.m in Sources */,
+				C56D7CB4179963090043222E /* BrynKitLogging.m in Sources */,
+				C56D7CB5179963090043222E /* NSString+BrynKit_Dates.m in Sources */,
+				C56D7CB8179963090043222E /* BrynKitMemoryLogging.m in Sources */,
+				C56D7CB9179963090043222E /* MGBox+BrynKit_Animations.m in Sources */,
+				C56D7CBA179963090043222E /* MGBoxHelpers.m in Sources */,
+				C56D7CBB179963090043222E /* RACCriticalSectionScheduler.m in Sources */,
+				C56D7CBC179963090043222E /* RACFuture.m in Sources */,
+				C56D7CBD179963090043222E /* RACHelpers.m in Sources */,
+				C56D7CBE179963090043222E /* RACScheduler+SECriticalSectionScheduler.m in Sources */,
+				C56D7CBF179963090043222E /* RACTransformableBinding.m in Sources */,
+				C56D7CC0179963090043222E /* UIButton+RACCommandSupport.m in Sources */,
+				C56D7CC2179963090043222E /* SEGradientSwatch.m in Sources */,
+				C5C2680C1757AC64005BBB4A /* stub.m in Sources */,
+				C55C54FA17793E6000B78A60 /* Bryn+CocoaLumberjack.m in Sources */,
+				C55C54FC17793E6000B78A60 /* DCControl.m in Sources */,
+				C55C54FD17793E6000B78A60 /* DCSlider.m in Sources */,
+				C55C54FF17793E6000B78A60 /* FIIconView+Extensions.m in Sources */,
+				C58E26BB179E724100CBDD0C /* NSString+BrynKit.m in Sources */,
+				C5DA5F6217A4961100857044 /* NSObject+BrynKit.m in Sources */,
+				C5DA5F6917A4980F00857044 /* BKFloatRange.m in Sources */,
+				C5DA5F6E17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m in Sources */,
+				C5DA5FE017A798A500857044 /* UIDevice+BrynKit.m in Sources */,
+				C5DA5FE117A798A500857044 /* UIScreen+BrynKit.m in Sources */,
+				C5DA5FE217A798A500857044 /* UIView+Autoresizing.m in Sources */,
+				C5DA5FE917A7996400857044 /* BrynKitCoreGraphics.m in Sources */,
+				C59B180817AC4EE300B7315E /* UILabel+BrynKit.m in Sources */,
+				C59B180B17AC4F2500B7315E /* UIView+BrynKit.m in Sources */,
+				C5FF401817B744400038E79C /* BrynKitDDLogColorFormatter.m in Sources */,
+				C5FF400D17B6F0E50038E79C /* UIColor+BrynKit_ColorLogging.m in Sources */,
+				C59B181E17AC5F2A00B7315E /* NSMutableOrderedSet+BrynKit.m in Sources */,
+				C59B181F17AC5F2A00B7315E /* NSMutableSet+BrynKit.m in Sources */,
+				C59B182017AC5F2A00B7315E /* NSOrderedSet+BrynKit.m in Sources */,
+				C59B182117AC5F2A00B7315E /* NSSet+BrynKit.m in Sources */,
+				C59B182717AC604800B7315E /* UIColor+Expanded.m in Sources */,
+				C59B182A17AC606000B7315E /* NSArray+BrynKit.m in Sources */,
+				C59B182D17AC60C100B7315E /* NSDictionary+BrynKit.m in Sources */,
+				C5FF401017B6F8BE0038E79C /* UIImage+BrynKit.m in Sources */,
+				C5FF401317B6FF500038E79C /* UIColor+BrynKit.m in Sources */,
+				C5FF401717B734260038E79C /* BrynKitMBProgressHUD.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C58F069A17792A1200F98447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5C267DF1757AB60005BBB4A /* BrynKit */;
+			targetProxy = C58F069917792A1200F98447 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C58F069317792A1200F98447 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C58F069417792A1200F98447 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C58F069C17792A1200F98447 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96B4DE984C3D44EB919BD75D /* Pods-BrynKitTests-OCUnit.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BrynKitTests-OCUnit/BrynKitTests-OCUnit-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"$(SOURCE_ROOT)/**",
+				);
+				INFOPLIST_FILE = "BrynKitTests-OCUnit/BrynKitTests-OCUnit-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		C58F069D17792A1200F98447 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96B4DE984C3D44EB919BD75D /* Pods-BrynKitTests-OCUnit.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks",
+				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BrynKitTests-OCUnit/BrynKitTests-OCUnit-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"$(SOURCE_ROOT)/**",
+				);
+				INFOPLIST_FILE = "BrynKitTests-OCUnit/BrynKitTests-OCUnit-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		C5C268031757AB60005BBB4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C5C268041757AB60005BBB4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C5C268061757AB60005BBB4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B8E51CE904546A2A3CA636A /* Pods.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/BrynKit.dst;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BrynKit-Prefix.pch";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					CoreText,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					UIKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C5C268071757AB60005BBB4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B8E51CE904546A2A3CA636A /* Pods.xcconfig */;
+			buildSettings = {
+				DSTROOT = /tmp/BrynKit.dst;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BrynKit-Prefix.pch";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					CoreText,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					UIKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C58F069B17792A1200F98447 /* Build configuration list for PBXNativeTarget "BrynKitTests-OCUnit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C58F069C17792A1200F98447 /* Debug */,
+				C58F069D17792A1200F98447 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C5C267DB1757AB60005BBB4A /* Build configuration list for PBXProject "BrynKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5C268031757AB60005BBB4A /* Debug */,
+				C5C268041757AB60005BBB4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C5C268051757AB60005BBB4A /* Build configuration list for PBXNativeTarget "BrynKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5C268061757AB60005BBB4A /* Debug */,
+				C5C268071757AB60005BBB4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C5C267D81757AB60005BBB4A /* Project object */;
+}

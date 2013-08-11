@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
-#import "SEDispatchSource.h"
+//#import <SEGrandSopranoDispatch/SEGrandSopranoDispatch.h>
 
-typedef void(^MemoryLogDispatchBlock)(natural_t freeMemBytes);
-
-extern natural_t         BrynKit_GetFreeMemory();
-extern SEDispatchSource* BrynKit_StartOccasionalMemoryLog(Float32 intervalInSeconds, MemoryLogDispatchBlock dispatchTheLog);
+//typedef void(^BKMemoryLogDispatchBlock)(natural_t freeMemBytes);
+//
+//natural_t         BKGetFreeMemory();
+//SEDispatchSource* BKStartOccasionalMemoryLog(Float32 intervalInSeconds, BKMemoryLogDispatchBlock dispatchTheLog);
 

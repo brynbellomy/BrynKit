@@ -6,59 +6,205 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#ifndef __Bryn__
-#define __Bryn__  // is this even possible????
-
 #import <libextobjc/metamacros.h>
+#import <UIKit/UIKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 
-/** @name Define macros */
 
-/**
- * # Define macros
+/**---------------------------------------------------------------------------------------
+ * @name Define macros
+ *  ---------------------------------------------------------------------------------------
  */
-#pragma mark- Define macros
+
+#pragma mark- Obj-C init method macros
 #pragma mark-
 
-#define CGRectWithSize(size) \
-            ({ \
-                CGRectMake(0.0f, 0.0f, size.width, size.height); \
-            })
-#define CGRectWithDimensions(width, height) \
-            ({ \
-                CGRectMake(0.0f, 0.0f, width, height); \
-            })
+#define _bk_macroArgIsMethodParameterType(N) \
+        metamacro_at(N, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0)
 
+#define _bk_initializerParams_iter(INDEX, ARG)          \
+        metamacro_if_eq(0, _bk_macroArgIsMethodParameterType(INDEX)) \
+            ( ARG ) \
+            ( (ARG) )
+
+#define _bk_callExistingInitializer_iter(INDEX, ARG)    \
+        metamacro_if_eq(0, _bk_macroArgIsMethodParameterType(INDEX)) \
+            (ARG) \
+            ()
+
+#define BKImplementConvenienceInitializer( OBJ_NAME, ... ) \
+        + (instancetype) metamacro_concat(OBJ_NAME,metamacro_foreach(_bk_initializerParams_iter,, ## __VA_ARGS__)) \
+        { \
+            id instance = [[self alloc] metamacro_concat(init,metamacro_foreach(_bk_callExistingInitializer_iter,, ## __VA_ARGS__)) ]; \
+            yssert_notNilAndIsClass( instance, self ); \
+            return instance; \
+        }
+
+/**
+ * 
+ *
+ * Example: you're subclassing UIView but you don't want to allow the standard `initWithFrame:` initializer.
+ * These macros will generate implementations for any initializers that are not supported by your subclass
+ * which do nothing more than throw `NSInternalInconsistencyException`s when they are called.
+ *
+ * In your `.h` file:
+ 
+      BKInitializersAreUnsupported( initWithCoder:(NSCoder *)aDecoder );
+
+ * ... and in your `.m` file:
+
+     BKImplementUnsupportedInitializers( YFilterThumbnailBox, initWithFilter:image:, initWithCoder:(NSCoder *)aDecoder );
+
+ */
+#define BKInitializerIsUnsupported(...) \
+        _bk_generateUnsupportedInitializerDecl_iter(,, __VA_ARGS__);
+
+#define BKInitializersAreUnsupported(...) \
+        metamacro_foreach_cxt( _bk_generateUnsupportedInitializerDecl_iter,,, __VA_ARGS__ ) \
+
+#define _bk_generateUnsupportedInitializerDecl_iter(INDEX, CONTEXT, UNSUPPORTED_SELECTOR) \
+        - (instancetype) UNSUPPORTED_SELECTOR __attribute__(( deprecated )); \
+
+
+
+#define BKImplementUnsupportedInitializer(CLASS_NAME, DESIGNATED_INIT, ...) \
+        _bk_implementUnsupportedInitializers_iter(, (CLASS_NAME DESIGNATED_INIT), __VA_ARGS__)
+
+#define BKImplementUnsupportedInitializers(CLASS_NAME, DESIGNATED_INIT, ...) \
+        metamacro_foreach_cxt( _bk_implementUnsupportedInitializers_iter,,(CLASS_NAME DESIGNATED_INIT), __VA_ARGS__ )
+
+#define _bk_implementUnsupportedInitializers_iter(INDEX, CONTEXT, UNSUPPORTED_SELECTOR) \
+        \
+        - (instancetype) UNSUPPORTED_SELECTOR \
+        { \
+            @throw [NSException exceptionWithName:@"NSInternalInconsistencyException" reason:@"You must call -[" @ # CONTEXT @"], the designated initializer." userInfo:nil]; \
+            return nil; \
+        }
+
+
+
+/**---------------------------------------------------------------------------------------
+ * @name Misc. #define macros
+ * ---------------------------------------------------------------------------------------
+ */
+
+#pragma mark- Misc. #define macros
+#pragma mark-
+
+
+#define BKRectWithSize(size) \
+            ({ CGRectMake(0.0f, 0.0f, size.width, size.height); })
+
+#define BKRectWithDimensions(width, height) \
+            ({ CGRectMake(0.0f, 0.0f, width, height); })
+
+#define BKRectWithOriginAndSize(point, size) \
+            ({ CGRectMake(point.x, point.y, size.width, size.height); })
+
+#define BKSizeWithRect(rect) \
+            ({ CGSizeMake( rect.size.width, rect.size.height ); })
+
+#define BKSizeWithVideoDimensions(dim) \
+            ({ CGSizeMake( (CGFloat)dim.width, (CGFloat)dim.height ); })
+
+#define BKFlagIsSet(needle, haystack) \
+            ({ (needle & haystack) != 0; })
+
+#define fffontAwesomeIcon(iconName) [[[FIFontAwesomeIcon alloc] init] iconName]
+#define eeentypoIcon(iconName)      [FIEntypoIcon metamacro_concat(iconName,Icon) ]
+#define iiiconicIcon(iconName)      [[[FIIconicIcon alloc] init] iconName]
 
 
 /**
- * #### Key(...)
- *
- * Defines a pointer to a static `NSString` literal to be used for key-value stuff,
- * `NSDictionary` keys, etc.  Ex:
+ * Use this macro to check if a globally-scoped framework constant (like, say,
+ * `kCVPixelBufferOpenGLESCompatibilityKey`) is available in the current SDK.
+ */
+#define BKCheckIfGlobalConstantIsAvailable(constant) (&constant != NULL)
 
- * ```
- * Key(MyNotificationUserInfoKey_Clowns);
- * // ... expands to `static NSString *const MyNotificationUserInfoKey_Clowns = @"MyNotificationUserInfoKey_Clowns"`
- *
- * Key(MyNotificationUserInfoKey_Clowns, @"clowns");
- * // ... expands to `static NSString *const MyNotificationUserInfoKey_Clowns = @"clowns"`
- *
- * NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserInfoKey_Clowns]);
- * ```
 
- * @param {identifier} identifier The name of the NSString variable.
- * @param {NSString*} value The contents of the NSString (optional).
+/**
+ @define BKDefineStringKey(...)
+ @discussion Defines a pointer to a static `NSString` literal to be used for key-value stuff,
+ `NSDictionary` keys, etc.  Ex:
+
+     BKDefineStringKey(MyNotificationUserInfoKey_Clowns);
+     // ... expands to `static NSString *const MyNotificationUserInfoKey_Clowns = @"MyNotificationUserInfoKey_Clowns"`
+
+     BKDefineStringKey(MyNotificationUserInfoKey_Clowns, @"clowns");
+     // ... expands to `static NSString *const MyNotificationUserInfoKey_Clowns = @"clowns"`
+
+     NSLog(@"the clowns in the userinfo dictionary: %@", userInfo[MyNotificationUserInfoKey_Clowns]);
+
+ @param identifier The name of the NSString variable.
+ @param value The contents of the NSString (optional).
  */
 
-#define Key(...) \
+#define BKDefineStringKey(...) \
     metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \
         ( static NSString *const metamacro_head(__VA_ARGS__) = @ metamacro_stringify(metamacro_head(__VA_ARGS__)) ) \
         ( static NSString *const metamacro_head(__VA_ARGS__) = metamacro_tail(__VA_ARGS__) )
 
 
+
 /**
- * Misc. macros
+ * Defines a `static void *const` variable in the current scope that can be used as a key when manipulating Objective-C associated objects or GCD `dispatch_queue_t` contexts.
+ *
+ * @see dispatch_set_specific
+ * @see dispatch_get_specific
+ * @see dispatch_queue_set_specific
+ * @see dispatch_queue_get_specific
+ * @see objc_setAssociatedObject
+ * @see objc_getAssociatedObject
  */
+#define BKDefineVoidKey(key) \
+    static void *const key = (void *)&key
+
+
+/**
+ * This is useful if you find it difficult to remember the awkward, new way
+ * of instantiating out-params under ARC rules.  To use, do something like the
+ * following:
+
+     @nserror(error);
+     [someObject doSomethingHard:123 error:&error];
+     if (error != nil) {
+         // ...
+     }
+
+ */
+#define nserror(x)    try{}@finally{} NSError __autoreleasing * x = x
+
+#define throw_if_error(err, ...)  \
+    try{}@finally{} \
+    do { \
+        yssert( !err, ## __VA_ARGS__ ) \
+    } while( 0 )
+
+#define return_if_error(err) \
+    try{}@finally{} \
+    do { \
+        if ( err ) { return; } \
+    } while( 0 )
+
+#define return_nil_if_error(err) \
+    try{}@finally{} \
+    do { \
+        if ( err ) { return nil; } \
+    } while( 0 )
+
+#define lllog_if_error(err) \
+    try{}@finally{} \
+    do { \
+        if ( err ) { lllog(Error, @"Error (line " @ metamacro_stringify(__LINE__) @" in " @ metamacro_stringify(__FILE__) @"): %@", [error localizedDescription]); } \
+    } while( 0 )
+
+
+
+#define BKErrorThrow        @throw_if_error
+#define BKErrorReturn(err)  @return_if_error
+#define BKErrorReturnNil    @return_nil_if_error
+#define BKErrorLog          @lllog_if_error
+
 
 #define instanceOf(klass) isKindOfClass:[klass class]
 
@@ -73,16 +219,25 @@
 #define $app [UIApplication sharedApplication]
 
 #define $documentDirectories \
-    ({ \
-        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); \
-    })
-
+    ({ NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); })
 
 #define $sortByKeyAscending(array, key) \
     ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:YES] ]]; })
 
 #define $sortByKeyDescending(array, key) \
     ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:NO] ]]; })
+
+
+
+#define bk_uint unsignedIntegerValue
+
+#define bk_int integerValue
+
+#define bk_float floatValue
+
+#define bk_double doubleValue
+
+#define bk_bool boolValue
 
 
 
@@ -104,45 +259,43 @@
 #   define IF_ARC(with, without) without
 #endif
 
-#ifndef $new
-#define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])
+#if !defined($new)
+#   define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])
 #endif
 
-#ifndef $str
-#define $str(__FORMAT__, ...)   [NSString stringWithFormat:__FORMAT__, ## __VA_ARGS__]
+#if !defined($str)
+#   define $str(__FORMAT__, ...)   ({ [NSString stringWithFormat:__FORMAT__, ## __VA_ARGS__]; })
 #endif
 
-#ifndef $utf8
-#define $utf8(utf8str)   [NSString stringWithCString:utf8str encoding:NSUTF8StringEncoding]
+#if !defined($utf8)
+#   define $utf8(utf8str)   ({ [NSString stringWithCString:utf8str encoding:NSUTF8StringEncoding]; })
 #endif
 
-#ifndef $point
-#define $point(val)       [NSValue valueWithCGPoint:(val)]
+#if !defined($point)
+#   define $point(val)       ({ [NSValue valueWithCGPoint:(val)]; })
 #endif
 
-#ifndef $pointer
-#define $pointer(val)       [NSValue valueWithPointer:(val)]
+#if !defined($pointer)
+#   define $pointer(val)       ({ [NSValue valueWithPointer:(val)]; })
 #endif
 
-#ifndef $selector
-#define $selector(val)    [NSValue valueWithPointer:@selector(val)]
+#if !defined($selector)
+#   define $selector(val)    ({ [NSValue valueWithPointer:@selector(val)]; })
 #endif
 
+#if !defined($range)
+#   define $range(val)       ({ [NSValue valueWithRange:(val)]; })
+#endif
 
-/**---------------------------------------------------------------------------------------
- * @name Typedefs
- *  ---------------------------------------------------------------------------------------
- */
-
-#pragma mark- Typedefs
-#pragma mark-
 
 
 /**
- * ### Blocks
- *
- * Saves a little bit of tedious typing.
+ * @name Objective-C Block typedefs
  */
+
+#pragma mark- Objective-C Block typedefs
+#pragma mark-
+
 typedef void(^BoolBlock)(BOOL);
 typedef void(^UIntBlock)(NSUInteger);
 typedef void(^ErrorBlock)(NSError *);
@@ -151,71 +304,19 @@ typedef void(^DictionaryBlock)(NSDictionary *);
 typedef void(^IdBlock)(id);
 typedef void(^UpdateCollectionCallbackBlock)(NSDictionary *updatedCollection);
 typedef void(^UpdateCollectionBlock)(NSMutableDictionary *collection, UpdateCollectionCallbackBlock callback);
+typedef   id(^BKRemapBlock)(id key, id val);
 
 
 
-typedef struct _BKFloatRange {
-    Float32 location;
-    Float32 length;
-} BKFloatRange;
 
-#define BKFloatRangeZero BKMakeFloatRange(0.0f, 0.0f)
-#define BKFloatRangeOne  BKMakeFloatRange(1.0f, 0.0f)
-
-/**
- * Creates a `BKFloatRange` initialized with the provided `loc` (location) and `len` (length) values.
- *
- *  @param loc Where the range should begin.
- *  @param len The length of the range.
- *  @return A `BKFloatRange` representing a continuous range from `loc` to `loc + len`.
-*/
-extern BKFloatRange BKMakeFloatRange(Float32 loc, Float32 len);
-
-/**
- * Creates a `BKFloatRange` initialized with `loc = start` and `len = end - start`.
- *
- * @param `start` Where the range should begin.
- * @param `end` Where the range should end.
- * @return A `BKFloatRange representing a continuous range from `start` to `end`.
- **/
-extern BKFloatRange BKMakeFloatRangeWithBounds(Float32 start, Float32 end);
-extern BKFloatRange BKMakeZeroLengthFloatRange(Float32 location);
-
-extern Float32 BKFloatRangeStartValue(BKFloatRange range);
-extern Float32 BKFloatRangeEndValue(BKFloatRange range);
-extern Float32 BKMinValueInFloatRange(BKFloatRange range);
-extern Float32 BKMaxValueInFloatRange(BKFloatRange range);
-
-extern BOOL BKIsLocationInFloatRange(Float32 loc, BKFloatRange range);
-extern BOOL BKFloatRangesAreEqual(BKFloatRange range1, BKFloatRange range2);
-
-//extern NSArray* SEMakeGradientSwatch(NSUInteger numSteps, BKFloatRange red, BKFloatRange green, BKFloatRange blue, BKFloatRange alpha)
-
-/**!
- * # Image-related macros
+/**---------------------------------------------------------------------------------------
+ * @name Image-related macros
+ *  ---------------------------------------------------------------------------------------
  */
-#pragma mark- image-related macros
+
+#pragma mark- Image-related macros
 #pragma mark-
 
-/**!
- * ### UIImageWithBundlePNG()
- *
- * Load a PNG file from the main bundle.  People use `+[UIImage imageNamed:]`
- * because it's much easier than the (minimum) method calls you have to make to
- * load a UIImage the 'right' way.  With a macro like this, there's no excuse.
- * Note: the image filename you pass to this macro should not contain its file
- * extension (".png").
- *
- * @param {NSString*} filename The filename of the image without its ".png" extension.
- */
-#if !defined(UIImageWithBundlePNG)
-#   define UIImageWithBundlePNG(x) ([UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:(x) ofType: @"png"]])
-#endif
-
-
-extern CGImageRef BrynCGImageFromFile(NSString *path);
-extern CGImageRef BrynCGImageFromBundlePNG(NSString *basename);
-extern UIImage*   BrynUIImageFromBundlePNG(NSString *basename);
 
 
 
@@ -228,11 +329,11 @@ extern UIImage*   BrynUIImageFromBundlePNG(NSString *basename);
 #pragma mark- ARC/non-ARC compatibility helpers
 #pragma mark-
 
-#ifndef bryn_strong
+#ifndef bk_strong
     #if __has_feature(objc_arc)
-        #define bryn_strong strong
+        #define bk_strong strong
     #else
-        #define bryn_strong retain
+        #define bk_strong retain
     #endif
 #endif
 
@@ -260,91 +361,50 @@ extern UIImage*   BrynUIImageFromBundlePNG(NSString *basename);
 #endif
 
 
-/**!
- * # GCD/concurrency helpers
+
+
+/**---------------------------------------------------------------------------------------
+ * @name Categories: Foundation
+ *  ---------------------------------------------------------------------------------------
  */
-#pragma mark- GCD/concurrency helpers
+
+#pragma mark- Categories: Foundation
 #pragma mark-
 
-extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); // __attribute__((deprecated));
-
-//#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
-#if !(OS_OBJECT_USE_OBJC)
-#   define dispatch_strong assign
-#else
-#   define dispatch_strong strong
+//#if !defined($concat)
+#if defined($concat)
+#   undef($concat)
 #endif
+#define $concat(x, y) [x stringByAppendingString:y]
+
+//#if !defined($concatPath)
+#if defined($concatPath)
+#   undef($concatPath)
+#endif
+#define $concatPath(x, y) [x stringByAppendingPathComponent:y]
+
+//#if !defined($concatFileExt)
+#if defined($concatFileExt)
+#   undef($concatFileExt)
+#endif
+#define $concatFileExt(x, y) [x stringByAppendingPathExtension:y]
 
 
+@interface NSNumber (BrynKit)
 
-/**!
- * # Misc. (will be refactored into self-sufficient components)
- */
-#pragma mark- Misc.
-#pragma mark-
+- (BOOL)bk_isYes;
+- (BOOL)bk_isNo;
 
-@interface NSObject (BrynKit_Description)
+@end
 
-- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties;
-- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties separator:(NSString *)separator;
-- (NSString *) bryn_descriptionWithProperties:(NSArray *)properties separator:(NSString *)separator formatter:(NSString *(^)(NSString *property, id value))formatter;
+@interface NSRegularExpression (BrynKit)
 
-- (NSString *) bryn_descriptionWithString:(NSString *)string;
++ (NSArray *) bk_resultsOfRegex:(NSString *)strPattern inString:(NSString *)haystack;
 
 @end
 
 
 
-@interface UIDevice (BrynKit)
-
-+ (BOOL) bryn_isMultitaskingSupported;
-+ (BOOL) bryn_isIPhone5OrTaller;
-
-@end
-
-
-
-@interface UIScreen (BrynKit)
-
-- (CGFloat) bryn_scaledHeight;
-- (CGFloat) bryn_actualHeight;
-- (CGFloat) bryn_scaledWidth;
-- (CGFloat) bryn_actualWidth;
-
-@end
-
-
-
-@interface NSString (BrynKit)
-
-- (NSString *) bryn_replace:(NSString *)strToReplace        with:(NSString *)replacementStr;
-- (NSString *) bryn_replaceRegex:(NSString *)regexToReplace with:(NSString *)replacementStr;
-
-@end
-
-
-
-#pragma mark- Categories: UIKit
-#pragma mark-
-
-@interface UILabel (BrynKit)
-
-- (void) bryn_setLabelTextAndSizeToFit:(NSString *)newText;
-
-@end
-
-
-@interface UIView (BrynKit)
-
-- (void) bryn_animateKey:(NSString *)key fromValue:(id)fromValue toValue:(id)toValue duration:(CFTimeInterval)duration autoreverses:(BOOL)autoreverses;
-- (void) bryn_animateKey:(NSString *)key toValue:(id)toValue duration:(CFTimeInterval)duration autoreverses:(BOOL)autoreverses;
-
-@end
-
-
-
-#pragma mark- Categories: collections
-#pragma mark-
 
 @protocol BKComparable <NSObject>
 
@@ -354,89 +414,13 @@ extern void dispatch_safe_sync(dispatch_queue_t queue, dispatch_block_t block); 
 
 
 
-@interface NSArray (BrynKitSorting)
-
-- (instancetype) bryn_sort;
-- (instancetype) bryn_sortByKey:(NSString *)key;
-- (instancetype) bryn_sort:(NSComparator)comparator;
-
-@end
-
-
-
-@interface NSSet (BrynKitSorting)
-
-- (NSOrderedSet *) bryn_sort;
-- (NSOrderedSet *) bryn_sortByKey:(NSString *)key;
+/**
+* Global `Bryn` object that we can piggyback on here and there (for instance,
+* when using the CocoaLumberjack submodule).
+*/
+@interface Bryn : NSObject
 
 @end
-
-
-
-@interface NSMutableSet (BrynKitSorting)
-
-- (NSMutableOrderedSet *) bryn_sort;
-- (NSMutableOrderedSet *) bryn_sortByKey:(NSString *)key;
-
-@end
-
-
-
-
-@interface NSOrderedSet (BrynKit)
-
-+ (instancetype) bryn_orderedSetWithIntegersInRange:(NSRange)range;
-
-@end
-
-
-
-@interface NSOrderedSet (BrynKitSorting)
-
-- (instancetype) bryn_sort;
-- (instancetype) bryn_sortByKey:(NSString *)key;
-
-@end
-
-
-
-@interface NSMutableOrderedSet (BrynKitSorting)
-
-- (instancetype) bryn_sort;
-- (instancetype) bryn_sortByKey:(NSString *)key;
-
-@end
-
-
-
-@interface NSDictionary (BrynKitSorting)
-
-- (NSArray *) bryn_sortedKeysByComparingSubkey:(NSString *)subkey;
-
-@end
-
-
-
-#pragma mark- Categories: Graphics/Quartz/etc.
-#pragma mark-
-
-@interface UIImage (BrynKit)
-
-+ (UIImage *) bryn_imageWithBundlePNG:(NSString *)filename;
-
-@end
-
-
-
-@interface UIColor (BrynKit)
-
-+ (instancetype) bryn_rgba:(CGFloat [4])rgba;
-
-@end
-
-
-
-#endif // __Bryn__
 
 
 

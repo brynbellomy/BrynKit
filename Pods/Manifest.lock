@@ -1,0 +1,133 @@
+PODS:
+  - CocoaLumberjack (1.6.2)
+  - EDColor (0.2.0)
+  - GCDThreadsafe (0.0.1):
+    - libextobjc (~> 0.2.5)
+  - Kiwi (2.1)
+  - libextobjc (0.3):
+    - libextobjc/EXTADT
+    - libextobjc/EXTAnnotation
+    - libextobjc/EXTAspect
+    - libextobjc/EXTBlockMethod
+    - libextobjc/EXTBlockTarget
+    - libextobjc/EXTConcreteProtocol
+    - libextobjc/EXTDispatchObject
+    - libextobjc/EXTFinalMethod
+    - libextobjc/EXTKeyPathCoding
+    - libextobjc/EXTMaybe
+    - libextobjc/EXTMixin
+    - libextobjc/EXTMultimethod
+    - libextobjc/EXTMultiObject
+    - libextobjc/EXTNil
+    - libextobjc/EXTPassthrough
+    - libextobjc/EXTPrivateMethod
+    - libextobjc/EXTProtocolCategory
+    - libextobjc/EXTSafeCategory
+    - libextobjc/EXTScope
+    - libextobjc/EXTSelectorChecking
+    - libextobjc/EXTSwizzle
+    - libextobjc/EXTSynthesize
+    - libextobjc/EXTTuple
+    - libextobjc/EXTVarargs
+    - libextobjc/NSInvocation+EXT
+    - libextobjc/NSMethodSignature+EXT
+    - libextobjc/RuntimeExtensions
+    - libextobjc/UmbrellaHeader
+  - libextobjc/EXTADT (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTAnnotation (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTAspect (0.3):
+    - libextobjc/RuntimeExtensions
+    - libffi
+  - libextobjc/EXTBlockMethod (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTBlockTarget (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTConcreteProtocol (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTDispatchObject (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTFinalMethod (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTKeyPathCoding (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMaybe (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMixin (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMultimethod (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMultiObject (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTNil (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTPassthrough (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTPrivateMethod (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTProtocolCategory (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSafeCategory (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSelectorChecking (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSwizzle (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSynthesize (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTTuple (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTVarargs (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSInvocation+EXT (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSMethodSignature+EXT (0.3):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.3)
+  - libextobjc/UmbrellaHeader (0.3)
+  - libffi (3.0.13)
+  - MBProgressHUD (0.6)
+  - MGBox2 (2.0.0)
+  - ObjectiveSugar (0.9)
+  - ReactiveCocoa/Core (2.0-development):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.0-development)
+  - ReactiveCocoa/RACExtensions (2.0-development):
+    - ReactiveCocoa/Core
+
+DEPENDENCIES:
+  - CocoaLumberjack
+  - EDColor
+  - GCDThreadsafe (from `~/projects/_obj-c/GCDThreadsafe`)
+  - Kiwi
+  - libextobjc (from `https://gist.github.com/brynbellomy/6060471/raw/080e94ce257a8cd8f67b74195d9b3c05fd7b274d/libextobjc.podspec`)
+  - MBProgressHUD
+  - MGBox2
+  - ObjectiveSugar
+  - ReactiveCocoa/Core (from `https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec`)
+  - ReactiveCocoa/RACExtensions (from `https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec`)
+
+EXTERNAL SOURCES:
+  GCDThreadsafe:
+    :path: ~/projects/_obj-c/GCDThreadsafe
+  libextobjc:
+    :podspec: https://gist.github.com/brynbellomy/6060471/raw/080e94ce257a8cd8f67b74195d9b3c05fd7b274d/libextobjc.podspec
+  ReactiveCocoa:
+    :podspec: https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
+  EDColor: ed4dec30508a1443971ba4148ed2ba9fdde45bc5
+  GCDThreadsafe: b8917b6e769d5c471090c0089d74b6b39c9d2fd7
+  Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
+  libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
+  libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
+  MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
+  MGBox2: 7c09e36c2271f9af16fdb5141a0ca554ecee4d8d
+  ObjectiveSugar: 5b33fb396f3e93c0a543bdf55d2d48f29ee46bfb
+  ReactiveCocoa: 980d9a2d05e3a58278243632b620417030d2bf04
+
+COCOAPODS: 0.22.3

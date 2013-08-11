@@ -8,19 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
-/**!
- * # Logging and debug macros
- */
-#pragma mark- logging and debug macros
-#pragma mark-
+#ifndef __BRYNKIT_COCOALUMBERJACK__
+#   ifndef lllog
+#       define lllog(level, ...)  NSLog(__VA_ARGS__)
+#   endif
+#   ifndef lllogc
+#       define lllogc(level, ...) NSLog(__VA_ARGS__)
+#   endif
+#endif
 
-/**!
- * ### color logging
+
+/**
+ * @name Color logging
  *
- * These macros and `#define`s help to integrate with the XcodeColors plugin.
+ * These macros and `#define`s help to integrate with the [XcodeColors](http://github.com/robbiehanson/XcodeColors) plugin.
  *
- * **IMPORTANT:** XcodeColors currently only works with `lldb`.  If you're
+ * **IMPORTANT:** `XcodeColors` currently only works with `lldb`.  If you're
  * using `gdb`, you'll just see a bunch of garbage surrounding your NSLog output.
+ *
+ * If you're using `lldb` and you still see garbage output, try changing the
+ * XCODE_COLORS_ESCAPE macro below.
  */
 
 #define XCODE_COLORS_ESCAPE_OSX @"\033["
@@ -35,13 +42,16 @@
 
 
 
-/**!
- * ### predefined rgb colors
+/**
+ * @name rgb color macros
  *
+ * @discussion
  * These macros evaluate to a regular NSString literal, so you can simply
  * concatenate them into an NSString expression like so:
  *
- * `NSLog(@"Blah blah" COLOR_RED(@"This will be red") @"This will not");`
+ * @code
+    NSLog( @"Blah blah" COLOR_RED( @"This will be red" ) @"And this will not" );
+ * @endcode
  */
 #define COLOR_WHITE(x)     XCODE_COLORS_FG(255,255,255) x XCODE_COLORS_RESET
 #define COLOR_RED(x)       XCODE_COLORS_FG(178,34,34) x XCODE_COLORS_RESET
@@ -54,88 +64,82 @@
 #define COLOR_LIGHTBLUE(x) XCODE_COLORS_FG(130,244,255) x XCODE_COLORS_RESET
 #define COLOR_GREY(x)      XCODE_COLORS_FG(160,160,160) x XCODE_COLORS_RESET
 
-/**!
+/**
  * ### a simple predefined color logging 'theme'
  *
  * Just as with the predefined RGB colors above, you can concatenate
  * these into a plain ol' NSString expression:
  *
- * `NSLog(COLOR_ERROR(@"You screwed up") @"... but it'll be okay.");`
+ * @code
+    NSLog( COLOR_ERROR( @"You screwed up" ) @"... but it'll be okay." );
+ * @endcode
  */
 
 #ifndef COLOR_ERROR
 #   define COLOR_ERROR    COLOR_RED
 #endif
+
 #ifndef COLOR_SUCCESS
 #   define COLOR_SUCCESS  COLOR_GREEN
 #endif
+
 #ifndef COLOR_WARN
 #   define COLOR_WARN     COLOR_ORANGE
 #endif
+
 #ifndef COLOR_INFO
 #   define COLOR_INFO     COLOR_LIGHTBLUE
 #endif
+
 #ifndef COLOR_VERBOSE
 #   define COLOR_VERBOSE  COLOR_GREY
 #endif
+
 #ifndef COLOR_FILENAME
 #   define COLOR_FILENAME COLOR_PURPLE
 #endif
+
 #ifndef COLOR_LINE
 #   define COLOR_LINE     COLOR_YELLOW
 #endif
+
 #ifndef COLOR_FUNC
 #   define COLOR_FUNC     COLOR_BLUE
 #endif
+
 #ifndef COLOR_SEL
 #   define COLOR_SEL(x)   @"[" COLOR_BLUE(x) @"]"
 #endif
-#ifndef COLOR_QUEUE
-#   define COLOR_QUEUE(x)   @"[" COLOR_YELLOW(x) @"]"
+
+#ifndef COLOR_GCD_QUEUE
+#   define COLOR_GCD_QUEUE(x)   @"[" COLOR_YELLOW(x) @"]"
 #endif
 
 
-/**!
- * ### BrynEnableColorLogging()
+/**
+ * @define BKEnableColorLogging
  *
  * Enables XcodeColors (you obviously have to install it too).  Call this from
- * your app delegate's `-applicationDidFinishLoading:` function, or something
+ * your app delegate's `applicationDidFinishLoading:` function, or something
  * else sufficiently early.
  */
-#define BrynEnableColorLogging() do{ setenv("XcodeColors", "YES", 0); }while(0)
+#define BKEnableColorLogging() do{ setenv("XcodeColors", "YES", 0); }while(0)
 
-/**!
- * ### BrynDisableColorLogging()
+/**
+ * @define BKDisableColorLogging
  *
  * Disables XcodeColors.
  */
-#define BrynDisableColorLogging() do{ setenv("XcodeColors", "NO", 0) }while(0)
+#define BKDisableColorLogging() do{ setenv("XcodeColors", "NO", 0) }while(0)
 
-/**!
- * ### \_\_JUST_FILENAME\_\_
+/**
+ * @define __JUST_FILENAME__
  *
  * `__FILE__` contains the entire path to a file.  this `#define` only gives you the file's actual name.
  */
 #define __JUST_FILENAME__   $utf8(__FILE__).lastPathComponent
 
 
-//#define BrynLog(__FORMAT__, ...)   NSLog(@"[" COLOR_FILENAME(@"%@") @":" COLOR_LINE(@"%d") @"] %@", __JUST_FILENAME__, __LINE__, [NSString stringWithFormat:(__FORMAT__), ##__VA_ARGS__])
-
-
-//#define BrynFnLog(severity, __FORMAT__, ...)   metamacro_concat(BrynFnLog_,severity)(__FORMAT__, ## __VA_ARGS__)
-
-//#if !defined(lllog)
-//#   define lllog BrynFnLog
-////(severity, __FORMAT__, ...)    metamacro_concat(BrynFnLog_,severity)(__FORMAT__, ## __VA_ARGS__)
-//#endif
-
-
-@interface UIColor (BrynKit_Logging)
-
-- (NSString *) bryn_xcodeColorsFGString;
-- (NSString *) bryn_xcodeColorsBGString;
-
-@end
 
 
 

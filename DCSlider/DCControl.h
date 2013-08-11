@@ -4,6 +4,8 @@
 //  Copyright 2011 Domestic Cat. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #define	kDCControlIsPhone (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 #define kDCControlDegreesToRadians(x) (M_PI * (x) / 180.0)
 #define kDCControlRadiansToDegrees(x) ((x) * 180.0 / M_PI)

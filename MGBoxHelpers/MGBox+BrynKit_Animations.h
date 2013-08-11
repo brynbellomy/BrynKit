@@ -10,6 +10,6 @@
 
 @interface MGBox (BrynKit_Animations)
 
-- (void) bryn_pulseBackground:(UIColor *)pulseColor durationInSeconds:(CFTimeInterval)durationInSeconds;
+- (void) bk_pulseBackground:(UIColor *)pulseColor durationInSeconds:(CFTimeInterval)durationInSeconds;
 
 @end
