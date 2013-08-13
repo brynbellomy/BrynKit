@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
     s.name         = 'BrynKit'
-    s.version      = '1.3.0'
+    s.version      = '1.3.1'
 
     s.ios.deployment_target = '6.1'
     s.osx.deployment_target = '10.8'
