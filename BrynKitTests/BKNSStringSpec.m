@@ -8,7 +8,6 @@
 
 #import <Kiwi/Kiwi.h>
 #import <libextobjc/EXTScope.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "BrynKit.h"
 
@@ -65,11 +64,11 @@ context(@"an initialized NSString", ^{
 
             [[theString should] equal:expected];
         });
-
+        
     });
-
+    
     describe(@"", ^{
-
+        
     });
     
 });

@@ -40,5 +40,15 @@ install_resource()
   esac
 }
 
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Fonts/Entypo-Social.otf"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Fonts/Entypo.otf"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Fonts/fontawesome.ttf"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Fonts/iconic.otf"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/Entypo.strings"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/EntypoSocial.strings"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/FontAwesomeRegular+Deprecation.strings"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/FontAwesomeRegular.strings"
+install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/IconicStroke.strings"
+
 rsync -avr --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rm -f "$RESOURCES_TO_COPY"

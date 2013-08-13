@@ -27,8 +27,8 @@ Pod::Spec.new do |s|
     s.subspec 'Main' do |subspec|
         subspec.source_files = 'Main/*.{m,h}'
 
-        subspec.dependency 'libextobjc/EXTScope'
-        subspec.dependency 'libextobjc/EXTConcreteProtocol'
+        subspec.dependency 'libextobjc/EXTScope', '~> 0.2.5'
+        subspec.dependency 'libextobjc/EXTConcreteProtocol', '~> 0.2.5'
     end
 
     #
@@ -57,6 +57,12 @@ Pod::Spec.new do |s|
     #
     # subspecs based on other modules
     #
+
+    s.subspec 'FontasticIcons' do |subspec|
+        subspec.source_files = 'FontasticIcons/*.{h,m}'
+        subspec.dependency 'BrynKit/UIKit'
+        subspec.dependency 'FontasticIcons', '~> 0.5.0'
+    end
 
     s.subspec 'DCSlider' do |subspec|
         subspec.source_files = 'DCSlider/*.{h,m}'
