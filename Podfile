@@ -19,7 +19,7 @@ pod 'ReactiveCocoa/RACExtensions',  :podspec => 'https://gist.github.com/tonyarn
 pod 'MGBox2'
 pod 'MBProgressHUD'
 pod 'CocoaLumberjack'
-pod 'FontasticIcons', '~> 0.5.0'
+#pod 'FontasticIcons', '~> 0.5.0'
 
 target 'BrynKitTests-OCUnit', :exclusive => true do
     # pod 'TestPilot'
