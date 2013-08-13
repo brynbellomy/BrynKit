@@ -95,11 +95,11 @@ PODS:
     - ReactiveCocoa/Core
 
 DEPENDENCIES:
-  - CocoaLumberjack
+  - CocoaLumberjack (~> 1.6.2)
   - Kiwi
   - libextobjc (from `https://gist.github.com/brynbellomy/6060471/raw/080e94ce257a8cd8f67b74195d9b3c05fd7b274d/libextobjc.podspec`)
-  - MBProgressHUD
-  - MGBox2
+  - MBProgressHUD (~> 0.7)
+  - MGBox2 (~> 2.0.0)
   - ReactiveCocoa/Core (from `https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec`)
   - ReactiveCocoa/RACExtensions (from `https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec`)
 
