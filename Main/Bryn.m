@@ -6,9 +6,6 @@
 //  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 #import "Bryn.h"
 #import "BrynKit-Main.h"
 

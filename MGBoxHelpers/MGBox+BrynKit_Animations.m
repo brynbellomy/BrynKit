@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "BrynKit-Main.h"
 #import "MGBox+BrynKit_Animations.h"
 

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "BrynKit-Main.h"
 #import "BKFloatRange.h"

@@ -124,6 +124,7 @@ Pod::Spec.new do |s|
         subspec.source_files = 'SEGradientSwatch/*.{h,m}'
         subspec.dependency 'BrynKit/Main'
         subspec.dependency 'BrynKit/BKFloatRange'
+        subspec.dependency 'BrynKit/UIKit'
     end
 end
 
