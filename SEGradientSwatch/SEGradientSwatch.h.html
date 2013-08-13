@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><title>SEGradientSwatch.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>SEGradientSwatch.h
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 5.8.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;BKFloatRange.h&quot;</span>
+
+
+<span class="k">@interface</span> <span class="nc">SEGradientSwatch</span> : <span class="nc">NSObject</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">steps</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">BKFloatRange</span> <span class="n">redRange</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">BKFloatRange</span> <span class="n">greenRange</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">BKFloatRange</span> <span class="n">blueRange</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">BKFloatRange</span> <span class="n">alphaRange</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">initWithNumSteps:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">numSteps</span>
+                        <span class="nf">fromColor:</span><span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromColor</span>
+                          <span class="nf">toColor:</span><span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">toColor</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">initWithNumSteps:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">numSteps</span>
+                         <span class="nf">redRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">redRange</span>
+                       <span class="nf">greenRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">greenRange</span>
+                        <span class="nf">blueRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">blueRange</span>
+                       <span class="nf">alphaRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">alphaRange</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span> <span class="nf">objectAtIndexedSubscript:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">index</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

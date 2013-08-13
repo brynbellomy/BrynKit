@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><title>SEGradientSwatch.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>SEGradientSwatch.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 5.8.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;SEGradientSwatch.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">SEGradientSwatch</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">initWithNumSteps:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">numSteps</span>
+                         <span class="nf">redRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">redRange</span>
+                       <span class="nf">greenRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">greenRange</span>
+                        <span class="nf">blueRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">blueRange</span>
+                       <span class="nf">alphaRange:</span><span class="p">(</span><span class="n">BKFloatRange</span><span class="p">)</span><span class="nv">alphaRange</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_redRange</span> <span class="o">=</span> <span class="n">redRange</span><span class="p">;</span>
+        <span class="n">_greenRange</span> <span class="o">=</span> <span class="n">greenRange</span><span class="p">;</span>
+        <span class="n">_blueRange</span> <span class="o">=</span> <span class="n">blueRange</span><span class="p">;</span>
+        <span class="n">_alphaRange</span> <span class="o">=</span> <span class="n">alphaRange</span><span class="p">;</span>
+        <span class="n">_steps</span> <span class="o">=</span> <span class="n">numSteps</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">initWithNumSteps:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">numSteps</span>
+                        <span class="nf">fromColor:</span><span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">fromColor</span>
+                          <span class="nf">toColor:</span><span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">toColor</span>
+<span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">onRed</span><span class="p">,</span> <span class="n">offRed</span><span class="p">,</span> <span class="n">onGreen</span><span class="p">,</span> <span class="n">offGreen</span><span class="p">,</span> <span class="n">onBlue</span><span class="p">,</span> <span class="n">offBlue</span><span class="p">,</span> <span class="n">onAlpha</span><span class="p">,</span> <span class="n">offAlpha</span><span class="p">;</span>
+
+    <span class="p">[</span><span class="n">fromColor</span> <span class="nl">getRed:</span><span class="o">&amp;</span><span class="n">onRed</span>  <span class="nl">green:</span><span class="o">&amp;</span><span class="n">onGreen</span>  <span class="nl">blue:</span><span class="o">&amp;</span><span class="n">onBlue</span>  <span class="nl">alpha:</span><span class="o">&amp;</span><span class="n">onAlpha</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">toColor</span>   <span class="nl">getRed:</span><span class="o">&amp;</span><span class="n">offRed</span> <span class="nl">green:</span><span class="o">&amp;</span><span class="n">offGreen</span> <span class="nl">blue:</span><span class="o">&amp;</span><span class="n">offBlue</span> <span class="nl">alpha:</span><span class="o">&amp;</span><span class="n">offAlpha</span><span class="p">];</span>
+
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">initWithNumSteps:</span> <span class="n">numSteps</span>
+                         <span class="nl">redRange:</span> <span class="n">BKMakeFloatRangeWithBounds</span><span class="p">(</span><span class="n">onRed</span><span class="p">,</span> <span class="n">offRed</span><span class="p">)</span>
+                       <span class="nl">greenRange:</span> <span class="n">BKMakeFloatRangeWithBounds</span><span class="p">(</span><span class="n">onGreen</span><span class="p">,</span> <span class="n">offGreen</span><span class="p">)</span>
+                        <span class="nl">blueRange:</span> <span class="n">BKMakeFloatRangeWithBounds</span><span class="p">(</span><span class="n">onBlue</span><span class="p">,</span> <span class="n">offBlue</span><span class="p">)</span>
+                       <span class="nl">alphaRange:</span> <span class="n">BKMakeFloatRangeWithBounds</span><span class="p">(</span><span class="n">onAlpha</span><span class="p">,</span> <span class="n">offAlpha</span><span class="p">)];</span>
+
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nf">objectAtIndexedSubscript:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">index</span>
+<span class="p">{</span>
+    <span class="n">yssert</span><span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">,</span> <span class="s">@&quot;Index out of range.&quot;</span><span class="p">);</span>
+
+    <span class="n">CGFloat</span> <span class="n">redStart</span>    <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeStartValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">redRange</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">redEnd</span>      <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeEndValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">redRange</span><span class="p">);</span>
+
+    <span class="n">CGFloat</span> <span class="n">greenStart</span>  <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeStartValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">greenRange</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">greenEnd</span>    <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeEndValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">greenRange</span><span class="p">);</span>
+
+    <span class="n">CGFloat</span> <span class="n">blueStart</span>   <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeStartValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">blueRange</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">blueEnd</span>     <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeEndValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">blueRange</span><span class="p">);</span>
+
+    <span class="n">CGFloat</span> <span class="n">alphaStart</span>  <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeStartValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">alphaRange</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">alphaEnd</span>    <span class="o">=</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">BKFloatRangeEndValue</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">alphaRange</span><span class="p">);</span>
+
+    <span class="n">CGFloat</span> <span class="n">redStepSize</span>   <span class="o">=</span> <span class="p">(</span><span class="n">redEnd</span>   <span class="o">-</span> <span class="n">redStart</span><span class="p">)</span>   <span class="o">/</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">;</span>
+    <span class="n">CGFloat</span> <span class="n">blueStepSize</span>  <span class="o">=</span> <span class="p">(</span><span class="n">blueEnd</span>  <span class="o">-</span> <span class="n">blueStart</span><span class="p">)</span>  <span class="o">/</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">;</span>
+    <span class="n">CGFloat</span> <span class="n">greenStepSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">greenEnd</span> <span class="o">-</span> <span class="n">greenStart</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">;</span>
+    <span class="n">CGFloat</span> <span class="n">alphaStepSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">alphaEnd</span> <span class="o">-</span> <span class="n">alphaStart</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">;</span>
+
+    <span class="n">CGFloat</span> <span class="n">redValue</span>   <span class="o">=</span> <span class="n">redStart</span>   <span class="o">+</span> <span class="p">(</span><span class="n">redStepSize</span>   <span class="o">*</span> <span class="n">index</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">greenValue</span> <span class="o">=</span> <span class="n">greenStart</span> <span class="o">+</span> <span class="p">(</span><span class="n">greenStepSize</span> <span class="o">*</span> <span class="n">index</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">blueValue</span>  <span class="o">=</span> <span class="n">blueStart</span>  <span class="o">+</span> <span class="p">(</span><span class="n">blueStepSize</span>  <span class="o">*</span> <span class="n">index</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">alphaValue</span> <span class="o">=</span> <span class="n">alphaStart</span> <span class="o">+</span> <span class="p">(</span><span class="n">alphaStepSize</span> <span class="o">*</span> <span class="n">index</span><span class="p">);</span>
+
+    <span class="n">UIColor</span> <span class="o">*</span><span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorWithRed:</span><span class="n">redValue</span> <span class="nl">green:</span><span class="n">greenValue</span> <span class="nl">blue:</span><span class="n">blueValue</span> <span class="nl">alpha:</span><span class="n">alphaValue</span><span class="p">];</span>
+    <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">UIColor</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><title>BrynKitMemoryLogging.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#memory-logging-helpers">Memory logging helpers</a></div><div class="heading h4"><a href="#bkgetfreememory--">BKGetFreeMemory()</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitMemoryLogging.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2.27.2013
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;mach/mach.h&gt;</span>
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;BrynKitMemoryLogging.h&quot;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="memory-logging-helpers">
+  <h1>
+    <a href="#memory-logging-helpers" class="pilcrow">&#182;</a>
+    Memory logging helpers
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="bkgetfreememory--">
+  <h4>
+    <a href="#bkgetfreememory--" class="pilcrow">&#182;</a>
+    BKGetFreeMemory()
+  </h4>
+</div>
+</div><div class="body"><p>Returns the amount of free memory on the device.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">natural_t</span> &mdash; <span class="description">The amount of free memory in bytes.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="n">natural_t</span> <span class="nf">BKGetFreeMemory</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">mach_port_t</span> <span class="n">host_port</span><span class="p">;</span>
+    <span class="n">mach_msg_type_number_t</span> <span class="n">host_size</span><span class="p">;</span>
+    <span class="n">vm_size_t</span> <span class="n">pagesize</span><span class="p">;</span>
+    <span class="n">host_port</span> <span class="o">=</span> <span class="n">mach_host_self</span><span class="p">();</span>
+    <span class="n">host_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">vm_statistics_data_t</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">integer_t</span><span class="p">);</span>
+    <span class="n">host_page_size</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pagesize</span><span class="p">);</span>
+    <span class="n">vm_statistics_data_t</span> <span class="n">vm_stat</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">host_statistics</span><span class="p">(</span><span class="n">host_port</span><span class="p">,</span> <span class="n">HOST_VM_INFO</span><span class="p">,</span> <span class="p">(</span><span class="n">host_info_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">vm_stat</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">host_size</span><span class="p">)</span> <span class="o">!=</span> <span class="n">KERN_SUCCESS</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">COLOR_ERROR</span><span class="p">(</span><span class="s">@&quot;Failed to fetch vm statistics&quot;</span><span class="p">));</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* Stats in bytes */</span>
+    <span class="n">natural_t</span> <span class="n">mem_free</span> <span class="o">=</span> <span class="n">vm_stat</span><span class="p">.</span><span class="n">free_count</span> <span class="o">*</span> <span class="n">pagesize</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">mem_free</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<ul>
+<li>@function BKStartOccasionalMemoryLog
+*</li>
+<li>@abstract</li>
+<li>Starts a GCD timer that barfs to the console the amount of memory</li>
+<li>currently available on the device every so often.
+*</li>
+<li>@param intervalInSeconds
+*</li>
+<li>@param dispatchTheLog
+*</li>
+<li>@return</li>
+<li>The SEDispatchSource object wrapping the GCD timer that fires the memory alerts.
+*/ </li>
+</ul></td><td class="code highlight"><div class="highlight"><pre><span class="n">SEDispatchSource</span><span class="o">*</span> <span class="nf">BKStartOccasionalMemoryLog</span><span class="p">(</span><span class="n">Float32</span> <span class="n">intervalInSeconds</span><span class="p">,</span> <span class="n">BKMemoryLogDispatchBlock</span> <span class="n">dispatchTheLog</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SEDispatchSource</span>  <span class="o">*</span><span class="n">timer</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+<span class="cp">#if DEBUG</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>create our timer source</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">dispatch_queue_t</span>   <span class="n">queue</span>  <span class="o">=</span> <span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>          <span class="n">yssert_notNil</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span>
+    <span class="n">dispatch_source_t</span>  <span class="n">source</span> <span class="o">=</span> <span class="n">dispatch_source_create</span><span class="p">(</span><span class="n">DISPATCH_SOURCE_TYPE_TIMER</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">queue</span><span class="p">);</span>        <span class="n">yssert_notNil</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span>
+
+    <span class="n">uint64_t</span> <span class="n">intervalInNanoseconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64_t</span><span class="p">)(</span><span class="n">intervalInSeconds</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">);</span>
+    <span class="n">dispatch_source_set_timer</span><span class="p">(</span><span class="n">source</span><span class="p">,</span>
+                              <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">intervalInNanoseconds</span><span class="p">),</span>
+                              <span class="n">intervalInNanoseconds</span><span class="p">,</span>
+                              <span class="n">intervalInNanoseconds</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>provide a default log-dispatching block in case the user can't be bothered</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">dispatchTheLog</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dispatchTheLog</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="n">natural_t</span> <span class="n">freeMemBytes</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">memoryReadout</span>    <span class="o">=</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;%.3fmb free&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">Float32</span><span class="p">)(</span><span class="n">freeMemBytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)));</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">logMessagePrefix</span> <span class="o">=</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;[ BrynKit.OccasionalMemoryLog ] = %@&quot;</span><span class="p">,</span> <span class="n">memoryReadout</span><span class="p">);</span>
+            <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@ Current available device memory: %@&quot;</span><span class="p">,</span> <span class="n">logMessagePrefix</span><span class="p">,</span> <span class="n">memoryReadout</span><span class="p">);</span>
+        <span class="p">};</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>timer = [SEDispatchSource dispatchSourceWithSource:source onQueue:queue];</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">timer</span><span class="p">.</span><span class="n">handler</span> <span class="o">=</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">natural_t</span> <span class="n">freeMemBytes</span> <span class="o">=</span> <span class="n">BKGetFreeMemory</span><span class="p">();</span>
+        <span class="n">dispatchTheLog</span><span class="p">(</span><span class="n">freeMemBytes</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span> <span class="n">timer</span><span class="p">,</span> <span class="n">SEDispatchSource</span> <span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>now that our timer is all set to go, start it</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="p">[</span><span class="n">timer</span> <span class="n">resume</span><span class="p">];</span>
+
+
+<span class="cp">#endif</span>
+
+    <span class="k">return</span> <span class="n">timer</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></td></tr></tbody></table></div></body></html>

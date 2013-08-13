@@ -1,0 +1,197 @@
+<!DOCTYPE html><html><head><title>BrynKitDDLogColorFormatter.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitDDLogColorFormatter.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2/27/2013.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;CocoaLumberjack/DDLog.h&gt;</span>
+
+<span class="cp">#import &quot;BrynKitDDLogColorFormatter.h&quot;</span>
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;BrynKitCocoaLumberjack.h&quot;</span>
+<span class="cp">#import &quot;UIColor+Expanded.h&quot;</span>
+<span class="cp">#import &quot;UIColor+BrynKit_ColorLogging.h&quot;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>@@TODO: refactor this</p></td><td class="code highlight"><div class="highlight"><pre><span class="k">@interface</span> <span class="nc">UIColor</span> <span class="nl">(BrynKitDDLogColorFormatter)</span>
+    <span class="o">+</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span> <span class="nl">colorFromHexCode:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">hexString</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">UIColor</span> <span class="nl">(BrynKitDDLogColorFormatter)</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span> <span class="nf">colorFromHexCode:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">hexString</span>
+<span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">cleanString</span> <span class="o">=</span> <span class="p">[</span><span class="n">hexString</span> <span class="nl">stringByReplacingOccurrencesOfString:</span><span class="s">@&quot;#&quot;</span> <span class="nl">withString:</span><span class="s">@&quot;&quot;</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">([</span><span class="n">cleanString</span> <span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cleanString</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%@%@%@%@%@%@&quot;</span><span class="p">,</span>
+                       <span class="p">[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                       <span class="p">[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+                       <span class="p">[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],[</span><span class="n">cleanString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]];</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">([</span><span class="n">cleanString</span> <span class="n">length</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cleanString</span> <span class="o">=</span> <span class="p">[</span><span class="n">cleanString</span> <span class="nl">stringByAppendingString:</span><span class="s">@&quot;ff&quot;</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">baseValue</span><span class="p">;</span>
+    <span class="p">[[</span><span class="n">NSScanner</span> <span class="nl">scannerWithString:</span><span class="n">cleanString</span><span class="p">]</span> <span class="nl">scanHexInt:</span><span class="o">&amp;</span><span class="n">baseValue</span><span class="p">];</span>
+
+    <span class="kt">float</span> <span class="n">red</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseValue</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0f</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">green</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseValue</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0f</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">blue</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseValue</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0f</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">alpha</span> <span class="o">=</span> <span class="p">((</span><span class="n">baseValue</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span><span class="o">/</span><span class="mf">255.0f</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorWithRed:</span><span class="n">red</span> <span class="nl">green:</span><span class="n">green</span> <span class="nl">blue:</span><span class="n">blue</span> <span class="nl">alpha:</span><span class="n">alpha</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="k">@interface</span> <span class="nc">BrynKitDDLogColorFormatter</span> <span class="p">()</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">colorForLogFlag</span><span class="p">;</span>
+    <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">nameForLogFlag</span><span class="p">;</span>
+<span class="k">@end</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">BrynKitDDLogColorFormatter</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>init</p></div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">instancetype</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nf">init</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_shouldColorize</span>                 <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_shouldPrintDispatchQueueLabel</span>  <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_shouldPrintLogLevel</span>            <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_shouldPrintMostLikelyClassname</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_shouldPrintMethodName</span>          <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_shouldFilterByLogContext</span>       <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+
+        <span class="n">_colorForLogFlag</span> <span class="o">=</span> <span class="err">@</span><span class="p">{}.</span><span class="n">mutableCopy</span><span class="p">;</span>
+        <span class="n">_nameForLogFlag</span>  <span class="o">=</span> <span class="err">@</span><span class="p">{}.</span><span class="n">mutableCopy</span><span class="p">;</span>
+
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorFromHexCode:</span><span class="s">@&quot;E74C3C&quot;</span><span class="p">]</span>  <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_ERROR</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorFromHexCode:</span><span class="s">@&quot;27AE60&quot;</span><span class="p">]</span>  <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_SUCCESS</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorFromHexCode:</span><span class="s">@&quot;F39C12&quot;</span><span class="p">]</span>  <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_WARN</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorFromHexCode:</span><span class="s">@&quot;2980B9&quot;</span><span class="p">]</span>  <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_INFO</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setColor:</span><span class="p">[</span><span class="n">UIColor</span> <span class="nl">colorFromHexCode:</span><span class="s">@&quot;34495E&quot;</span><span class="p">]</span>  <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_VERBOSE</span><span class="p">];</span>
+
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setName:</span><span class="s">@&quot;ERROR&quot;</span>   <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_ERROR</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setName:</span><span class="s">@&quot;SUCCESS&quot;</span> <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_SUCCESS</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setName:</span><span class="s">@&quot;WARN&quot;</span>    <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_WARN</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setName:</span><span class="s">@&quot;INFO&quot;</span>    <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_INFO</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">setName:</span><span class="s">@&quot;VERBOSE&quot;</span> <span class="nl">forLogFlag:</span><span class="n">LOG_FLAG_VERBOSE</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setColor:</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">color</span>
+       <span class="nf">forLogFlag:</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">logFlag</span>
+<span class="p">{</span>
+    <span class="n">yssert_notNilAndIsClass</span><span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">UIColor</span> <span class="p">);</span>
+    <span class="n">yssert</span><span class="p">(</span> <span class="n">color</span><span class="p">.</span><span class="n">canProvideRGBComponents</span><span class="p">,</span> <span class="s">@&quot;provided color for log flag </span><span class="se">\&quot;</span><span class="s">%d</span><span class="se">\&quot;</span><span class="s"> is not in RGB colorspace (color = %@)&quot;</span><span class="p">,</span> <span class="n">logFlag</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">colorForLogFlag</span><span class="p">[</span> <span class="err">@</span><span class="p">(</span><span class="n">logFlag</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setName:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span>
+      <span class="nf">forLogFlag:</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">logFlag</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">nameForLogFlag</span><span class="p">[</span> <span class="err">@</span><span class="p">(</span><span class="n">logFlag</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>formatLogMessage:</p></div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">DDLogMessage*</span><code class="name">logMessage</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSString*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">formatLogMessage:</span><span class="p">(</span><span class="n">DDLogMessage</span> <span class="o">*</span><span class="p">)</span><span class="nv">logMessageObject</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldFilterByLogContext</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">acceptableLogContexts</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="kt">BOOL</span> <span class="n">found</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">acceptableLogContexts</span> <span class="nl">containsObject:</span><span class="err">@</span><span class="p">(</span> <span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">logContext</span> <span class="p">)];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">NO</span> <span class="o">==</span> <span class="n">found</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">logMessage</span><span class="p">;</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">logLevel</span> <span class="o">=</span> <span class="s">@&quot;N/A&quot;</span><span class="p">;</span>
+    <span class="n">UIColor</span> <span class="o">*</span><span class="n">color</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">colorForLogFlag</span><span class="p">[</span> <span class="err">@</span><span class="p">(</span> <span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">logFlag</span> <span class="p">)</span> <span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>log message</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">shouldColorize</span> <span class="o">||</span> <span class="o">!</span><span class="n">color</span> <span class="o">||</span> <span class="o">!</span><span class="n">color</span><span class="p">.</span><span class="n">canProvideRGBComponents</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">logMessage</span> <span class="o">=</span> <span class="p">[</span><span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">logMsg</span> <span class="n">copy</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">logMessage</span> <span class="o">=</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;%@%@&quot;</span> <span class="n">XCODE_COLORS_RESET</span><span class="p">,</span> <span class="p">[</span><span class="n">color</span> <span class="n">bk_xcodeColorsFGString</span><span class="p">],</span> <span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">logMsg</span><span class="p">);</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>log level</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">NSString</span> <span class="o">*</span><span class="n">logLevelName</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">nameForLogFlag</span><span class="p">[</span> <span class="err">@</span><span class="p">(</span><span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">logFlag</span><span class="p">)</span> <span class="p">];</span>
+    <span class="n">logLevelName</span> <span class="o">=</span> <span class="n">logLevelName</span> <span class="o">?:</span> <span class="s">@&quot;LOG&quot;</span><span class="p">;</span>
+
+    <span class="n">logLevel</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldColorize</span>
+                <span class="o">?</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;%@%@&quot;</span> <span class="n">XCODE_COLORS_RESET</span><span class="p">,</span> <span class="p">[</span><span class="n">color</span> <span class="n">bk_xcodeColorsFGString</span><span class="p">],</span> <span class="n">logLevelName</span><span class="p">)</span>
+                <span class="o">:</span> <span class="p">[</span><span class="n">logLevelName</span> <span class="n">copy</span><span class="p">]);</span>
+
+    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>dispatch queue label</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldPrintDispatchQueueLabel</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">parts</span> <span class="nl">addObject:</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldColorize</span>
+                               <span class="o">?</span> <span class="n">$str</span><span class="p">(</span><span class="n">COLOR_GCD_QUEUE</span><span class="p">(</span><span class="s">@&quot;%s&quot;</span><span class="p">),</span> <span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">queueLabel</span><span class="p">)</span>
+                               <span class="o">:</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;[%s]&quot;</span><span class="p">,</span> <span class="n">logMessageObject</span><span class="o">-&gt;</span><span class="n">queueLabel</span><span class="p">))];</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>method name</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldPrintMethodName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">methodNameParts</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="mi">2</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldPrintMostLikelyClassname</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">methodNameParts</span> <span class="nl">addObject:</span> <span class="n">logMessageObject</span><span class="p">.</span><span class="n">fileName</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="p">[</span><span class="n">methodNameParts</span> <span class="nl">addObject:</span> <span class="n">logMessageObject</span><span class="p">.</span><span class="n">methodName</span><span class="p">];</span>
+        <span class="n">NSString</span> <span class="o">*</span><span class="n">methodName</span> <span class="o">=</span> <span class="p">[</span><span class="n">methodNameParts</span> <span class="nl">componentsJoinedByString:</span> <span class="s">@&quot; &quot;</span><span class="p">];</span>
+
+        <span class="p">[</span><span class="n">parts</span> <span class="nl">addObject:</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldColorize</span>
+                               <span class="o">?</span> <span class="n">$str</span><span class="p">(</span><span class="n">COLOR_SEL</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">),</span> <span class="n">methodName</span><span class="p">)</span>
+                               <span class="o">:</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;[%@]&quot;</span><span class="p">,</span> <span class="n">methodName</span><span class="p">))];</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>log level</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldPrintLogLevel</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">parts</span> <span class="nl">addObject:</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;[%@]&quot;</span><span class="p">,</span> <span class="n">logLevel</span><span class="p">)];</span>
+    <span class="p">}</span>
+
+
+
+    <span class="p">[</span><span class="n">parts</span> <span class="nl">addObject:</span> <span class="n">logMessage</span><span class="p">];</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">parts</span> <span class="nl">componentsJoinedByString:</span> <span class="s">@&quot; &quot;</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

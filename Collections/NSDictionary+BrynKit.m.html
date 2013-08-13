@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><title>NSDictionary+BrynKit.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>NSDictionary+BrynKit.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 8.2.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;libextobjc/EXTScope.h&gt;</span>
+
+<span class="cp">#import &quot;NSDictionary+BrynKit.h&quot;</span>
+<span class="cp">#import &quot;BrynKitDebugging.h&quot;</span>
+<span class="cp">#import &quot;NSArray+BrynKit.h&quot;</span>
+
+
+
+<span class="k">@implementation</span> <span class="nc">NSDictionary</span> <span class="nl">(BrynKit)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_remapKeys:</span><span class="p">(</span><span class="n">BKRemapBlock</span><span class="p">)</span><span class="nv">block</span>
+<span class="p">{</span>
+    <span class="n">yssert_notNil</span><span class="p">(</span> <span class="n">block</span> <span class="p">);</span>
+
+    <span class="n">__block</span> <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">dict</span> <span class="o">=</span> <span class="err">@</span><span class="p">{}.</span><span class="n">mutableCopy</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">enumerateKeysAndObjectsUsingBlock:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="kt">BOOL</span> <span class="o">*</span><span class="n">stop</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">id</span> <span class="n">newVal</span> <span class="o">=</span> <span class="n">block</span><span class="p">(</span> <span class="n">key</span><span class="p">,</span> <span class="n">obj</span> <span class="p">);</span>
+        <span class="n">dict</span><span class="p">[</span> <span class="n">key</span> <span class="p">]</span> <span class="o">=</span> <span class="n">newVal</span><span class="p">;</span>
+    <span class="p">}];</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithDictionary:</span> <span class="n">dict</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_sortedKeysByComparingSubkey:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">subkey</span>
+<span class="p">{</span>
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">self</span> <span class="n">allKeys</span><span class="p">]</span> <span class="nl">bk_sort:</span><span class="o">^</span><span class="n">NSComparisonResult</span><span class="p">(</span><span class="kt">id</span> <span class="n">key1</span><span class="p">,</span> <span class="kt">id</span> <span class="n">key2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+        <span class="kt">id</span><span class="o">&lt;</span><span class="n">BKComparable</span><span class="o">&gt;</span> <span class="n">key1SubkeyValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">[</span> <span class="n">key1</span> <span class="p">]</span> <span class="nl">valueForKey:</span><span class="n">subkey</span><span class="p">];</span>
+        <span class="kt">id</span><span class="o">&lt;</span><span class="n">BKComparable</span><span class="o">&gt;</span> <span class="n">key2SubkeyValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">[</span> <span class="n">key2</span> <span class="p">]</span> <span class="nl">valueForKey:</span><span class="n">subkey</span><span class="p">];</span>
+
+        <span class="n">yssert_notNilAndRespondsToSelector</span><span class="p">(</span><span class="n">key1SubkeyValue</span><span class="p">,</span> <span class="nl">compare:</span><span class="p">);</span>
+        <span class="n">yssert_notNilAndRespondsToSelector</span><span class="p">(</span><span class="n">key2SubkeyValue</span><span class="p">,</span> <span class="nl">compare:</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">key1SubkeyValue</span> <span class="nl">compare:</span><span class="n">key2SubkeyValue</span><span class="p">];</span>
+    <span class="p">}];</span>
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html><html><head><title>NSObject+BrynKitObjCRuntime.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>NSObject+BrynKitObjCRuntime.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7.27.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;objc/objc.h&gt;</span>
+<span class="cp">#import &lt;objc/runtime.h&gt;</span>
+
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;NSObject+BrynKitObjCRuntime.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">NSObject</span> <span class="nl">(BrynKitObjCRuntime)</span>
+
+<span class="cp">#pragma mark- Method swizzling</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="n">IMP</span><span class="p">)</span> <span class="nf">bk_wrapMethod:</span> <span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">selector</span>
+            <span class="nf">withBlock:</span> <span class="p">(</span><span class="kt">id</span> <span class="p">(</span><span class="o">^</span><span class="p">)())</span><span class="nv">block</span>
+<span class="p">{</span>
+    <span class="n">yssert_notNil</span><span class="p">(</span> <span class="n">block</span> <span class="p">);</span>
+
+    <span class="n">Method</span>      <span class="n">originalMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span> <span class="n">self</span><span class="p">,</span> <span class="n">selector</span> <span class="p">);</span>                                         <span class="n">yssert_notNil</span><span class="p">(</span> <span class="n">originalMethod</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">typeEncoding</span>   <span class="o">=</span> <span class="n">method_getTypeEncoding</span><span class="p">(</span> <span class="n">originalMethod</span> <span class="p">);</span>                                          <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">typeEncoding</span> <span class="p">);</span>
+    <span class="n">IMP</span>         <span class="n">originalImpl</span>   <span class="o">=</span> <span class="n">method_getImplementation</span><span class="p">(</span> <span class="n">originalMethod</span> <span class="p">);</span>                                        <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">originalImpl</span> <span class="p">);</span>
+
+    <span class="kt">SEL</span> <span class="n">wrapperSel</span>    <span class="o">=</span> <span class="n">NSSelectorFromString</span><span class="p">(</span> <span class="n">$str</span><span class="p">(</span> <span class="s">@&quot;bk_wrapper_%@&quot;</span><span class="p">,</span>  <span class="n">NSStringFromSelector</span><span class="p">(</span> <span class="n">selector</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>        <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">wrapperSel</span> <span class="p">);</span>
+    <span class="n">IMP</span> <span class="n">wrapperImpl</span>   <span class="o">=</span> <span class="n">imp_implementationWithBlock</span><span class="p">(</span> <span class="n">block</span> <span class="p">);</span>                                                       <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">wrapperImpl</span> <span class="p">);</span>
+
+    <span class="kt">BOOL</span> <span class="n">success</span> <span class="o">=</span> <span class="n">class_addMethod</span><span class="p">(</span> <span class="n">self</span><span class="p">,</span> <span class="n">wrapperSel</span><span class="p">,</span> <span class="n">wrapperImpl</span><span class="p">,</span> <span class="n">typeEncoding</span> <span class="p">);</span>                                  <span class="n">yssert</span><span class="p">(</span> <span class="n">success</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">success</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">lllog</span><span class="p">(</span> <span class="n">Error</span><span class="p">,</span> <span class="s">@&quot;Could not add block method with selector &#39;%@&#39; to class &#39;%@&#39;.&quot;</span><span class="p">,</span> <span class="n">NSStringFromSelector</span><span class="p">(</span><span class="n">selector</span><span class="p">),</span> <span class="n">NSStringFromClass</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">class</span><span class="p">)</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Method</span> <span class="n">wrapperMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span> <span class="n">self</span><span class="p">,</span> <span class="n">wrapperSel</span> <span class="p">);</span>                                             <span class="n">yssert_notNil</span><span class="p">(</span> <span class="n">wrapperMethod</span> <span class="p">);</span>
+    <span class="n">yssert</span><span class="p">(</span> <span class="n">strcmp</span><span class="p">(</span><span class="n">method_getTypeEncoding</span><span class="p">(</span><span class="n">originalMethod</span><span class="p">),</span> <span class="n">method_getTypeEncoding</span><span class="p">(</span><span class="n">wrapperMethod</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s">@&quot;Encoding must be the same.&quot;</span> <span class="p">);</span>
+
+    <span class="n">method_exchangeImplementations</span><span class="p">(</span> <span class="n">originalMethod</span><span class="p">,</span> <span class="n">wrapperMethod</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">originalImpl</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<ul>
+<li>(void)   bk_forSelector: (SEL)selector
+    setPreconditions: (dispatch_block_t)preconditions
+{
+[self bk_wrapMethod:selector withBlock:^{}];
+}</li>
+</ul></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<ul>
+<li>(void)   bk_forSelector: (SEL)selector
+    setPreconditions: (dispatch_block_t)preconditions
+{
+//    static NSDictionary *contractsInfo = nil;
+//    if (contractsInfo == nil)
+//    {
+//        contractsInfo = (NSDictionary *) [[self class] associatedValueForKey: BKContractsForClass];
+//    }
+NSMutableDictionary *contractsInfo = (NSMutableDictionary *) [[self class] associatedValueForKey: BKContractsForClass];
+if ( contractsInfo == nil )
+{
+   contractsInfo = @{}.mutableCopy;</li>
+</ul>
+
+
+<div class="highlight"><pre><code>   <span class="cp">[</span><span class="err">[</span><span class="bp">self</span> <span class="nb">class</span><span class="cp">]</span> <span class="nt">associateValue</span><span class="o">:</span> <span class="nt">contractsInfo</span>
+                        <span class="nt">withKey</span><span class="o">:</span> <span class="nt">BKContractsForClass</span><span class="o">];</span>
+</code></pre></div>
+
+
+
+<p>}</p>
+
+<p>contractsInfo[ NSStringFromSelector(selector) ] = preconditions;
+}</p>
+
+<p>BKDefineVoidKey( BKContractsForClass );</p>
+
+<ul>
+<li><p>(NSString *) contractWrapper_testMethod:(NSNumber *)someNum
+{
+NSString *strSelector = ({
+   NSMutableArray *selectorParts = [NSStringFromSelector( _cmd ) componentsSeparatedByString:@":"].mutableCopy;
+   [selectorParts removeObjectAtIndex:0];
+   [selectorParts componentsJoinedByString:@":"];
+});</p>
+
+<p>NSDictionary *selectors = (NSDictionary *)[[self class] associatedValueForKey: BKContractsForClass];
+NSDictionary *contractInfo = selectors[ strSelector ];</p>
+
+<p>void(^preconditionsBlock) ( void ) = contractInfo[ @"pre"  ] ?: nil;
+void(^postconditionsBlock)( id )   = contractInfo[ @"post" ] ?: nil;</p>
+
+<p>if (preconditionsBlock) { preconditionsBlock(); }</p></li>
+</ul>
+
+<p>//    id retval = [self CALL_ORIGINAL_METHOD];
+   id retval = [self contractWrapper_testMethod: someNum];</p>
+
+<p>if (postconditionsBlock) { postconditionsBlock( retval ); }</p>
+
+<p>return retval;
+}</p>
+
+<ul>
+<li><p>(NSString *) testMethod:(NSNumber *)someNum
+{</p>
+
+<p>/<em>* GENERATED *</em>/
+//    static NSMutableDictionary *bk_contractInfo = nil;
+//    static void(^bk_preconditions)(void) = nil;
+//    static void(^bk_postconditions)(void *) = nil;</p>
+
+<p>//    if ( ! bk_contractInfo )  { bk_contractInfo = @{}.mutableCopy; }</p>
+
+<p>//    static dispatch_once_t onceToken;
+//    dispatch_once(&amp;onceToken, ^{
+//        NSDictionary *bk_contractInfo = (NSDictionary *)[[self class] associatedValueForKey: BKContractsForClass];
+//
+//        bk_preconditions  = bk_contractInfo[ @"pre"  ] ?: nil;
+//        bk_postconditions = bk_contractInfo[ @"post" ] ?: nil;
+//    });</p>
+
+<p>/<em>* / GENERATED *</em>/</p>
+
+<p>//    bk_preconditions = ^{
+//        yssert( someNum.bk_uint > 7 );
+//    };
+//
+//    bk_postconditions = ^(void *retval) {
+//
+//    };</p>
+
+<p>NSLog( @"[xyzzy testMethod:] someNum = %@", someNum );
+return @"some string";
+}</p></li>
+</ul></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Objective-C associated objects</span>
+
+<span class="cp">#pragma mark-</span>
+<span class="cp">#pragma mark Instance methods</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_associateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_atomicallyAssociateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_associateCopyOfValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY_NONATOMIC</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_atomicallyAssociateCopyOfValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_weaklyAssociateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_ASSIGN</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">bk_associatedValueForKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_removeAllAssociatedObjects</span> <span class="p">{</span>
+  <span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark-</span>
+<span class="cp">#pragma mark Class methods</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_associateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN_NONATOMIC</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_atomicallyAssociateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_associateCopyOfValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY_NONATOMIC</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_atomicallyAssociateCopyOfValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_weaklyAssociateValue:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">value</span> <span class="nf">withKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_ASSIGN</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">bk_associatedValueForKey:</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">bk_removeAllAssociatedObjects</span> <span class="p">{</span>
+  <span class="n">objc_removeAssociatedObjects</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

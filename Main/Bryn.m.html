@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><title>Bryn.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>Bryn.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7/29/12.
+ Copyright (c) 2012 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;Bryn.h&quot;</span>
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">Bryn</span>
+<span class="k">@end</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><hr /></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Categories: Foundation</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">@implementation</span> <span class="nc">NSNumber</span> <span class="nl">(BrynKit)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">bk_isYes</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">bk_bool</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span> <span class="nf">bk_isNo</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">bk_bool</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">NSRegularExpression</span> <span class="nl">(BrynKit)</span>
+
+<span class="cp">#define BKHandleErrors(EXPR, ...) \</span>
+<span class="cp">     ({ \</span>
+<span class="cp">        @nserror( error ); \</span>
+<span class="cp">\</span>
+<span class="cp">        id var = ( EXPR ); \</span>
+<span class="cp">\</span>
+<span class="cp">        metamacro_foreach(_bk_handleErrors_iter,, __VA_ARGS__) \</span>
+<span class="cp">\</span>
+<span class="cp">        var; \</span>
+<span class="cp">    });</span>
+
+<span class="cp">#define _bk_handleErrors_iter(INDEX, ARG) \</span>
+<span class="cp">    ARG ( error );</span>
+
+
+<span class="k">+</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_resultsOfRegex:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">strPattern</span> <span class="nf">inString:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">haystack</span>
+<span class="p">{</span>
+    <span class="n">NSRegularExpression</span> <span class="o">*</span><span class="n">regex</span> <span class="o">=</span>
+        <span class="n">BKHandleErrors</span><span class="p">({</span> <span class="p">[</span><span class="n">NSRegularExpression</span> <span class="nl">regularExpressionWithPattern:</span><span class="n">strPattern</span> <span class="nl">options:</span><span class="mi">0</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span> <span class="p">},</span> <span class="n">BKErrorLog</span><span class="p">,</span> <span class="n">BKErrorReturnNil</span><span class="p">);</span>
+
+    <span class="n">NSArray</span> <span class="o">*</span><span class="n">arTextCheckingResults</span> <span class="o">=</span> <span class="p">[</span><span class="n">regex</span> <span class="nl">matchesInString:</span><span class="n">haystack</span> <span class="nl">options:</span><span class="mi">0</span> <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">haystack</span> <span class="n">length</span><span class="p">])];</span>
+
+    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">results</span> <span class="o">=</span> <span class="err">@</span><span class="p">[].</span><span class="n">mutableCopy</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="n">NSTextCheckingResult</span> <span class="o">*</span><span class="n">ntcr</span> <span class="k">in</span> <span class="n">arTextCheckingResults</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="n">NSUInteger</span> <span class="n">captureIndex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">captureIndex</span> <span class="o">&lt;</span> <span class="n">ntcr</span><span class="p">.</span><span class="n">numberOfRanges</span><span class="p">;</span> <span class="n">captureIndex</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span> <span class="n">capture</span> <span class="o">=</span> <span class="p">[</span><span class="n">haystack</span> <span class="nl">substringWithRange:</span><span class="p">[</span><span class="n">ntcr</span> <span class="nl">rangeAtIndex:</span><span class="n">captureIndex</span><span class="p">]];</span>
+            <span class="p">[</span><span class="n">results</span> <span class="nl">addObject:</span><span class="n">capture</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithArray:</span><span class="n">results</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

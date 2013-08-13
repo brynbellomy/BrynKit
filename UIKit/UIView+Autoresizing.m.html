@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><title>UIView+Autoresizing.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>UIView+Autoresizing.m
+ Stan</p>
+
+<p>Taken from open-source code created by Chen Weigang on 12-2-3.
+ Copyright (c) 2012年 Fugu Mobile Limited. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;UIView+Autoresizing.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">UIView</span> <span class="nl">(Autoresizing)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixLeftTop</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleBottomMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleRightMargin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixLeftBottom</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleTopMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleRightMargin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixRightTop</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleBottomMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleLeftMargin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixRightBottom</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleTopMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleLeftMargin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixTopFlexibleWidth</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleBottomMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixBottomFlexibleWidth</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleTopMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixLeftFlexibleHeight</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleRightMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleHeight</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFixRightFlexibleHeight</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleLeftMargin</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleHeight</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">autoresizingFlexibleWidthFlexibleHeight</span>
+<span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleWidth</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleHeight</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><title>DCControl.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>DCControl.h</p>
+
+<p>Copyright 2011 Domestic Cat. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+
+<span class="cp">#define kDCControlIsPhone (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)</span>
+<span class="cp">#define kDCControlDegreesToRadians(x) (M_PI * (x) / 180.0)</span>
+<span class="cp">#define kDCControlRadiansToDegrees(x) ((x) * 180.0 / M_PI)</span>
+
+<span class="k">@protocol</span> <span class="nc">DCControlDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+
+<span class="err">@</span><span class="n">required</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">controlValueDidChange:</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">value</span> <span class="nl">sender:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+<span class="k">@interface</span> <span class="nc">DCControl</span> : <span class="nc">UIView</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">id</span> <span class="n">delegate</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span><span class="n">color</span><span class="p">;</span>     <span class="c1">// default: black</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGFloat</span> <span class="n">backgroundColorAlpha</span><span class="p">;</span>         <span class="c1">// default: 0.3</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span><span class="n">deselectedColor</span><span class="p">;</span> <span class="c1">// default: nil</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIFont</span> <span class="o">*</span><span class="n">labelFont</span><span class="p">;</span>    <span class="c1">// default: bold, system, 12.5</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span><span class="n">labelColor</span><span class="p">;</span>    <span class="c1">// default: use self.color</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGPoint</span> <span class="n">labelOffset</span><span class="p">;</span>              <span class="c1">// default: CGPointZero</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGFloat</span> <span class="n">min</span><span class="p">;</span>                  <span class="c1">// default: 0.0</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGFloat</span> <span class="n">max</span><span class="p">;</span>                  <span class="c1">// default: 1.0</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGFloat</span> <span class="n">value</span><span class="p">;</span>          <span class="c1">// default: 0.0</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">displaysValue</span><span class="p">;</span>             <span class="c1">// default: YES</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">atomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">allowsGestures</span><span class="p">;</span>              <span class="c1">// default: YES</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>@property (nonatomic, strong, readonly) RACSignal *rac_signalForValues;</p></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithDelegate:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">aDelegate</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>///////////////////
+Drawing Methods //
+///////////////////</p></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">context:</span><span class="p">(</span><span class="n">CGContextRef</span><span class="p">)</span><span class="nv">context</span> <span class="nf">addRoundedRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span> <span class="nf">cornerRadius:</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="nv">cornerRadius</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

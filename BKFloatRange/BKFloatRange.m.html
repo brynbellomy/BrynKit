@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><title>BKFloatRange.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BKFloatRange.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7.27.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;BKFloatRange.h&quot;</span>
+
+
+<span class="n">BKFloatRange</span> <span class="nf">BKMakeFloatRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">loc</span><span class="p">,</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">len</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BKFloatRange</span> <span class="n">r</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">loc</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">BKFloatRange</span> <span class="nf">BKMakeFloatRangeWithBounds</span><span class="p">(</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">start</span><span class="p">,</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">end</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BKFloatRange</span> <span class="n">r</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">BKFloatRange</span> <span class="nf">BKMakeZeroLengthFloatRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">location</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BKFloatRange</span> <span class="n">r</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">;</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Float32</span> <span class="nf">BKFloatRangeStartValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">BKMinValueInFloatRange</span><span class="p">(</span><span class="n">range</span><span class="p">);</span> <span class="p">}</span>
+<span class="n">Float32</span> <span class="nf">BKFloatRangeEndValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range</span> <span class="p">)</span>   <span class="p">{</span> <span class="k">return</span> <span class="n">BKMaxValueInFloatRange</span><span class="p">(</span><span class="n">range</span><span class="p">);</span> <span class="p">}</span>
+<span class="n">Float32</span> <span class="nf">BKMinValueInFloatRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">;</span> <span class="p">}</span>
+<span class="n">Float32</span> <span class="nf">BKMaxValueInFloatRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="kt">BOOL</span> <span class="nf">BKIsLocationInFloatRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">Float32</span> <span class="n">loc</span><span class="p">,</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range</span><span class="p">)</span>       <span class="p">{</span> <span class="k">return</span> <span class="n">loc</span> <span class="o">-</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">&lt;</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="p">}</span>
+<span class="kt">BOOL</span> <span class="nf">BKFloatRangesAreEqual</span><span class="p">(</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range1</span><span class="p">,</span> <span class="k">const</span> <span class="n">BKFloatRange</span> <span class="n">range2</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">range1</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="n">range2</span><span class="p">.</span><span class="n">location</span> <span class="o">&amp;&amp;</span> <span class="n">range1</span><span class="p">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">range2</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="p">}</span>
+</pre></div></td></tr></tbody></table></div></body></html>

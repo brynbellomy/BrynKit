@@ -1,0 +1,298 @@
+<!DOCTYPE html><html><head><title>DCSlider.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>DCSlider.m</p>
+
+<p>Copyright 2011 Domestic Cat. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;DCSlider.h&quot;</span>
+
+<span class="k">@interface</span> <span class="nc">DCSlider</span> <span class="p">()</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">tapGestureRecognizer</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGFloat</span> <span class="n">touchHandleOffset</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">DCSlider</span> <span class="p">{}</span>
+
+<span class="cp">#pragma mark- Lifecycle</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nl">initWithDelegate:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">aDelegate</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithDelegate:</span><span class="n">aDelegate</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">_cornerRadius</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">;</span>
+        <span class="n">_minimumHandleSize</span> <span class="o">=</span> <span class="mf">35.0f</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Accessors</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">setIsTappable:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="n">isTappable</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isTappable</span> <span class="o">==</span> <span class="n">YES</span> <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">tapGestureRecognizer</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>add the tap gesture for jumping the value straight to that point</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">tapGestureRecognizer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITapGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">tap:</span><span class="p">)];</span>
+        <span class="n">tapGestureRecognizer</span><span class="p">.</span><span class="n">numberOfTapsRequired</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">addGestureRecognizer:</span><span class="n">tapGestureRecognizer</span><span class="p">];</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">tapGestureRecognizer</span> <span class="o">=</span> <span class="n">tapGestureRecognizer</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">tapGestureRecognizer</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">self</span> <span class="nl">removeGestureRecognizer:</span> <span class="n">self</span><span class="p">.</span><span class="n">tapGestureRecognizer</span><span class="p">];</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">tapGestureRecognizer</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">_isTappable</span> <span class="o">=</span> <span class="n">isTappable</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">setFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="n">frame</span>
+<span class="p">{</span>
+  <span class="p">[</span><span class="n">super</span> <span class="nl">setFrame:</span><span class="n">frame</span><span class="p">];</span>
+
+    <span class="n">CGFloat</span> <span class="n">height</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span>
+                        <span class="o">?</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mf">6.0f</span>
+                        <span class="o">:</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mf">6.0f</span><span class="p">;</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span> <span class="o">=</span> <span class="n">floorf</span><span class="p">(</span><span class="n">height</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">setHandleSize:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">handleSize</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">handleSize</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">minimumHandleSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">handleSize</span> <span class="o">=</span> <span class="mf">35.0f</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">_handleSize</span> <span class="o">=</span> <span class="n">handleSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Touch handling</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">touchesBegan:</span> <span class="p">(</span><span class="n">NSSet</span> <span class="o">*</span><span class="p">)</span><span class="n">touches</span>
+            <span class="nl">withEvent:</span> <span class="p">(</span><span class="n">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="n">event</span>
+<span class="p">{</span>
+  <span class="n">UITouch</span> <span class="o">*</span><span class="n">touch</span> <span class="o">=</span> <span class="p">[</span><span class="n">touches</span> <span class="n">anyObject</span><span class="p">];</span>
+  <span class="n">CGPoint</span> <span class="n">touchPosition</span> <span class="o">=</span> <span class="p">[</span><span class="n">touch</span> <span class="nl">locationInView:</span><span class="n">self</span><span class="p">];</span>
+  <span class="n">CGFloat</span> <span class="n">handleOrigin</span><span class="p">;</span>
+  <span class="n">CGFloat</span> <span class="n">valueInternal</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">handleOrigin</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span> <span class="o">*</span> <span class="n">valueInternal</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">handleOrigin</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span> <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span> <span class="o">*</span> <span class="n">valueInternal</span><span class="p">;</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>if the touch is inside the handle then save the offset of the touch from the handle</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span> <span class="o">&amp;&amp;</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">handleOrigin</span> <span class="o">&amp;&amp;</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">handleOrigin</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span>
+    <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span> <span class="o">&amp;&amp;</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">handleOrigin</span> <span class="o">&amp;&amp;</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">handleOrigin</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">))</span>
+  <span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">touchHandleOffset</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span> <span class="o">?</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">handleOrigin</span> <span class="o">:</span> <span class="n">touchPosition</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">handleOrigin</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>set the handle offset to -1 so touchesmoved events are ignored</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">self</span><span class="p">.</span><span class="n">touchHandleOffset</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">touchesMoved:</span> <span class="p">(</span><span class="n">NSSet</span> <span class="o">*</span><span class="p">)</span><span class="n">touches</span>
+            <span class="nl">withEvent:</span> <span class="p">(</span><span class="n">UIEvent</span> <span class="o">*</span><span class="p">)</span><span class="n">event</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">touchHandleOffset</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="n">UITouch</span> <span class="o">*</span><span class="n">touch</span>        <span class="o">=</span> <span class="p">[</span><span class="n">touches</span> <span class="n">anyObject</span><span class="p">];</span>
+  <span class="n">CGPoint</span> <span class="n">touchPosition</span> <span class="o">=</span> <span class="p">[</span><span class="n">touch</span> <span class="nl">locationInView:</span><span class="n">self</span><span class="p">];</span>
+
+  <span class="n">CGFloat</span> <span class="n">newValue</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">newValue</span> <span class="o">=</span> <span class="p">(</span><span class="n">touchPosition</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">touchHandleOffset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">newValue</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">touchPosition</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">touchHandleOffset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span> <span class="o">+</span> <span class="n">newValue</span> <span class="o">*</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">tap:</span><span class="p">(</span><span class="n">UIGestureRecognizer</span> <span class="o">*</span><span class="p">)</span><span class="n">gesture</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">allowsGestures</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+  
+  <span class="n">CGPoint</span> <span class="n">tapPoint</span> <span class="o">=</span> <span class="p">[</span><span class="n">gesture</span> <span class="nl">locationInView:</span><span class="n">self</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>work out the touch position and therefore value</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="n">CGFloat</span> <span class="n">newValue</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">newValue</span> <span class="o">=</span> <span class="p">(</span><span class="n">tapPoint</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">newValue</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">tapPoint</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span> <span class="o">+</span> <span class="n">newValue</span> <span class="o">*</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Drawing</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="n">rect</span>
+<span class="p">{</span>
+  <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+    <span class="n">UIColor</span>     <span class="o">*</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">deselectedColor</span> <span class="o">!=</span> <span class="nb">nil</span>
+                                        <span class="o">?</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">deselectedColor</span> <span class="nl">colorWithAlphaComponent:</span><span class="n">self</span><span class="p">.</span><span class="n">backgroundColorAlpha</span><span class="p">]</span>
+                                        <span class="o">:</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">color</span>           <span class="nl">colorWithAlphaComponent:</span><span class="n">self</span><span class="p">.</span><span class="n">backgroundColorAlpha</span><span class="p">]);</span>
+
+    <span class="n">CGFloat</span> <span class="n">lighterBackgroundColorAlpha</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">backgroundColorAlpha</span> <span class="o">/</span> <span class="mf">2.0f</span><span class="p">;</span>
+  <span class="n">UIColor</span> <span class="o">*</span><span class="n">lighterBackgroundColor</span>     <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">deselectedColor</span> <span class="o">!=</span> <span class="nb">nil</span>
+                                               <span class="o">?</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">deselectedColor</span> <span class="nl">colorWithAlphaComponent:</span> <span class="n">lighterBackgroundColorAlpha</span><span class="p">]</span>
+                                               <span class="o">:</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">color</span>           <span class="nl">colorWithAlphaComponent:</span> <span class="n">lighterBackgroundColorAlpha</span><span class="p">]);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>draw background of slider</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="p">[</span><span class="n">lighterBackgroundColor</span> <span class="n">set</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span> <span class="nl">cornerRadius:</span><span class="n">self</span><span class="p">.</span><span class="n">cornerRadius</span><span class="p">];</span>
+  <span class="n">CGContextFillPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>draw the 'filled' section to the left of the handle (or from the handle if in bidirectional mode)</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="p">[</span><span class="n">backgroundColor</span> <span class="n">set</span><span class="p">];</span>
+
+  <span class="n">CGRect</span> <span class="n">valueRect</span><span class="p">;</span>
+    <span class="n">CGRect</span>  <span class="n">rectForHandle</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">rectForHandle</span><span class="p">];</span>
+    <span class="n">CGFloat</span> <span class="n">handlePos</span>     <span class="o">=</span> <span class="n">CGRectGetMinY</span><span class="p">(</span><span class="n">rectForHandle</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">handleMid</span>     <span class="o">=</span> <span class="n">CGRectGetMidY</span><span class="p">(</span><span class="n">rectForHandle</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">handleMin</span>     <span class="o">=</span> <span class="n">CGRectGetMinY</span><span class="p">(</span><span class="n">rectForHandle</span><span class="p">);</span>
+    <span class="n">CGFloat</span> <span class="n">handleMax</span>     <span class="o">=</span> <span class="n">CGRectGetMaxX</span><span class="p">(</span><span class="n">rectForHandle</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isBidirectional</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">handleMid</span> <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+            <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">handleMid</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">handleMid</span> <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+            <span class="p">}</span>
+
+      <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">valueRect</span> <span class="nl">cornerRadius:</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+      <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">handleMax</span><span class="p">),</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+      <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">valueRect</span> <span class="nl">cornerRadius:</span><span class="n">self</span><span class="p">.</span><span class="n">cornerRadius</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">CGContextFillPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+    <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">handlePos</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>draw the 'filled' section below the handle (or from the handle if in bidirectional mode) using a colour slightly lighter than the theme</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isBidirectional</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">handleMid</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">handleMid</span><span class="p">);</span>
+            <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">handleMid</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectIntegral</span><span class="p">(</span><span class="n">valueRect</span><span class="p">);</span>
+
+      <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">valueRect</span> <span class="nl">cornerRadius:</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+      <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectIntegral</span><span class="p">(</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">handleMin</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">handleMin</span><span class="p">));</span>
+
+      <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">valueRect</span> <span class="nl">cornerRadius:</span><span class="n">self</span><span class="p">.</span><span class="n">cornerRadius</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">CGContextFillPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+    <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">handlePos</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+  <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>draw the handle</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectIntegral</span><span class="p">(</span><span class="n">valueRect</span><span class="p">);</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">color</span> <span class="n">set</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">context:</span><span class="n">context</span> <span class="nl">addRoundedRect:</span><span class="n">valueRect</span> <span class="nl">cornerRadius:</span><span class="n">self</span><span class="p">.</span><span class="n">cornerRadius</span><span class="p">];</span>
+
+  <span class="n">CGContextFillPath</span><span class="p">(</span><span class="n">context</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>draw value string as needed</p></td><td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">displaysValue</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">labelColor</span> <span class="n">set</span><span class="p">];</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">valueString</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isBidirectional</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">valueString</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%02.0f%%&quot;</span><span class="p">,</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span> <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="n">valueString</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%03.0f%%&quot;</span><span class="p">,</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">];</span>
+        <span class="p">}</span>
+
+    <span class="n">CGSize</span> <span class="n">valueStringSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">valueString</span> <span class="nl">sizeWithFont:</span><span class="n">self</span><span class="p">.</span><span class="n">labelFont</span><span class="p">];</span>
+    <span class="n">CGRect</span> <span class="n">handleRect</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">rectForHandle</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">valueString</span> <span class="nl">drawInRect:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="n">handleRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">handleRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">valueStringSize</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="n">handleRect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">handleRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">valueStringSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                       <span class="n">valueRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span>
+                       <span class="n">valueRect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+             <span class="nl">withFont:</span><span class="n">self</span><span class="p">.</span><span class="n">labelFont</span>
+          <span class="nl">lineBreakMode:</span><span class="n">NSLineBreakByTruncatingTail</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="n">rectForHandle</span>
+<span class="p">{</span>
+  <span class="n">CGRect</span> <span class="n">valueRect</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isHorizontalSlider</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">handlePos</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">));</span>
+    <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">handlePos</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">handlePos</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span> <span class="o">-</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)));</span>
+    <span class="n">valueRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">handlePos</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">handleSize</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">valueRect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

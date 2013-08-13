@@ -1,0 +1,384 @@
+<!DOCTYPE html><html><head><title>Bryn.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#macros-from-concisekit">Macros from ConciseKit</a></div><div class="heading h1"><a href="#arc-non-arc-compatibility-helpers">ARC/non-ARC compatibility helpers</a></div><div class="heading h1"><a href="#if--defined--concat-">if !defined($concat)</a></div><div class="heading h1"><a href="#if--defined--concatpath-">if !defined($concatPath)</a></div><div class="heading h1"><a href="#if--defined--concatfileext-">if !defined($concatFileExt)</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>Bryn.h
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7/18/12.
+ Copyright (c) 2012 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;libextobjc/metamacros.h&gt;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><hr /></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Obj-C init method macros</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="cp">#define _bk_macroArgIsMethodParameterType(N) \</span>
+<span class="cp">        metamacro_at(N, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0)</span>
+
+<span class="cp">#define _bk_initializerParams_iter(INDEX, ARG)          \</span>
+<span class="cp">        metamacro_if_eq(0, _bk_macroArgIsMethodParameterType(INDEX)) \</span>
+<span class="cp">            ( ARG ) \</span>
+<span class="cp">            ( (ARG) )</span>
+
+<span class="cp">#define _bk_callExistingInitializer_iter(INDEX, ARG)    \</span>
+<span class="cp">        metamacro_if_eq(0, _bk_macroArgIsMethodParameterType(INDEX)) \</span>
+<span class="cp">            (ARG) \</span>
+<span class="cp">            ()</span>
+
+<span class="cp">#define BKImplementConvenienceInitializer( OBJ_NAME, ... ) \</span>
+<span class="cp">        + (instancetype) metamacro_concat(OBJ_NAME,metamacro_foreach(_bk_initializerParams_iter,, ## __VA_ARGS__)) \</span>
+<span class="cp">        { \</span>
+<span class="cp">            id instance = [[self alloc] metamacro_concat(init,metamacro_foreach(_bk_callExistingInitializer_iter,, ## __VA_ARGS__)) ]; \</span>
+<span class="cp">            yssert_notNilAndIsClass( instance, self ); \</span>
+<span class="cp">            return instance; \</span>
+<span class="cp">        }</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Example: you're subclassing UIView but you don't want to allow the standard <code>initWithFrame:</code> initializer.
+These macros will generate implementations for any initializers that are not supported by your subclass
+which do nothing more than throw <code>NSInternalInconsistencyException</code>s when they are called.</p></div><div class="body"><p>In your <code>.h</code> file:</p>
+
+
+<div class="highlight"><pre><code>  <span class="nt">BKInitializersAreUnsupported</span><span class="o">(</span> <span class="nt">initWithCoder</span><span class="o">:(</span><span class="nt">NSCoder</span> <span class="o">*)</span><span class="nt">aDecoder</span> <span class="o">);</span>
+</code></pre></div>
+
+
+
+<p>... and in your <code>.m</code> file:</p>
+
+
+<div class="highlight"><pre><code> <span class="nt">BKImplementUnsupportedInitializers</span><span class="o">(</span> <span class="nt">YFilterThumbnailBox</span><span class="o">,</span> <span class="nt">initWithFilter</span><span class="nd">:image</span><span class="o">:,</span> <span class="nt">initWithCoder</span><span class="o">:(</span><span class="nt">NSCoder</span> <span class="o">*)</span><span class="nt">aDecoder</span> <span class="o">);</span>
+</code></pre></div>
+
+</div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BKInitializerIsUnsupported(...) \</span>
+<span class="cp">        _bk_generateUnsupportedInitializerDecl_iter(,, __VA_ARGS__);</span>
+
+<span class="cp">#define BKInitializersAreUnsupported(...) \</span>
+<span class="cp">        metamacro_foreach_cxt( _bk_generateUnsupportedInitializerDecl_iter,,, __VA_ARGS__ ) \</span>
+
+<span class="cp">#define _bk_generateUnsupportedInitializerDecl_iter(INDEX, CONTEXT, UNSUPPORTED_SELECTOR) \</span>
+<span class="cp">        - (instancetype) UNSUPPORTED_SELECTOR __attribute__(( deprecated )); \</span>
+
+
+
+<span class="cp">#define BKImplementUnsupportedInitializer(CLASS_NAME, DESIGNATED_INIT, ...) \</span>
+<span class="cp">        _bk_implementUnsupportedInitializers_iter(, (CLASS_NAME DESIGNATED_INIT), __VA_ARGS__)</span>
+
+<span class="cp">#define BKImplementUnsupportedInitializers(CLASS_NAME, DESIGNATED_INIT, ...) \</span>
+<span class="cp">        metamacro_foreach_cxt( _bk_implementUnsupportedInitializers_iter,,(CLASS_NAME DESIGNATED_INIT), __VA_ARGS__ )</span>
+
+<span class="cp">#define _bk_implementUnsupportedInitializers_iter(INDEX, CONTEXT, UNSUPPORTED_SELECTOR) \</span>
+<span class="cp">        \</span>
+<span class="cp">        - (instancetype) UNSUPPORTED_SELECTOR \</span>
+<span class="cp">        { \</span>
+<span class="cp">            @throw [NSException exceptionWithName:@&quot;NSInternalInconsistencyException&quot; reason:@&quot;You must call -[&quot; @ # CONTEXT @&quot;], the designated initializer.&quot; userInfo:nil]; \</span>
+<span class="cp">            return nil; \</span>
+<span class="cp">        }</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><hr /></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div><div class="dox_tag_title">---------------------------------------------------------------------------------------</div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Misc. #define macros</span>
+<span class="cp">#pragma mark-</span>
+
+
+<span class="cp">#define BKRectWithSize(size) \</span>
+<span class="cp">            ({ CGRectMake(0.0f, 0.0f, size.width, size.height); })</span>
+
+<span class="cp">#define BKRectWithDimensions(width, height) \</span>
+<span class="cp">            ({ CGRectMake(0.0f, 0.0f, width, height); })</span>
+
+<span class="cp">#define BKRectWithOriginAndSize(point, size) \</span>
+<span class="cp">            ({ CGRectMake(point.x, point.y, size.width, size.height); })</span>
+
+<span class="cp">#define BKSizeWithRect(rect) \</span>
+<span class="cp">            ({ CGSizeMake( rect.size.width, rect.size.height ); })</span>
+
+<span class="cp">#define BKSizeWithVideoDimensions(dim) \</span>
+<span class="cp">            ({ CGSizeMake( (CGFloat)dim.width, (CGFloat)dim.height ); })</span>
+
+<span class="cp">#define BKFlagIsSet(needle, haystack) \</span>
+<span class="cp">            ({ (needle &amp; haystack) != 0; })</span>
+
+<span class="cp">#define fffontAwesomeIcon(iconName) [[[FIFontAwesomeIcon alloc] init] iconName]</span>
+<span class="cp">#define eeentypoIcon(iconName)      [FIEntypoIcon metamacro_concat(iconName,Icon) ]</span>
+<span class="cp">#define iiiconicIcon(iconName)      [[[FIIconicIcon alloc] init] iconName]</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Use this macro to check if a globally-scoped framework constant (like, say,
+<code>kCVPixelBufferOpenGLESCompatibilityKey</code>) is available in the current SDK.</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BKCheckIfGlobalConstantIsAvailable(constant) (&amp;constant != NULL)</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>@define BKDefineStringKey(...)
+ @discussion Defines a pointer to a static <code>NSString</code> literal to be used for key-value stuff,
+ <code>NSDictionary</code> keys, etc.  Ex:</p></div><div class="body"><p>BKDefineStringKey(MyNotificationUserInfoKey_Clowns);
+     // ... expands to <code>static NSString *const MyNotificationUserInfoKey_Clowns = @"MyNotificationUserInfoKey_Clowns"</code></p>
+
+
+<div class="highlight"><pre><code> <span class="n">BKDefineStringKey</span><span class="p">(</span><span class="n">MyNotificationUserInfoKey_Clowns</span><span class="p">,</span> <span class="s">@&quot;clowns&quot;</span><span class="p">);</span>
+ <span class="c1">// ... expands to `static NSString *const MyNotificationUserInfoKey_Clowns = @&quot;clowns&quot;`</span>
+
+ <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;the clowns in the userinfo dictionary: %@&quot;</span><span class="p">,</span> <span class="n">userInfo</span><span class="p">[</span><span class="n">MyNotificationUserInfoKey_Clowns</span><span class="p">]);</span>
+</code></pre></div>
+
+
+
+<p>@param identifier The name of the NSString variable.
+ @param value The contents of the NSString (optional).</p></div><div class="details"><div class="dox_tag_title">Define</div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BKDefineStringKey(...) \</span>
+<span class="cp">    metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">        ( static NSString *const metamacro_head(__VA_ARGS__) = @ metamacro_stringify(metamacro_head(__VA_ARGS__)) ) \</span>
+<span class="cp">        ( static NSString *const metamacro_head(__VA_ARGS__) = metamacro_tail(__VA_ARGS__) )</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Defines a <code>static void *const</code> variable in the current scope that can be used as a key when manipulating Objective-C associated objects or GCD <code>dispatch_queue_t</code> contexts.</p></div><div class="body"></div><div class="details"><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">dispatch_set_specific</span></div><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">dispatch_get_specific</span></div><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">dispatch_queue_set_specific</span></div><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">dispatch_queue_get_specific</span></div><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">objc_setAssociatedObject</span></div><div class="dox_tag_title">See</div><div class="dox_tag_detail"><span class="dox_type">objc_getAssociatedObject</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define BKDefineVoidKey(key) \</span>
+<span class="cp">    static void *const key = (void *)&amp;key</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>This is useful if you find it difficult to remember the awkward, new way
+of instantiating out-params under ARC rules.  To use, do something like the
+following:</p></div><div class="body"><p>@nserror(error);
+     [someObject doSomethingHard:123 error:&amp;error];
+     if (error != nil) {
+         // ...
+     }</p></div><div class="details"><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define nserror(x)    try{}@finally{} NSError __autoreleasing * x = x</span>
+
+<span class="cp">#define throw_if_error(err, ...)  \</span>
+<span class="cp">    try{}@finally{} \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert( !err, ## __VA_ARGS__ ) \</span>
+<span class="cp">    } while( 0 )</span>
+
+<span class="cp">#define return_if_error(err) \</span>
+<span class="cp">    try{}@finally{} \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        if ( err ) { return; } \</span>
+<span class="cp">    } while( 0 )</span>
+
+<span class="cp">#define return_nil_if_error(err) \</span>
+<span class="cp">    try{}@finally{} \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        if ( err ) { return nil; } \</span>
+<span class="cp">    } while( 0 )</span>
+
+<span class="cp">#define lllog_if_error(err) \</span>
+<span class="cp">    try{}@finally{} \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        if ( err ) { lllog(Error, @&quot;Error (line &quot; @ metamacro_stringify(__LINE__) @&quot; in &quot; @ metamacro_stringify(__FILE__) @&quot;): %@&quot;, [error localizedDescription]); } \</span>
+<span class="cp">    } while( 0 )</span>
+
+
+
+<span class="cp">#define BKErrorThrow        @throw_if_error</span>
+<span class="cp">#define BKErrorReturn(err)  @return_if_error</span>
+<span class="cp">#define BKErrorReturnNil    @return_nil_if_error</span>
+<span class="cp">#define BKErrorLog          @lllog_if_error</span>
+
+
+<span class="cp">#define instanceOf(klass) isKindOfClass:[klass class]</span>
+
+<span class="cp">#define $url(str) ({ [NSURL URLWithString:(str)]; })</span>
+
+<span class="cp">#define $bundleResourceURL(res, ext) [[NSBundle mainBundle] URLForResource:res withExtension:ext]</span>
+
+<span class="cp">#define $fileManager [NSFileManager defaultManager]</span>
+
+<span class="cp">#define $notificationCenter [NSNotificationCenter defaultCenter]</span>
+
+<span class="cp">#define $app [UIApplication sharedApplication]</span>
+
+<span class="cp">#define $documentDirectories \</span>
+<span class="cp">    ({ NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); })</span>
+
+<span class="cp">#define $sortByKeyAscending(array, key) \</span>
+<span class="cp">    ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:YES] ]]; })</span>
+
+<span class="cp">#define $sortByKeyDescending(array, key) \</span>
+<span class="cp">    ({ [array sortedArrayUsingDescriptors: @[ [[NSSortDescriptor alloc] initWithKey:key ascending:NO] ]]; })</span>
+
+
+
+<span class="cp">#define bk_uint unsignedIntegerValue</span>
+
+<span class="cp">#define bk_int integerValue</span>
+
+<span class="cp">#define bk_float floatValue</span>
+
+<span class="cp">#define bk_double doubleValue</span>
+
+<span class="cp">#define bk_bool boolValue</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="macros-from-concisekit">
+  <h1>
+    <a href="#macros-from-concisekit" class="pilcrow">&#182;</a>
+    Macros from ConciseKit
+  </h1>
+</div>
+</div><div class="body"><p>I can't always justify including the whole of <a href="http://github.com/petejkim/ConciseKit">ConciseKit</a>
+just because I want to use <code>$new(...)</code> a few times in a helper library.  So these are here mainly
+for me to be able to have my cake and eat it too.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#ifndef __has_feature</span>
+<span class="cp">#   define __has_feature(x) 0</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if __has_feature(objc_arc)</span>
+<span class="cp">#   define IF_ARC(with, without) with</span>
+<span class="cp">#else</span>
+<span class="cp">#   define IF_ARC(with, without) without</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($new)</span>
+<span class="cp">#   define $new(Klass) IF_ARC([[Klass alloc] init], [[[Klass alloc] init] autorelease])</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($str)</span>
+<span class="cp">#   define $str(__FORMAT__, ...)   ({ [NSString stringWithFormat:__FORMAT__, ## __VA_ARGS__]; })</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($utf8)</span>
+<span class="cp">#   define $utf8(utf8str)   ({ [NSString stringWithCString:utf8str encoding:NSUTF8StringEncoding]; })</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($point)</span>
+<span class="cp">#   define $point(val)       ({ [NSValue valueWithCGPoint:(val)]; })</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($pointer)</span>
+<span class="cp">#   define $pointer(val)       ({ [NSValue valueWithPointer:(val)]; })</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($selector)</span>
+<span class="cp">#   define $selector(val)    ({ [NSValue valueWithPointer:@selector(val)]; })</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if !defined($range)</span>
+<span class="cp">#   define $range(val)       ({ [NSValue valueWithRange:(val)]; })</span>
+<span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>@name Objective-C Block typedefs</p></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Objective-C Block typedefs</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">BoolBlock</span><span class="p">)(</span><span class="kt">BOOL</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">UIntBlock</span><span class="p">)(</span><span class="n">NSUInteger</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">ErrorBlock</span><span class="p">)(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">NotificationBlock</span><span class="p">)(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">DictionaryBlock</span><span class="p">)(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">IdBlock</span><span class="p">)(</span><span class="kt">id</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">UpdateCollectionCallbackBlock</span><span class="p">)(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">updatedCollection</span><span class="p">);</span>
+<span class="k">typedef</span> <span class="nf">void</span><span class="p">(</span><span class="o">^</span><span class="n">UpdateCollectionBlock</span><span class="p">)(</span><span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">collection</span><span class="p">,</span> <span class="n">UpdateCollectionCallbackBlock</span> <span class="n">callback</span><span class="p">);</span>
+<span class="k">typedef</span>   <span class="nf">id</span><span class="p">(</span><span class="o">^</span><span class="n">BKRemapBlock</span><span class="p">)(</span><span class="kt">id</span> <span class="n">key</span><span class="p">,</span> <span class="kt">id</span> <span class="n">val</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><hr /></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Image-related macros</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="arc-non-arc-compatibility-helpers">
+  <h1>
+    <a href="#arc-non-arc-compatibility-helpers" class="pilcrow">&#182;</a>
+    ARC/non-ARC compatibility helpers
+  </h1>
+</div>
+</div><div class="body"><p>everything in this section comes courtesy of the fantastic MBProgressHUD
+class by matej bukovinski [<a href='http://github.com/jdg/MBProgressHUD'>http://github.com/jdg/MBProgressHUD</a>]</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- ARC/non-ARC compatibility helpers</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="cp">#ifndef bk_strong</span>
+    <span class="err">#</span><span class="k">if</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc</span><span class="p">)</span>
+        <span class="err">#</span><span class="n">define</span> <span class="n">bk_strong</span> <span class="n">strong</span>
+    <span class="err">#</span><span class="k">else</span>
+        <span class="err">#</span><span class="n">define</span> <span class="n">bk_strong</span> <span class="n">retain</span>
+    <span class="err">#</span><span class="n">endif</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#ifndef bryn_weak</span>
+    <span class="err">#</span><span class="k">if</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc_weak</span><span class="p">)</span>
+        <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">weak</span>
+        <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__weak</span>
+    <span class="err">#</span><span class="n">elif</span> <span class="n">__has_feature</span><span class="p">(</span><span class="n">objc_arc</span><span class="p">)</span>
+        <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">unsafe_unretained</span>
+        <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__unsafe_unretained</span>
+    <span class="err">#</span><span class="k">else</span>
+        <span class="err">#</span><span class="n">define</span>   <span class="n">bryn_weak</span>   <span class="n">assign</span>
+        <span class="err">#</span><span class="n">define</span> <span class="n">__bryn_weak</span> <span class="n">__assign</span>
+    <span class="err">#</span><span class="n">endif</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if __has_feature(objc_arc)</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynAutorelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynRelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynRetain</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="n">exp</span>
+<span class="cp">#else</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynAutorelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">autorelease</span><span class="p">]</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynRelease</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">release</span><span class="p">]</span>
+    <span class="err">#</span><span class="n">define</span> <span class="n">BrynRetain</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="p">[</span><span class="n">exp</span> <span class="n">retain</span><span class="p">]</span>
+<span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><hr /></div><div class="body"></div><div class="details"><div class="dox_tag_title">Name</div><div class="dox_tag_detail"></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#pragma mark- Categories: Foundation</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap" id="if--defined--concat-">
+  <h1>
+    <a href="#if--defined--concat-" class="pilcrow">&#182;</a>
+    if !defined($concat)
+  </h1>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if defined($concat)</span>
+<span class="cp">#   undef($concat)</span>
+<span class="cp">#endif</span>
+<span class="cp">#define $concat(x, y) [x stringByAppendingString:y]</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap" id="if--defined--concatpath-">
+  <h1>
+    <a href="#if--defined--concatpath-" class="pilcrow">&#182;</a>
+    if !defined($concatPath)
+  </h1>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if defined($concatPath)</span>
+<span class="cp">#   undef($concatPath)</span>
+<span class="cp">#endif</span>
+<span class="cp">#define $concatPath(x, y) [x stringByAppendingPathComponent:y]</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap" id="if--defined--concatfileext-">
+  <h1>
+    <a href="#if--defined--concatfileext-" class="pilcrow">&#182;</a>
+    if !defined($concatFileExt)
+  </h1>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if defined($concatFileExt)</span>
+<span class="cp">#   undef($concatFileExt)</span>
+<span class="cp">#endif</span>
+<span class="cp">#define $concatFileExt(x, y) [x stringByAppendingPathExtension:y]</span>
+
+
+<span class="k">@interface</span> <span class="nc">NSNumber</span> <span class="nl">(BrynKit)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">bk_isYes</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">bk_isNo</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+<span class="k">@interface</span> <span class="nc">NSRegularExpression</span> <span class="nl">(BrynKit)</span>
+
+<span class="k">+</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_resultsOfRegex:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">strPattern</span> <span class="nf">inString:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">haystack</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+
+
+
+<span class="k">@protocol</span> <span class="nc">BKComparable</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span> <span class="nl">compare:</span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">BKComparable</span><span class="o">&gt;</span><span class="p">)</span><span class="n">other</span><span class="p">;</span>
+
+<span class="k">@end</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<div class="dox"><div class="summary"><p>Global <code>Bryn</code> object that we can piggyback on here and there (for instance,
+when using the CocoaLumberjack submodule).</p></div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">@interface</span> <span class="nc">Bryn</span> : <span class="nc">NSObject</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

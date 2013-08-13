@@ -1,0 +1,200 @@
+<!DOCTYPE html><html><head><title>BrynKitCoreGraphics.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>UIImage+BrynKit.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7.30.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;ImageIO/ImageIO.h&gt;</span>
+<span class="cp">#import &lt;CoreVideo/CoreVideo.h&gt;</span>
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;BrynKitCoreGraphics.h&quot;</span>
+
+
+<span class="n">CGImageRef</span> <span class="nf">BKCGImageFromFile</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">path</span><span class="p">)</span>
+<span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Get the URL for the pathname passed to the function.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">fileURLWithPath:</span><span class="n">path</span><span class="p">];</span>
+    <span class="n">CGImageRef</span>        <span class="n">image</span>         <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">CGImageSourceRef</span>  <span class="n">imageSource</span>   <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">CFDictionaryRef</span>   <span class="n">options</span>       <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">CFStringRef</span>       <span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="n">CFTypeRef</span>         <span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>Set up options if you want them. The options here are for
+caching the image in a decoded form and for using floating-point
+values if the image format supports them.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">keys</span>  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">kCGImageSourceShouldCache</span><span class="p">;</span>
+    <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">CFTypeRef</span><span class="p">)</span><span class="n">kCFBooleanTrue</span><span class="p">;</span>
+    <span class="n">keys</span>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">kCGImageSourceShouldAllowFloat</span><span class="p">;</span>
+    <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">CFTypeRef</span><span class="p">)</span><span class="n">kCFBooleanTrue</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Create the dictionary</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">options</span> <span class="o">=</span> <span class="n">CFDictionaryCreate</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span>
+                                 <span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">**</span><span class="p">)</span><span class="n">keys</span><span class="p">,</span>
+                                 <span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">**</span><span class="p">)</span><span class="n">values</span><span class="p">,</span>
+                                 <span class="mi">2</span><span class="p">,</span>
+                                 <span class="o">&amp;</span><span class="n">kCFTypeDictionaryKeyCallBacks</span><span class="p">,</span>
+                                 <span class="o">&amp;</span><span class="n">kCFTypeDictionaryValueCallBacks</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Create an image source from the URL.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">imageSource</span> <span class="o">=</span> <span class="n">CGImageSourceCreateWithURL</span><span class="p">((</span><span class="n">__bridge</span> <span class="n">CFURLRef</span><span class="p">)</span><span class="n">url</span><span class="p">,</span> <span class="n">options</span><span class="p">);</span>
+
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">options</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Make sure the image source exists before continuing</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">yssert_notNull</span><span class="p">(</span><span class="n">imageSource</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">imageSource</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Create an image from the first item in the image source.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">image</span> <span class="o">=</span> <span class="n">CGImageSourceCreateImageAtIndex</span><span class="p">(</span><span class="n">imageSource</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="n">CFRelease</span><span class="p">(</span> <span class="n">imageSource</span> <span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>Make sure the image exists before continuing</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">image</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">UIImage</span> <span class="o">*</span><span class="nf">BKUIImageFromBundlePNG</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">basename</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CGImageRef</span> <span class="n">cgimage</span>  <span class="o">=</span> <span class="n">BKCGImageFromBundlePNG</span><span class="p">(</span> <span class="n">basename</span> <span class="p">);</span>
+    <span class="n">UIImage</span> <span class="o">*</span><span class="n">image</span>      <span class="o">=</span> <span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageWithCGImage:</span> <span class="n">cgimage</span><span class="p">];</span>
+
+    <span class="n">CGImageRelease</span><span class="p">(</span> <span class="n">cgimage</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">CGImageRef</span> <span class="nf">BKCGImageFromBundlePNG</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">basename</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CGImageRef</span> <span class="n">pngImage</span> <span class="o">=</span> <span class="n">BKCGImageFromFile</span><span class="p">([[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="n">basename</span> <span class="nl">ofType:</span> <span class="s">@&quot;png&quot;</span><span class="p">]);</span>
+    <span class="n">yssert_notNull</span><span class="p">(</span><span class="n">pngImage</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">pngImage</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">CGContextRef</span> <span class="nf">BKCreateARGBBitmapContext</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">bitmapData</span><span class="p">,</span> <span class="n">CGImageRef</span> <span class="n">inImage</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CGContextRef</span>    <span class="n">context</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">CGColorSpaceRef</span> <span class="n">colorSpace</span><span class="p">;</span>
+    <span class="n">size_t</span>          <span class="n">bitmapBytesPerRow</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Get image width, height. We'll use the entire image.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">const</span> <span class="n">size_t</span> <span class="n">pixelsWide</span> <span class="o">=</span> <span class="n">CGImageGetWidth</span><span class="p">(</span><span class="n">inImage</span><span class="p">);</span>
+    <span class="k">const</span> <span class="n">size_t</span> <span class="n">pixelsHigh</span> <span class="o">=</span> <span class="n">CGImageGetHeight</span><span class="p">(</span><span class="n">inImage</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Declare the number of bytes per row. Each pixel in the bitmap in this
+example is represented by 4 bytes; 8 bits each of red, green, blue, and
+alpha.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">bitmapBytesPerRow</span>   <span class="o">=</span> <span class="p">(</span><span class="n">pixelsWide</span> <span class="o">*</span> <span class="p">(</span><span class="n">size_t</span><span class="p">)</span><span class="mi">4</span><span class="p">);</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>Use the generic RGB color space.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">colorSpace</span> <span class="o">=</span> <span class="n">CGColorSpaceCreateDeviceRGB</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">colorSpace</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">lllogc</span><span class="p">(</span><span class="n">Error</span><span class="p">,</span> <span class="s">@&quot;Error allocating color space&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>Allocate memory for image data. This is the destination in memory
+where any drawing to the bitmap context will be rendered.
+ bitmapData = malloc( bitmapByteCount );
+ if (bitmapData == NULL)
+ {
+   fprintf (stderr, "Memory not allocated!");
+   CGColorSpaceRelease( colorSpace );
+   return NULL;
+ }</p></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Create the bitmap context. We want pre-multiplied ARGB, 8-bits
+per component. Regardless of what the source image format is
+(CMYK, Grayscale, and so on) it will be converted over to the format
+specified here by CGBitmapContextCreate.</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">context</span> <span class="o">=</span> <span class="n">CGBitmapContextCreate</span> <span class="p">(</span><span class="n">bitmapData</span><span class="p">,</span>
+        <span class="n">pixelsWide</span><span class="p">,</span>
+        <span class="n">pixelsHigh</span><span class="p">,</span>
+        <span class="mi">8</span><span class="p">,</span>      <span class="c1">// bits per component</span>
+        <span class="n">bitmapBytesPerRow</span><span class="p">,</span>
+        <span class="n">colorSpace</span><span class="p">,</span>
+        <span class="n">kCGImageAlphaPremultipliedFirst</span> <span class="o">|</span> <span class="n">kCGBitmapByteOrder32Little</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">context</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">free</span> <span class="p">(</span><span class="n">bitmapData</span><span class="p">);</span>
+        <span class="n">lllogc</span><span class="p">(</span><span class="n">Error</span><span class="p">,</span> <span class="s">@&quot;Context not created!&quot;</span><span class="p">);</span>
+    <span class="p">}</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>Make sure and release colorspace before returning</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="n">CGColorSpaceRelease</span><span class="p">(</span> <span class="n">colorSpace</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">context</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="n">CVPixelBufferRef</span> <span class="nf">BKCVPixelBufferFromCGImage</span><span class="p">(</span><span class="n">CGImageRef</span> <span class="n">image</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CGSize</span> <span class="n">frameSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="n">CGImageGetWidth</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">CGImageGetHeight</span><span class="p">(</span><span class="n">image</span><span class="p">));</span>
+    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">options</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>this constant doesn't exist on earlier versions of iOS</p></td><td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span> <span class="n">BKCheckIfGlobalConstantIsAvailable</span><span class="p">(</span> <span class="n">kCVPixelBufferOpenGLESCompatibilityKey</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="err">@</span><span class="p">{</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nl">kCVPixelBufferOpenGLESCompatibilityKey:</span> <span class="err">@</span><span class="n">YES</span><span class="p">,</span> <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="err">@</span><span class="p">{};</span>
+    <span class="p">}</span>
+
+    <span class="n">CVPixelBufferRef</span> <span class="n">pxbuffer</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">CVReturn</span> <span class="n">status</span> <span class="o">=</span> <span class="n">CVPixelBufferCreate</span><span class="p">(</span><span class="n">kCFAllocatorDefault</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">size_t</span><span class="p">)</span><span class="n">frameSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">size_t</span><span class="p">)</span><span class="n">frameSize</span><span class="p">.</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">kCVPixelFormatType_32BGRA</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">__bridge</span> <span class="n">CFDictionaryRef</span><span class="p">)</span> <span class="n">options</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">pxbuffer</span><span class="p">);</span>
+
+    <span class="n">yssert</span><span class="p">(</span> <span class="n">status</span> <span class="o">==</span> <span class="n">kCVReturnSuccess</span> <span class="p">);</span>
+    <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">pxbuffer</span> <span class="p">);</span>
+
+    <span class="n">size_t</span> <span class="n">bytesPerPixel</span> <span class="o">=</span> <span class="n">CVPixelBufferGetBytesPerRow</span><span class="p">(</span><span class="n">pxbuffer</span><span class="p">)</span> <span class="o">/</span> <span class="n">frameSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="n">yssert</span><span class="p">(</span> <span class="n">bytesPerPixel</span> <span class="o">==</span> <span class="mi">4</span> <span class="p">);</span>
+
+    <span class="n">CVPixelBufferLockBaseAddress</span><span class="p">(</span> <span class="n">pxbuffer</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="p">{</span>
+        <span class="kt">void</span> <span class="o">*</span><span class="n">pxdata</span> <span class="o">=</span> <span class="n">CVPixelBufferGetBaseAddress</span><span class="p">(</span> <span class="n">pxbuffer</span> <span class="p">);</span>
+
+        <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">BKCreateARGBBitmapContext</span><span class="p">(</span> <span class="n">pxdata</span><span class="p">,</span> <span class="n">image</span> <span class="p">);</span>
+        <span class="n">yssert_notNull</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+        <span class="n">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="n">frameSize</span> <span class="p">};</span>
+        <span class="n">CGContextDrawImage</span><span class="p">(</span> <span class="n">context</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">image</span> <span class="p">);</span>
+
+        <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">CGBitmapContextGetData</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+        <span class="n">yssert_notNull</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
+
+        <span class="n">CGContextRelease</span><span class="p">(</span> <span class="n">context</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">CVPixelBufferUnlockBaseAddress</span><span class="p">(</span><span class="n">pxbuffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="n">yssert_notNull</span><span class="p">(</span><span class="n">pxbuffer</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">pxbuffer</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></td></tr></tbody></table></div></body></html>

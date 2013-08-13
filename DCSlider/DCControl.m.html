@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><title>DCControl.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>DCControl.m</p>
+
+<p>Copyright 2011 Domestic Cat. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &quot;DCControl.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">DCControl</span> <span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">_value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark- Lifecycle</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span> <span class="nl">initWithDelegate:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">aDelegate</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">init</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+  <span class="p">{</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>set defaults for properties inherited from UIView</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">self</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">clipsToBounds</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">opaque</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>setup defaults</p></td><td class="code highlight"><div class="highlight"><pre>        <span class="n">_backgroundColorAlpha</span> <span class="o">=</span> <span class="mf">0.3f</span><span class="p">;</span>
+        <span class="n">_color</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">];</span>
+        <span class="n">_min</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+        <span class="n">_max</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="p">;</span>
+        <span class="n">_displaysValue</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_allowsGestures</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+        <span class="n">_labelFont</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">boldSystemFontOfSize:</span><span class="mf">12.5f</span><span class="p">];</span>
+
+    <span class="n">_delegate</span> <span class="o">=</span> <span class="n">aDelegate</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dealloc</span>
+<span class="p">{</span>
+  <span class="n">_delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Accessors</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span> <span class="n">value</span>
+<span class="p">{</span>
+    <span class="n">CGFloat</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">@synchronized</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">setValue:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">newValue</span>
+<span class="p">{</span>
+    <span class="k">@synchronized</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">willChangeValueForKey:</span><span class="s">@&quot;value&quot;</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">newValue</span> <span class="o">&gt;</span> <span class="n">self</span><span class="p">.</span><span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">_value</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">max</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">newValue</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">_value</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">min</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">_value</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nl">didChangeValueForKey:</span><span class="s">@&quot;value&quot;</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">controlValueDidChange:</span><span class="n">_value</span> <span class="nl">sender:</span><span class="n">self</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsDisplay</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Helper methods</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>        <span class="nl">context:</span><span class="p">(</span><span class="n">CGContextRef</span><span class="p">)</span><span class="n">c</span>
+         <span class="nl">addRoundedRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="n">rect</span>
+           <span class="nl">cornerRadius:</span><span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">cornerRadius</span>
+<span class="p">{</span>
+  <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">+=</span> <span class="mf">0.5f</span><span class="p">;</span>
+  <span class="n">NSInteger</span> <span class="n">x_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">x_left_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">x_right_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">x_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">y_top</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">y_top_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">y_bottom_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">NSInteger</span> <span class="n">y_bottom</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">floorf</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+  <span class="cm">/* Begin! */</span>
+  <span class="n">CGContextBeginPath</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+  <span class="n">CGContextMoveToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_left</span><span class="p">,</span> <span class="n">y_top_center</span><span class="p">);</span>
+
+  <span class="cm">/* First corner */</span>
+  <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_left</span><span class="p">,</span> <span class="n">y_top</span><span class="p">,</span> <span class="n">x_left_center</span><span class="p">,</span> <span class="n">y_top</span><span class="p">,</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_right_center</span><span class="p">,</span> <span class="n">y_top</span><span class="p">);</span>
+
+  <span class="cm">/* Second corner */</span>
+  <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_right</span><span class="p">,</span> <span class="n">y_top</span><span class="p">,</span> <span class="n">x_right</span><span class="p">,</span> <span class="n">y_top_center</span><span class="p">,</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_right</span><span class="p">,</span> <span class="n">y_bottom_center</span><span class="p">);</span>
+
+  <span class="cm">/* Third corner */</span>
+  <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_right</span><span class="p">,</span> <span class="n">y_bottom</span><span class="p">,</span> <span class="n">x_right_center</span><span class="p">,</span> <span class="n">y_bottom</span><span class="p">,</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_left_center</span><span class="p">,</span> <span class="n">y_bottom</span><span class="p">);</span>
+
+  <span class="cm">/* Fourth corner */</span>
+  <span class="n">CGContextAddArcToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_left</span><span class="p">,</span> <span class="n">y_bottom</span><span class="p">,</span> <span class="n">x_left</span><span class="p">,</span> <span class="n">y_bottom_center</span><span class="p">,</span> <span class="n">cornerRadius</span><span class="p">);</span>
+  <span class="n">CGContextAddLineToPoint</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x_left</span><span class="p">,</span> <span class="n">y_top_center</span><span class="p">);</span>
+
+  <span class="cm">/* Done */</span>
+  <span class="n">CGContextClosePath</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>  
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

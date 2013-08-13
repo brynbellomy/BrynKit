@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><title>BKNSStringSpec.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BKNSStringSpec.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7.23.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;Kiwi/Kiwi.h&gt;</span>
+<span class="cp">#import &lt;libextobjc/EXTScope.h&gt;</span>
+<span class="cp">#import &lt;ReactiveCocoa/ReactiveCocoa.h&gt;</span>
+
+<span class="cp">#import &quot;BrynKit.h&quot;</span>
+
+<span class="n">SPEC_BEGIN</span><span class="p">(</span><span class="n">BKNSStringSpec</span><span class="p">)</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Category methods that need to be tested:</p>
+
+<ul>
+<li>(NSRange)    bk_rangeFromStringLength;</li>
+<li>(NSString *) bk_trim;</li>
+<li>(NSString *) bk_replace:(NSString *)strToReplace        with:(NSString *)replacementStr;</li>
+<li>(NSString *) bk_replaceRegex:(NSString *)regexToReplace with:(NSString *)replacementStr;</li>
+<li>(NSString *) bk_concat:(NSString *)string;</li>
+<li>(NSString *) bk_concatPath:(NSString *)string;</li>
+</ul></td><td class="code highlight"><div class="highlight"><pre><span class="n">context</span><span class="p">(</span><span class="s">@&quot;an initialized NSString&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+    <span class="n">describe</span><span class="p">(</span><span class="s">@&quot;when told to bk_trim&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+        <span class="n">it</span><span class="p">(</span><span class="s">@&quot;should trim all forms of whitespace at its edges&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot; as df</span><span class="se">\r</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span> <span class="n">bk_trim</span><span class="p">];</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">expected</span>  <span class="o">=</span> <span class="s">@&quot;as df&quot;</span><span class="p">;</span>
+
+            <span class="p">[[</span><span class="n">theString</span> <span class="n">should</span><span class="p">]</span> <span class="nl">equal:</span><span class="n">expected</span><span class="p">];</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+
+    <span class="n">describe</span><span class="p">(</span><span class="s">@&quot;when told to bk_rangeFromStringLength&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+        <span class="n">it</span><span class="p">(</span><span class="s">@&quot;should yield an NSRange with location 0 and length equal to the string&#39;s length&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="s">@&quot;asdf&quot;</span><span class="p">;</span>
+            <span class="n">NSRange</span>   <span class="n">theRange</span>  <span class="o">=</span> <span class="p">[</span><span class="n">theString</span> <span class="n">bk_rangeFromStringLength</span><span class="p">];</span>
+
+            <span class="p">[[</span><span class="n">theValue</span><span class="p">(</span><span class="n">theRange</span><span class="p">.</span><span class="n">location</span><span class="p">)</span> <span class="n">should</span><span class="p">]</span> <span class="nl">equal:</span><span class="mi">0</span>                <span class="nl">withDelta:</span><span class="mi">0</span><span class="p">];</span>
+            <span class="p">[[</span><span class="n">theValue</span><span class="p">(</span><span class="n">theRange</span><span class="p">.</span><span class="n">length</span><span class="p">)</span>   <span class="n">should</span><span class="p">]</span> <span class="nl">equal:</span><span class="n">theString</span><span class="p">.</span><span class="n">length</span> <span class="nl">withDelta:</span><span class="mi">0</span><span class="p">];</span>
+        <span class="p">});</span>
+
+    <span class="p">});</span>
+
+    <span class="n">describe</span><span class="p">(</span><span class="s">@&quot;when told to bk_replace:with:&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+        <span class="n">it</span><span class="p">(</span><span class="s">@&quot;should return a new string where all instances of the needle substring have been replaced by the replacement string&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;xyzzy&quot;</span> <span class="nl">bk_replace:</span><span class="s">@&quot;y&quot;</span> <span class="nl">with:</span><span class="s">@&quot;zork&quot;</span><span class="p">];</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">expected</span>  <span class="o">=</span> <span class="s">@&quot;xzorkzzzork&quot;</span><span class="p">;</span>
+
+            <span class="p">[[</span><span class="n">theString</span> <span class="n">should</span><span class="p">]</span> <span class="nl">equal:</span><span class="n">expected</span><span class="p">];</span>
+        <span class="p">});</span>
+
+        <span class="n">it</span><span class="p">(</span><span class="s">@&quot;should return a copy of an identical string if no instances of the needle substring were found&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">theString</span> <span class="o">=</span> <span class="p">[</span><span class="s">@&quot;xyzzy&quot;</span> <span class="nl">bk_replace:</span><span class="s">@&quot;blahblahblah&quot;</span> <span class="nl">with:</span><span class="s">@&quot;zork&quot;</span><span class="p">];</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">expected</span>  <span class="o">=</span> <span class="s">@&quot;xyzzy&quot;</span><span class="p">;</span>
+
+            <span class="p">[[</span><span class="n">theString</span> <span class="n">should</span><span class="p">]</span> <span class="nl">equal:</span><span class="n">expected</span><span class="p">];</span>
+        <span class="p">});</span>
+
+    <span class="p">});</span>
+
+    <span class="n">describe</span><span class="p">(</span><span class="s">@&quot;&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+
+    <span class="p">});</span>
+    
+<span class="p">});</span>
+
+<span class="n">SPEC_END</span>
+</pre></div></td></tr></tbody></table></div></body></html>

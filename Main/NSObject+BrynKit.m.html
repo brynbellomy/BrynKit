@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><title>NSObject+BrynKit.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>NSObject+BrynKit.m
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 7.27.13.
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;libextobjc/EXTScope.h&gt;</span>
+<span class="cp">#import &quot;BrynKit-Main.h&quot;</span>
+<span class="cp">#import &quot;NSObject+BrynKit.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">NSObject</span> <span class="nl">(BrynKit)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_descriptionWithProperties:</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">properties</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">bk_descriptionWithProperties:</span> <span class="n">properties</span>
+                                    <span class="nl">separator:</span> <span class="s">@&quot;</span><span class="se">\r</span><span class="s">&quot;</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_descriptionWithProperties:</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">properties</span>
+                                  <span class="nf">separator:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">separator</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">bk_descriptionWithProperties:</span> <span class="n">properties</span>
+                                    <span class="nl">separator:</span> <span class="n">separator</span>
+                                    <span class="nl">formatter:</span> <span class="o">^</span><span class="n">NSString</span> <span class="o">*</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">property</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+                                        <span class="k">return</span> <span class="n">$str</span><span class="p">(</span><span class="s">@&quot;    %@ = %@;&quot;</span><span class="p">,</span> <span class="n">property</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+                                    <span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_descriptionWithProperties:</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">properties</span>
+                                  <span class="nf">separator:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">separator</span>
+                                  <span class="nf">formatter:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">property</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">))</span><span class="nv">formatter</span>
+<span class="p">{</span>
+    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">formattedProperties</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="n">properties</span><span class="p">.</span><span class="n">count</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">id</span> <span class="n">property</span> <span class="k">in</span> <span class="n">properties</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">id</span> <span class="n">formattedProperty</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">property</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span> <span class="nl">valueForKey:</span><span class="n">property</span><span class="p">]);</span>
+        <span class="p">[</span><span class="n">formattedProperties</span> <span class="nl">addObject:</span><span class="n">formattedProperty</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">propertyDescriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">formattedProperties</span> <span class="nl">componentsJoinedByString:</span><span class="n">separator</span><span class="p">];</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nl">bk_descriptionWithString:</span><span class="n">propertyDescriptions</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="nf">bk_descriptionWithString:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;&lt;%@: %p; = {</span><span class="se">\n</span><span class="s">%@</span><span class="se">\n</span><span class="s">}&gt;&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="n">self</span> <span class="n">class</span><span class="p">]</span> <span class="n">description</span><span class="p">],</span> <span class="n">self</span><span class="p">,</span> <span class="n">string</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

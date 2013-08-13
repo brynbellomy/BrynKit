@@ -1,0 +1,212 @@
+<!DOCTYPE html><html><head><title>BrynKitDebugging.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="../doc-style.css"><script src="../doc-filelist.js"></script><script>var relativeDir = '../', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="../doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h1"><a href="#debugging-macros">Debugging macros</a></div><div class="heading h4"><a href="#alog-...-">ALog(...)</a></div><div class="heading h1"><a href="#ifndef-ns_block_assertions">ifndef NS_BLOCK_ASSERTIONS</a></div><div class="heading h1"><a href="#define-ns_block_assertions">define NS_BLOCK_ASSERTIONS</a></div><div class="heading h1"><a href="#endif">endif</a></div><div class="heading h4"><a href="#yssert--">yssert()</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>BrynKitDebugging.h
+ BrynKit</p>
+
+<p>Created by bryn austin bellomy on 2/27/2013
+ Copyright (c) 2013 bryn austin bellomy. All rights reserved.</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#import &lt;libextobjc/metamacros.h&gt;</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="debugging-macros">
+  <h1>
+    <a href="#debugging-macros" class="pilcrow">&#182;</a>
+    Debugging macros
+  </h1>
+</div>
+</div><div class="body"></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#if (DEBUG == 1 || AD_HOC == 1)</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="alog-...-">
+  <h4>
+    <a href="#alog-...-" class="pilcrow">&#182;</a>
+    ALog(...)
+  </h4>
+</div>
+</div><div class="body"><p>For internal use, mainly.</p></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#   define ALog(...) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">            ( [[NSAssertionHandler currentHandler] \</span>
+<span class="cp">                        handleFailureInFunction:$utf8(__PRETTY_FUNCTION__) file:$utf8(__FILE__) lineNumber:__LINE__ description:@&quot;[assertion: %@]\n%@&quot;, @ metamacro_stringify(__VA_ARGS__), [NSThread callStackSymbols]]; \</span>
+<span class="cp">              fflush(stdout); ) \</span>
+<span class="cp">\</span>
+<span class="cp">            ( [[NSAssertionHandler currentHandler] \</span>
+<span class="cp">                        handleFailureInFunction:$utf8(__PRETTY_FUNCTION__) file:$utf8(__FILE__) lineNumber:__LINE__ description:@&quot;%@ [assertion: %@]\n%@&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__)), [NSThread callStackSymbols]]; \</span>
+<span class="cp">              fflush(stdout); ) \</span>
+<span class="cp">    } while(0)</span>
+<span class="cp">#   define ALogC(...) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">            ( [[NSAssertionHandler currentHandler] \</span>
+<span class="cp">                        handleFailureInFunction:$utf8(__PRETTY_FUNCTION__) file:$utf8(__FILE__) lineNumber:__LINE__ description:@&quot;[assertion: %@]\n%@&quot;, @ metamacro_stringify(__VA_ARGS__), [NSThread callStackSymbols]]; \</span>
+<span class="cp">              fflush(stdout); ) \</span>
+<span class="cp">\</span>
+<span class="cp">            ( [[NSAssertionHandler currentHandler] \</span>
+<span class="cp">                        handleFailureInFunction:$utf8(__PRETTY_FUNCTION__) file:$utf8(__FILE__) lineNumber:__LINE__ description:@&quot;%@ [assertion: %@]\n%@&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__)), [NSThread callStackSymbols]]; \</span>
+<span class="cp">              fflush(stdout); ) \</span>
+<span class="cp">    } while(0)</span>
+<span class="cp">#else</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap" id="ifndef-ns_block_assertions">
+  <h1>
+    <a href="#ifndef-ns_block_assertions" class="pilcrow">&#182;</a>
+    ifndef NS_BLOCK_ASSERTIONS
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="define-ns_block_assertions">
+  <h1>
+    <a href="#define-ns_block_assertions" class="pilcrow">&#182;</a>
+    define NS_BLOCK_ASSERTIONS
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="endif">
+  <h1>
+    <a href="#endif" class="pilcrow">&#182;</a>
+    endif
+  </h1>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">#   if defined (DDLogError)</span>
+<span class="cp">#       define ALog(...) \</span>
+<span class="cp">            do { \</span>
+<span class="cp">                int ddLogLevel = LOG_LEVEL_VERBOSE; \</span>
+<span class="cp">                metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">                    ( DDLogError(@&quot;[ASSERTION FAILED] [assertion: %@]&quot;,    @ metamacro_stringify(__VA_ARGS__)); fflush(stdout); ) \</span>
+<span class="cp">                    ( DDLogError(@&quot;[ASSERTION FAILED] %@ [assertion: %@]&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__))); fflush(stdout); ) \</span>
+<span class="cp">            } while(0)</span>
+
+<span class="cp">#       define ALogC(...) \</span>
+<span class="cp">            do { \</span>
+<span class="cp">                int ddLogLevel = LOG_LEVEL_VERBOSE; \</span>
+<span class="cp">                metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">                    ( DDLogCError(@&quot;[ASSERTION FAILED] [assertion: %@]&quot;,    @ metamacro_stringify(__VA_ARGS__)); fflush(stdout); ) \</span>
+<span class="cp">                    ( DDLogCError(@&quot;[ASSERTION FAILED] %@ [assertion: %@]&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__))); fflush(stdout); ) \</span>
+<span class="cp">            } while(0)</span>
+<span class="cp">#   else</span>
+<span class="cp">#       define ALog(...) \</span>
+<span class="cp">            do { \</span>
+<span class="cp">                metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">                    ( NSLog(@&quot;[ASSERTION FAILED] [assertion: %@]&quot;,    @ metamacro_stringify(__VA_ARGS__)); fflush(stdout); ) \</span>
+<span class="cp">                    ( NSLog(@&quot;[ASSERTION FAILED] %@ [assertion: %@]&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__))); fflush(stdout); ) \</span>
+<span class="cp">            } while(0)</span>
+
+<span class="cp">#       define ALogC(...) \</span>
+<span class="cp">            do { \</span>
+<span class="cp">                metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__)) \</span>
+<span class="cp">                    ( NSLog(@&quot;[ASSERTION FAILED] [assertion: %@]&quot;,    @ metamacro_stringify(__VA_ARGS__)); fflush(stdout); ) \</span>
+<span class="cp">                    ( NSLog(@&quot;[ASSERTION FAILED] %@ [assertion: %@]&quot;, $str(metamacro_tail(__VA_ARGS__)), @ metamacro_stringify(metamacro_head(__VA_ARGS__))); fflush(stdout); ) \</span>
+<span class="cp">            } while(0)</span>
+<span class="cp">#   endif</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+
+<div class="highlight"><pre><code>           <span class="n">metamacro_if_eq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">metamacro_argcount</span><span class="p">(</span><span class="n">__VA_ARGS__</span><span class="p">))</span> \
+               <span class="p">(</span> <span class="n">BrynFnLog</span><span class="p">(</span><span class="s">@&quot;[ASSERTION FAILED] %@ [assertion: %@]&quot;</span><span class="p">,</span> <span class="n">$str</span><span class="p">(</span><span class="n">metamacro_tail</span><span class="p">(</span><span class="n">__VA_ARGS__</span><span class="p">)),</span> <span class="err">@</span> <span class="n">metamacro_stringify</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span> <span class="p">)</span>
+</code></pre></div>
+
+
+
+<p>BrynFnLog(@"[ASSERTION FAILED] %@ [assertion: %@]", $str(metamacro_tail(<strong>VA_ARGS</strong>)), @ metamacro_stringify(condition)) ) \
+( BrynFnLog(COLOR_ERROR(@"ASSERTION FAILED ") @"(%@) %@", @ metamacro_stringify((<strong>VA_ARGS</strong>)), $str(<strong>VA_ARGS</strong>)) )</p></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#endif</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="yssert--">
+  <h4>
+    <a href="#yssert--" class="pilcrow">&#182;</a>
+    yssert()
+  </h4>
+</div>
+</div><div class="body"><p>In DEBUG builds, <code>yssert</code> acts just like <code>assert()</code> -- it throws an
+exception when the given condition fails.  In non-DEBUG builds, <code>yssert()</code>
+logs the failure to <code>stdout</code> (using the message specified by the format
+string) and proceeds with execution.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">expr</span><code class="name">A</code> &mdash; <span class="description">condition to test.</span></div><div class="dox_tag_detail"><span class="dox_type">format</span><code class="name">A</code> &mdash; <span class="description">format string to print when <code>condition</code> is FALSE.</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="cp">#define yssert(condition, ...) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        if (!(condition)) { \</span>
+<span class="cp">            ALog(condition, ## __VA_ARGS__); \</span>
+<span class="cp">        } \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssertc(condition, ...) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        if (!(condition)) { \</span>
+<span class="cp">            ALogC(condition, ## __VA_ARGS__); \</span>
+<span class="cp">        } \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_fail(...) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(NO, ## __VA_ARGS__); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_singleTypeCollection(collection, klass) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        for ( id obj in collection ) { \</span>
+<span class="cp">            yssert( [obj instanceOf( klass )] ); \</span>
+<span class="cp">        } \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_onMainThread() \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert([NSThread isMainThread], @&quot;-[%@ %s] must be called from the main thread.&quot;, NSStringFromClass(self.class), __PRETTY_FUNCTION__); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notOnMainThread() \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert( ! [NSThread isMainThread], @&quot;-[%@ %s] must not be called from the main thread.&quot;, NSStringFromClass(self.class), __PRETTY_FUNCTION__); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_noError(error) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(!error, @ metamacro_stringify(obj) @&quot; is non-NULL.&quot;); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_errorIsNil(error) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(error == nil, @ metamacro_stringify(obj) @&quot; is not nil.  Error = %@&quot;, [ error localizedDescription ]); \</span>
+<span class="cp">    } while(0)</span>
+
+
+<span class="cp">#define yssert_isNil(obj) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj == nil, @ metamacro_stringify(obj) @&quot; is not nil.&quot;); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notNil(obj) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj != nil, @ metamacro_stringify(obj) @&quot; is nil.&quot;); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notNull(obj) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj != NULL, @ metamacro_stringify(obj) @&quot; is nil.&quot;); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notNilAndIsClass(obj, klass) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj != nil, @ metamacro_stringify(obj) @&quot; is nil.&quot;); \</span>
+<span class="cp">        yssert([obj isKindOfClass: [klass class]], @ metamacro_stringify(obj) @&quot; is not an instance of &quot; @ metamacro_stringify(klass)); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notNilAndConformsToProtocol(obj, proto) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj != nil, @ metamacro_stringify(obj) @&quot; is nil.&quot;); \</span>
+<span class="cp">        yssert([obj conformsToProtocol: @protocol(proto)], @ metamacro_stringify(obj) @&quot; does not conform to protocol &quot; @ metamacro_stringify(proto)); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_notNilAndRespondsToSelector(obj, sel) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert(obj != nil, @ metamacro_stringify(obj) @&quot; is nil.&quot;); \</span>
+<span class="cp">        yssert([obj respondsToSelector: @selector(sel)], @ metamacro_stringify(obj) @&quot; does not respond to selector &quot; @ metamacro_stringify(sel)); \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define yssert_fileExistsAtPath(path) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        yssert( [[NSFileManager defaultManager] fileExistsAtPath: path], @&quot;file (%@) doesn&#39;t exist&quot;, path ); \</span>
+<span class="cp">    } while(0)</span></pre></div></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>static int _BrynKitDebugging_ddLogLevel = LOG_LEVEL_VERBOSE;</p>
+
+<p>void BrynKitSetDebugging_ddLogLevel(int level) { _BrynKitDebugging_ddLogLevel = level; }
+int BrynKitDebugging_ddLogLevel()              { return _BrynKitDebugging_ddLogLevel; }</p></td><td class="code highlight"><div class="highlight"><pre></pre></div></td></tr></tbody></table></div></body></html>
