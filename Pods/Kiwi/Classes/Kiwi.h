@@ -23,6 +23,8 @@ extern "C" {
 #import "KWBeMemberOfClassMatcher.h"
 #import "KWBeSubclassOfClassMatcher.h"
 #import "KWBeTrueMatcher.h"
+#import "KWBeNilMatcher.h"
+#import "KWBeNonNilMatcher.h"
 #import "KWBeWithinMatcher.h"
 #import "KWBeZeroMatcher.h"
 #import "KWBeforeAllNode.h"
@@ -86,6 +88,7 @@ extern "C" {
 #import "NSObject+KiwiSpyAdditions.h"
 #import "NSObject+KiwiStubAdditions.h"
 #import "NSObject+KiwiVerifierAdditions.h"
+#import "NSProxy+KiwiVerifierAdditions.h"
 
 #import "KiwiMacros.h"
 

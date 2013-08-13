@@ -23,6 +23,8 @@
 
 @property (nonatomic, retain, readonly) NSMutableArray *lastInContexts;
 @property (nonatomic, assign) KWExampleSuite *suite;
+@property (nonatomic, assign) id<KWVerifying> unassignedVerifier;
+
 
 - (id)initWithExampleNode:(id<KWExampleNode>)node;
 
@@ -31,7 +33,7 @@
 - (id)addVerifier:(id<KWVerifying>)aVerifier;
 - (id)addExistVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite;
 - (id)addMatchVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite;
-- (id)addAsyncVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite timeout:(NSInteger)timeout;
+- (id)addAsyncVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite timeout:(NSInteger)timeout shouldWait:(BOOL)shouldWait;
 
 #pragma mark - Report failure
 

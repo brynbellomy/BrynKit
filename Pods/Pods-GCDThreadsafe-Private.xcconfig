@@ -1,6 +1,0 @@
-#include "Pods-GCDThreadsafe.xcconfig"
-CLANG_ENABLE_MODULES = ${PODS_GCDTHREADSAFE_CLANG_ENABLE_MODULES}
-GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/GCDThreadsafe" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/EDColor" "${PODS_ROOT}/Headers/GCDThreadsafe" "${PODS_ROOT}/Headers/Kiwi" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MGBox2" "${PODS_ROOT}/Headers/ObjectiveSugar" "${PODS_ROOT}/Headers/ReactiveCocoa" "${PODS_ROOT}/Headers/libextobjc" "${PODS_ROOT}/Headers/libffi"
-OTHER_LDFLAGS = -ObjC
-PODS_ROOT = ${SRCROOT}

@@ -13,17 +13,10 @@
 		C55C54FD17793E6000B78A60 /* DCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F072717793C9600F98447 /* DCSlider.m */; };
 		C55C54FF17793E6000B78A60 /* FIIconView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F072D17793C9600F98447 /* FIIconView+Extensions.m */; };
 		C56D7CB2179963090043222E /* Bryn.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073317793C9600F98447 /* Bryn.m */; };
-		C56D7CB4179963090043222E /* BrynKitLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073817793C9600F98447 /* BrynKitLogging.m */; };
 		C56D7CB5179963090043222E /* NSString+BrynKit_Dates.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F073A17793C9600F98447 /* NSString+BrynKit_Dates.m */; };
 		C56D7CB8179963090043222E /* BrynKitMemoryLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074217793C9600F98447 /* BrynKitMemoryLogging.m */; };
 		C56D7CB9179963090043222E /* MGBox+BrynKit_Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074517793C9600F98447 /* MGBox+BrynKit_Animations.m */; };
 		C56D7CBA179963090043222E /* MGBoxHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074717793C9600F98447 /* MGBoxHelpers.m */; };
-		C56D7CBB179963090043222E /* RACCriticalSectionScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */; };
-		C56D7CBC179963090043222E /* RACFuture.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F074F17793C9600F98447 /* RACFuture.m */; };
-		C56D7CBD179963090043222E /* RACHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075117793C9600F98447 /* RACHelpers.m */; };
-		C56D7CBE179963090043222E /* RACScheduler+SECriticalSectionScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */; };
-		C56D7CBF179963090043222E /* RACTransformableBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075517793C9600F98447 /* RACTransformableBinding.m */; };
-		C56D7CC0179963090043222E /* UIButton+RACCommandSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */; };
 		C56D7CC2179963090043222E /* SEGradientSwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = C58F076117793C9600F98447 /* SEGradientSwatch.m */; };
 		C58E26B3179E68C300CBDD0C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268101757B04F005BBB4A /* CoreGraphics.framework */; };
 		C58E26B5179E68CD00CBDD0C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C58E26B4179E68CD00CBDD0C /* CoreVideo.framework */; };
@@ -33,9 +26,6 @@
 		C58F068E17792A1200F98447 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267E31757AB60005BBB4A /* Foundation.framework */; };
 		C58F068F17792A1200F98447 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C2680E1757B049005BBB4A /* UIKit.framework */; };
 		C58F069517792A1200F98447 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C58F069317792A1200F98447 /* InfoPlist.strings */; };
-		C58F06A217792AFB00F98447 /* BrynFUISwitchSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */; };
-		C58F06A317792AFB00F98447 /* RACTransformableBindingSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */; };
-		C58F06A417792AFB00F98447 /* RACFutureSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */; };
 		C58F06A717792CBD00F98447 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268161757B065005BBB4A /* ImageIO.framework */; };
 		C58F06A917792CBD00F98447 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C58F06A817792CBD00F98447 /* CoreImage.framework */; };
 		C58F06AA17792CC200F98447 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C268121757B054005BBB4A /* QuartzCore.framework */; };
@@ -90,8 +80,6 @@
 		7F99A5E6A5FE4C148784B149 /* Pods-BrynKitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrynKitTests.xcconfig"; path = "Pods/Pods-BrynKitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		96B4DE984C3D44EB919BD75D /* Pods-BrynKitTests-OCUnit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrynKitTests-OCUnit.xcconfig"; path = "Pods/Pods-BrynKitTests-OCUnit.xcconfig"; sourceTree = SOURCE_ROOT; };
 		9B8E51CE904546A2A3CA636A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RACFutureSpec.m; path = ../BrynKitTests/RACFutureSpec.m; sourceTree = "<group>"; };
-		C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrynFUISwitchSpec.m; path = ../BrynKitTests/BrynFUISwitchSpec.m; sourceTree = "<group>"; };
 		C58E26B4179E68CD00CBDD0C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C58E26B7179E6DE600CBDD0C /* BKNSStringSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BKNSStringSpec.m; path = BrynKitTests/BKNSStringSpec.m; sourceTree = SOURCE_ROOT; };
 		C58E26B9179E724100CBDD0C /* NSString+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BrynKit.h"; sourceTree = "<group>"; };
@@ -115,7 +103,6 @@
 		C58F073417793C9600F98447 /* BrynKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKit.h; sourceTree = "<group>"; };
 		C58F073617793C9600F98447 /* BrynKitDebugging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitDebugging.h; sourceTree = "<group>"; };
 		C58F073717793C9600F98447 /* BrynKitLogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitLogging.h; sourceTree = "<group>"; };
-		C58F073817793C9600F98447 /* BrynKitLogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrynKitLogging.m; sourceTree = "<group>"; };
 		C58F073917793C9600F98447 /* NSString+BrynKit_Dates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+BrynKit_Dates.h"; sourceTree = "<group>"; };
 		C58F073A17793C9600F98447 /* NSString+BrynKit_Dates.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+BrynKit_Dates.m"; sourceTree = "<group>"; };
 		C58F074117793C9600F98447 /* BrynKitMemoryLogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrynKitMemoryLogging.h; sourceTree = "<group>"; };
@@ -124,20 +111,6 @@
 		C58F074517793C9600F98447 /* MGBox+BrynKit_Animations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MGBox+BrynKit_Animations.m"; sourceTree = "<group>"; };
 		C58F074617793C9600F98447 /* MGBoxHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGBoxHelpers.h; sourceTree = "<group>"; };
 		C58F074717793C9600F98447 /* MGBoxHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGBoxHelpers.m; sourceTree = "<group>"; };
-		C58F074917793C9600F98447 /* RACDispatchTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACDispatchTimer.h; sourceTree = "<group>"; };
-		C58F074A17793C9600F98447 /* RACDispatchTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACDispatchTimer.m; sourceTree = "<group>"; };
-		C58F074C17793C9600F98447 /* RACCriticalSectionScheduler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACCriticalSectionScheduler.h; sourceTree = "<group>"; };
-		C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACCriticalSectionScheduler.m; sourceTree = "<group>"; };
-		C58F074E17793C9600F98447 /* RACFuture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACFuture.h; sourceTree = "<group>"; };
-		C58F074F17793C9600F98447 /* RACFuture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACFuture.m; sourceTree = "<group>"; };
-		C58F075017793C9600F98447 /* RACHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACHelpers.h; sourceTree = "<group>"; };
-		C58F075117793C9600F98447 /* RACHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACHelpers.m; sourceTree = "<group>"; };
-		C58F075217793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RACScheduler+SECriticalSectionScheduler.h"; sourceTree = "<group>"; };
-		C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RACScheduler+SECriticalSectionScheduler.m"; sourceTree = "<group>"; };
-		C58F075417793C9600F98447 /* RACTransformableBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACTransformableBinding.h; sourceTree = "<group>"; };
-		C58F075517793C9600F98447 /* RACTransformableBinding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RACTransformableBinding.m; sourceTree = "<group>"; };
-		C58F075617793C9600F98447 /* UIButton+RACCommandSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+RACCommandSupport.h"; sourceTree = "<group>"; };
-		C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+RACCommandSupport.m"; sourceTree = "<group>"; };
 		C58F075917793C9600F98447 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		C58F075A17793C9600F98447 /* RRFPSBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RRFPSBar.h; sourceTree = "<group>"; };
 		C58F075B17793C9600F98447 /* RRFPSBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RRFPSBar.m; sourceTree = "<group>"; };
@@ -173,7 +146,6 @@
 		C5C268141757B05F005BBB4A /* libPods-BrynKitTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-BrynKitTests.a"; path = "Pods/build/Release-iphoneos/libPods-BrynKitTests.a"; sourceTree = "<group>"; };
 		C5C268161757B065005BBB4A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		C5C268181757B06D005BBB4A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RACTransformableBindingSpec.m; path = ../BrynKitTests/RACTransformableBindingSpec.m; sourceTree = "<group>"; };
 		C5DA5F6017A4961100857044 /* NSObject+BrynKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BrynKit.h"; sourceTree = "<group>"; };
 		C5DA5F6117A4961100857044 /* NSObject+BrynKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BrynKit.m"; sourceTree = "<group>"; };
 		C5DA5F6717A4980F00857044 /* BKFloatRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKFloatRange.h; sourceTree = "<group>"; };
@@ -240,9 +212,6 @@
 		C58F069017792A1200F98447 /* BrynKitTests-OCUnit */ = {
 			isa = PBXGroup;
 			children = (
-				C5521DBE1764CD570093D827 /* BrynFUISwitchSpec.m */,
-				C5D0194F1764C98C00F359F3 /* RACTransformableBindingSpec.m */,
-				C51EAE3E175AA40700B9FFAB /* RACFutureSpec.m */,
 				C58E26B7179E6DE600CBDD0C /* BKNSStringSpec.m */,
 				C58F069117792A1200F98447 /* Supporting Files */,
 			);
@@ -298,7 +267,6 @@
 				C58F073417793C9600F98447 /* BrynKit.h */,
 				C58F073617793C9600F98447 /* BrynKitDebugging.h */,
 				C58F073717793C9600F98447 /* BrynKitLogging.h */,
-				C58F073817793C9600F98447 /* BrynKitLogging.m */,
 				C5DA5F6C17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.h */,
 				C5DA5F6D17A49C3A00857044 /* NSObject+BrynKitObjCRuntime.m */,
 				C58E26B9179E724100CBDD0C /* NSString+BrynKit.h */,
@@ -329,34 +297,6 @@
 				C58F074717793C9600F98447 /* MGBoxHelpers.m */,
 			);
 			path = MGBoxHelpers;
-			sourceTree = SOURCE_ROOT;
-		};
-		C58F074B17793C9600F98447 /* RACDispatchTimer */ = {
-			isa = PBXGroup;
-			children = (
-				C58F074917793C9600F98447 /* RACDispatchTimer.h */,
-				C58F074A17793C9600F98447 /* RACDispatchTimer.m */,
-			);
-			path = RACDispatchTimer;
-			sourceTree = SOURCE_ROOT;
-		};
-		C58F075817793C9600F98447 /* RACHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				C58F074C17793C9600F98447 /* RACCriticalSectionScheduler.h */,
-				C58F074D17793C9600F98447 /* RACCriticalSectionScheduler.m */,
-				C58F074E17793C9600F98447 /* RACFuture.h */,
-				C58F074F17793C9600F98447 /* RACFuture.m */,
-				C58F075017793C9600F98447 /* RACHelpers.h */,
-				C58F075117793C9600F98447 /* RACHelpers.m */,
-				C58F075217793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.h */,
-				C58F075317793C9600F98447 /* RACScheduler+SECriticalSectionScheduler.m */,
-				C58F075417793C9600F98447 /* RACTransformableBinding.h */,
-				C58F075517793C9600F98447 /* RACTransformableBinding.m */,
-				C58F075617793C9600F98447 /* UIButton+RACCommandSupport.h */,
-				C58F075717793C9600F98447 /* UIButton+RACCommandSupport.m */,
-			);
-			path = RACHelpers;
 			sourceTree = SOURCE_ROOT;
 		};
 		C58F075C17793C9600F98447 /* RRFPSBar */ = {
@@ -456,8 +396,6 @@
 				C58F074317793C9600F98447 /* MemoryLogging */,
 				C58F074817793C9600F98447 /* MGBoxHelpers */,
 				C5FF401417B734260038E79C /* MBProgressHUDHelpers */,
-				C58F074B17793C9600F98447 /* RACDispatchTimer */,
-				C58F075817793C9600F98447 /* RACHelpers */,
 				C58F075C17793C9600F98447 /* RRFPSBar */,
 				C58F076217793C9600F98447 /* SEGradientSwatch */,
 				C5DA5FD917A798A500857044 /* UIKit */,
@@ -590,7 +528,7 @@
 				ORGANIZATIONNAME = "signalenvelope llc";
 				TargetAttributes = {
 					C58F068B17792A1200F98447 = {
-						TestTargetID = C5C267DF1757AB60005BBB4A;
+						TestTargetID = C5C267DF1757AB60005BBB4A /* BrynKit */;
 					};
 				};
 			};
@@ -700,9 +638,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C58F06A417792AFB00F98447 /* RACFutureSpec.m in Sources */,
-				C58F06A317792AFB00F98447 /* RACTransformableBindingSpec.m in Sources */,
-				C58F06A217792AFB00F98447 /* BrynFUISwitchSpec.m in Sources */,
 				C58E26B8179E6DE600CBDD0C /* BKNSStringSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -712,17 +647,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C56D7CB2179963090043222E /* Bryn.m in Sources */,
-				C56D7CB4179963090043222E /* BrynKitLogging.m in Sources */,
 				C56D7CB5179963090043222E /* NSString+BrynKit_Dates.m in Sources */,
 				C56D7CB8179963090043222E /* BrynKitMemoryLogging.m in Sources */,
 				C56D7CB9179963090043222E /* MGBox+BrynKit_Animations.m in Sources */,
 				C56D7CBA179963090043222E /* MGBoxHelpers.m in Sources */,
-				C56D7CBB179963090043222E /* RACCriticalSectionScheduler.m in Sources */,
-				C56D7CBC179963090043222E /* RACFuture.m in Sources */,
-				C56D7CBD179963090043222E /* RACHelpers.m in Sources */,
-				C56D7CBE179963090043222E /* RACScheduler+SECriticalSectionScheduler.m in Sources */,
-				C56D7CBF179963090043222E /* RACTransformableBinding.m in Sources */,
-				C56D7CC0179963090043222E /* UIButton+RACCommandSupport.m in Sources */,
 				C56D7CC2179963090043222E /* SEGradientSwatch.m in Sources */,
 				C5C2680C1757AC64005BBB4A /* stub.m in Sources */,
 				C55C54FA17793E6000B78A60 /* Bryn+CocoaLumberjack.m in Sources */,

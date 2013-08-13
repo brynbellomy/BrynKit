@@ -3,7 +3,7 @@
 //  BrynKit
 //
 //  Created by bryn austin bellomy on 8.10.13.
-//  Copyright (c) 2013 signalenvelope llc. All rights reserved.
+//  Copyright (c) 2013 bryn austin bellomy. All rights reserved.
 //
 
 #import "UIColor+BrynKit_ColorLogging.h"

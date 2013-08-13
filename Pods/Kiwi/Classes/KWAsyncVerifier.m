@@ -14,10 +14,11 @@
 
 @implementation KWAsyncVerifier
 
-+ (id)asyncVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite matcherFactory:(KWMatcherFactory *)aMatcherFactory reporter:(id<KWReporting>)aReporter probeTimeout:(NSTimeInterval)probeTimeout;
++ (id)asyncVerifierWithExpectationType:(KWExpectationType)anExpectationType callSite:(KWCallSite *)aCallSite matcherFactory:(KWMatcherFactory *)aMatcherFactory reporter:(id<KWReporting>)aReporter probeTimeout:(NSTimeInterval)probeTimeout shouldWait:(BOOL)shouldWait
 {
   KWAsyncVerifier *verifier = [[self alloc] initWithExpectationType:anExpectationType callSite:aCallSite matcherFactory:aMatcherFactory reporter:aReporter];
   verifier.timeout = probeTimeout;
+  verifier.shouldWait = shouldWait;
   return [verifier autorelease];
 }
 
@@ -30,21 +31,23 @@
 
 - (void)verifyWithProbe:(KWAsyncMatcherProbe *)aProbe {
   @try {
-    KWProbePoller *poller = [[KWProbePoller alloc] initWithTimeout:self.timeout delay:kKW_DEFAULT_PROBE_DELAY];
+    KWProbePoller *poller = [[KWProbePoller alloc] initWithTimeout:self.timeout delay:kKW_DEFAULT_PROBE_DELAY shouldWait: self.shouldWait];
 
     if (![poller check:aProbe]) {
       if (self.expectationType == KWExpectationTypeShould) {
         NSString *message = [aProbe.matcher failureMessageForShould];
         KWFailure *failure = [KWFailure failureWithCallSite:self.callSite message:message];
         [self.reporter reportFailure:failure];
-      } else if (self.expectationType == KWExpectationTypeShouldNot) {
+      }
+    } else {
+      // poller returned YES -- fail if expectation is NOT
+      if (self.expectationType == KWExpectationTypeShouldNot) {
         NSString *message = [aProbe.matcher failureMessageForShouldNot];
         KWFailure *failure = [KWFailure failureWithCallSite:self.callSite message:message];
         [self.reporter reportFailure:failure];
-      } else if (self.expectationType == KWExpectationTypeMaybe) {
-        // don't do anything
       }
     }
+		
     [poller release];
 
   } @catch (NSException *exception) {

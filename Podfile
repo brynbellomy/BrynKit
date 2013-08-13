@@ -2,10 +2,6 @@ platform :ios, '6.1'
 
 # pod 'BrynKit/Main'             , :path => '.'
 # pod 'BrynKit/MBProgressHUD'    , :path => '.'
-# pod 'BrynKit/RACHelpers'       , :path => '.'
-# pod 'BrynKit/RACDispatchTimer' , :path => '.'
-# pod 'BrynKit/GCDThreadsafe'    , :path => '.'
-# pod 'BrynKit/SEDispatchSource' , :path => '.'
 # pod 'BrynKit/MemoryLogging'    , :path => '.'
 # pod 'BrynKit/RRFPSBar'         , :path => '.'
 # pod 'BrynKit/MGBoxHelpers'     , :path => '.'
@@ -20,12 +16,8 @@ pod 'libextobjc',                   :podspec => 'https://gist.github.com/brynbel
 pod 'ReactiveCocoa/Core',           :podspec => 'https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec'
 pod 'ReactiveCocoa/RACExtensions',  :podspec => 'https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec'
 
-pod 'GCDThreadsafe', :path => '~/projects/_obj-c/GCDThreadsafe'
-
 pod 'MGBox2'
-pod 'EDColor'
 pod 'MBProgressHUD'
-pod 'ObjectiveSugar'
 pod 'CocoaLumberjack'
 
 target 'BrynKitTests-OCUnit', :exclusive => true do

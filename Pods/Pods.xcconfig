@@ -1,5 +1,4 @@
-CLANG_ENABLE_MODULES = YES
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/EDColor" "${PODS_ROOT}/Headers/GCDThreadsafe" "${PODS_ROOT}/Headers/Kiwi" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MGBox2" "${PODS_ROOT}/Headers/ObjectiveSugar" "${PODS_ROOT}/Headers/ReactiveCocoa" "${PODS_ROOT}/Headers/libextobjc" "${PODS_ROOT}/Headers/libffi"
-OTHER_LDFLAGS = -ObjC -Wl,-no_compact_unwind -framework CoreGraphics -framework CoreText -framework QuartzCore -framework UIKit
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/Kiwi" "${PODS_ROOT}/Headers/MBProgressHUD" "${PODS_ROOT}/Headers/MGBox2" "${PODS_ROOT}/Headers/ReactiveCocoa" "${PODS_ROOT}/Headers/libextobjc" "${PODS_ROOT}/Headers/libffi"
+OTHER_LDFLAGS = -ObjC -Wl,-no_compact_unwind -framework CoreGraphics -framework CoreText -framework QuartzCore
 PODS_ROOT = ${SRCROOT}/Pods

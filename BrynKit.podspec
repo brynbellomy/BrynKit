@@ -1,7 +1,3 @@
-#
-# BrynKit
-# CocoaPods podspec
-#
 
 Pod::Spec.new do |s|
     s.name         = 'BrynKit'
@@ -33,7 +29,6 @@ Pod::Spec.new do |s|
 
         subspec.dependency 'libextobjc/EXTScope'
         subspec.dependency 'libextobjc/EXTConcreteProtocol'
-        subspec.dependency 'ObjectiveSugar'
     end
 
     #
@@ -63,7 +58,7 @@ Pod::Spec.new do |s|
     # subspecs based on other modules
     #
 
-    s.subspec 'DCSlider-fork' do |subspec|
+    s.subspec 'DCSlider' do |subspec|
         subspec.source_files = 'DCSlider/*.{h,m}'
         subspec.dependency 'BrynKit/UIKit'
     end
@@ -115,15 +110,7 @@ Pod::Spec.new do |s|
     #end
 
 
-    s.subspec 'RACHelpers' do |subspec|
-        subspec.source_files = 'RACHelpers/*.{m,h}'
-
-        subspec.dependency 'BrynKit/Main'
-        subspec.dependency 'ReactiveCocoa', '>= 1.8.0'
-        subspec.dependency 'GCDThreadsafe', '~> 0.0.1'
-    end
-
-
+    
     #
     # subspecs: misc. helper classes
     #

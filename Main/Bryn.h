@@ -7,6 +7,7 @@
 //
 
 #import <libextobjc/metamacros.h>
+#import <libextobjc/EXTAnnotation.h>
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 
