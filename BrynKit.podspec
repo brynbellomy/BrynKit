@@ -68,13 +68,13 @@ Pod::Spec.new do |s|
 
         subspec.dependency 'BrynKit/Main'
         subspec.dependency 'BrynKit/UIKit'
-        subspec.dependency 'MGBox2'
+        subspec.dependency 'MGBox2', '~> 2.0.0'
     end
 
     s.subspec 'MBProgressHUDHelpers' do |subspec|
         subspec.source_files = 'MBProgressHUD/*.{h,m}'
 
-        subspec.dependency 'MBProgressHUD'
+        subspec.dependency 'MBProgressHUD', '~> 0.7'
         subspec.dependency 'BrynKit/Main'
     end
 
@@ -86,7 +86,7 @@ Pod::Spec.new do |s|
     s.subspec 'CocoaLumberjack' do |subspec|
         subspec.source_files = 'CocoaLumberjack/*.{m,h}'
 
-        subspec.dependency 'CocoaLumberjack'
+        subspec.dependency 'CocoaLumberjack', '~> 1.6.2'
         subspec.dependency 'BrynKit/Main'
     end
 

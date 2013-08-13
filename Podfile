@@ -16,9 +16,9 @@ pod 'libextobjc',                   :podspec => 'https://gist.github.com/brynbel
 pod 'ReactiveCocoa/Core',           :podspec => 'https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec'
 pod 'ReactiveCocoa/RACExtensions',  :podspec => 'https://gist.github.com/tonyarnold/6053439/raw/fd050efc021761b34ec320b84462781c4cd87111/ReactiveCocoa.podspec'
 
-pod 'MGBox2'
-pod 'MBProgressHUD'
-pod 'CocoaLumberjack'
+pod 'MGBox2', '~> 2.0.0'
+pod 'MBProgressHUD', '~> 0.7'
+pod 'CocoaLumberjack', '~> 1.6.2'
 
 target 'BrynKitTests-OCUnit', :exclusive => true do
     # pod 'TestPilot'
