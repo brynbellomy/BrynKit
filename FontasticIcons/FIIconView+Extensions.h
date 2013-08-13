@@ -1,15 +1,21 @@
-// //
-// //  FIIconView+Extensions.h
-// //  BrynKit
-// //
-// //  Created by bryn austin bellomy on 4.23.13.
-// //  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
-// //
+//
+//  FIIconView+Extensions.h
+//  BrynKit
+//
+//  Created by bryn austin bellomy on 4.23.13.
+//  Copyright (c) 2013 robot bubble bath LLC. All rights reserved.
+//
 
-// #import <FontasticIcons/FIIconView.h>
+#if __BRYNKIT_USE_FONTASTICICONS__ == 1
 
-// @interface FIIconView (Extensions)
+#import <FontasticIcons/FIIconView.h>
 
-// + (instancetype) bryn_iconViewWithIcon:(FIIcon *)icon size:(CGSize)size;
+@interface FIIconView (Extensions)
 
-// @end
++ (instancetype) bryn_iconViewWithIcon:(FIIcon *)icon size:(CGSize)size;
+
+@end
+
+
+#endif
+

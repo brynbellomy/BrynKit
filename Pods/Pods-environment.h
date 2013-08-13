@@ -24,27 +24,6 @@
 #define COCOAPODS_VERSION_MINOR_MGBox2 0
 #define COCOAPODS_VERSION_PATCH_MGBox2 0
 
-// ReactiveCocoa/Core
-#define COCOAPODS_POD_AVAILABLE_ReactiveCocoa_Core
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 2.0-development.
-
-// ReactiveCocoa/RACExtensions
-#define COCOAPODS_POD_AVAILABLE_ReactiveCocoa_RACExtensions
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 2.0-development.
-
-// ReactiveCocoa/no-arc
-#define COCOAPODS_POD_AVAILABLE_ReactiveCocoa_no_arc
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 2.0-development.
-
 // libextobjc
 #define COCOAPODS_POD_AVAILABLE_libextobjc
 #define COCOAPODS_VERSION_MAJOR_libextobjc 0

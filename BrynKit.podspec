@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
     s.name         = 'BrynKit'
-    s.version      = '1.3.0'
+    s.version      = '1.3.1'
 
     s.ios.deployment_target = '6.1'
     s.osx.deployment_target = '10.8'
@@ -27,8 +27,8 @@ Pod::Spec.new do |s|
     s.subspec 'Main' do |subspec|
         subspec.source_files = 'Main/*.{m,h}'
 
-        subspec.dependency 'libextobjc/EXTScope'
-        subspec.dependency 'libextobjc/EXTConcreteProtocol'
+        subspec.dependency 'libextobjc/EXTScope', '~> 0.2.5'
+        subspec.dependency 'libextobjc/EXTConcreteProtocol', '~> 0.2.5'
     end
 
     #
@@ -58,6 +58,12 @@ Pod::Spec.new do |s|
     # subspecs based on other modules
     #
 
+    s.subspec 'FontasticIcons' do |subspec|
+        subspec.source_files = 'FontasticIcons/*.{h,m}'
+        subspec.dependency 'BrynKit/UIKit'
+        subspec.dependency 'FontasticIcons', '~> 0.5.0'
+    end
+
     s.subspec 'DCSlider' do |subspec|
         subspec.source_files = 'DCSlider/*.{h,m}'
         subspec.dependency 'BrynKit/UIKit'
@@ -68,13 +74,13 @@ Pod::Spec.new do |s|
 
         subspec.dependency 'BrynKit/Main'
         subspec.dependency 'BrynKit/UIKit'
-        subspec.dependency 'MGBox2'
+        subspec.dependency 'MGBox2', '~> 2.0.0'
     end
 
     s.subspec 'MBProgressHUDHelpers' do |subspec|
         subspec.source_files = 'MBProgressHUD/*.{h,m}'
 
-        subspec.dependency 'MBProgressHUD'
+        subspec.dependency 'MBProgressHUD', '~> 0.7'
         subspec.dependency 'BrynKit/Main'
     end
 
@@ -86,7 +92,7 @@ Pod::Spec.new do |s|
     s.subspec 'CocoaLumberjack' do |subspec|
         subspec.source_files = 'CocoaLumberjack/*.{m,h}'
 
-        subspec.dependency 'CocoaLumberjack'
+        subspec.dependency 'CocoaLumberjack', '~> 1.6.2'
         subspec.dependency 'BrynKit/Main'
     end
 
