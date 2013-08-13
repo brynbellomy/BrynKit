@@ -28,9 +28,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C58F068B17792A1200F98447"
-               BuildableName = "BrynKitTests-OCUnit.octest"
-               BlueprintName = "BrynKitTests-OCUnit"
+               BlueprintIdentifier = "C500E24817BAE18C00ECC9AB"
+               BuildableName = "BrynKitTests.octest"
+               BlueprintName = "BrynKitTests"
                ReferencedContainer = "container:BrynKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,22 +43,12 @@
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C5C267F01757AB60005BBB4A"
-               BuildableName = "BrynKitTests.xctest"
-               BlueprintName = "BrynKitTests"
-               ReferencedContainer = "container:BrynKit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C58F068B17792A1200F98447"
-               BuildableName = "BrynKitTests-OCUnit.octest"
-               BlueprintName = "BrynKitTests-OCUnit"
+               BlueprintIdentifier = "C500E24817BAE18C00ECC9AB"
+               BuildableName = "BrynKitTests.octest"
+               BlueprintName = "BrynKitTests"
                ReferencedContainer = "container:BrynKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -72,7 +62,9 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      simulatorIPhoneDisplay = "3.000000"
+      simulatorIPadDisplay = "2.000000">
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
